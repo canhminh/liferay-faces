@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -13,13 +13,13 @@
  */
 package com.liferay.faces.util.text;
 
-import com.liferay.faces.util.factory.FactoryExtension;
+import javax.faces.FacesWrapper;
 
 
 /**
  * @author  Neil Griffin
  */
-public abstract class RichTextFactory implements FactoryExtension<RichTextFactory> {
+public abstract class RichTextFactory implements FacesWrapper<RichTextFactory> {
 
 	public abstract RichText getRichText(RichText.Type type, String value);
 }

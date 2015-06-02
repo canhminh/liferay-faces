@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -10,9 +10,6 @@
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
- */
-/**
- * Copyright (c) 2011 tritonsvc.com All rights reserved.
  */
 package com.liferay.faces.alloy.el;
 
@@ -29,7 +26,7 @@ public class AUI {
 	private static final String METHOD_GET_BUILD_NUMBER = "getBuildNumber";
 
 	// Singleton Instance
-	private static AUI instance = new AUI();
+	private static final AUI instance = new AUI();
 
 	// Private Data Members
 	private Boolean provided;
@@ -37,7 +34,7 @@ public class AUI {
 
 	public AUI() {
 
-		liferayBuildNumber = new Integer(0);
+		liferayBuildNumber = 0;
 
 		try {
 			Class<?> clazz = Class.forName(FQCN_RELEASE_INFO);
@@ -59,11 +56,6 @@ public class AUI {
 	}
 
 	public static AUI getInstance() {
-
-		if (instance == null) {
-			instance = new AUI();
-		}
-
 		return instance;
 	}
 
@@ -77,6 +69,6 @@ public class AUI {
 	}
 
 	public int getLiferayBuildNumber() {
-		return liferayBuildNumber.intValue();
+		return liferayBuildNumber;
 	}
 }

@@ -15,6 +15,7 @@
 	<modules>
 		<module>bridge</module>
 		<module>portal</module>
+		<module>showcase</module>
 	</modules>
 
 	<profiles>
@@ -184,5 +185,15 @@
 			</build>
 		</profile>
 	</profiles>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-install-plugin</artifactId>
+				<configuration>
+					<skip>false</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -25,12 +25,20 @@ import javax.faces.context.FacesContext;
  */
 public abstract class MessageContext {
 
-	protected static MessageContext instance = new MessageContextImpl();
+	protected static MessageContext instance;
 
+	/**
+	 * @deprecated  Call {@link com.liferay.faces.util.context.MessageContextFactory#getMessageContext()} instead.
+	 */
+	@Deprecated
 	public static MessageContext getInstance() {
 		return instance;
 	}
 
+	/**
+	 * @deprecated  Register an instance of {@link com.liferay.faces.util.context.MessageContextFactory} instead.
+	 */
+	@Deprecated
 	public static void setInstance(MessageContext messageContext) {
 		instance = messageContext;
 	}

@@ -171,11 +171,21 @@ sub do_inplace_edits {
 	}
 
 	#
+	# Otherwise, if the current file is named "friendly-url-routes.xml" then potentially fix the version
+	# numbers specified in DOCTYPE line for the DTD.
+	#
+	elsif ($file eq "friendly-url-routes.xml" and ($File::Find::name =~ /\/src/)) {
+		print "$File::Find::name\n";
+		`perl -pi -e 's/DTD Friendly URL Routes [0-9][.][0-9][.][0-9]/DTD Friendly URL Routes $portalDtdDisplay/' $file`;
+		`perl -pi -e 's/liferay-friendly-url-routes_[0-9]_[0-9]_[0-9][.]dtd/liferay-friendly-url-routes_$portalDtdUrl.dtd/' $file`;
+	}
+
+	#
 	# Otherwise, if the current file is named "faces-config.xml" then potentially fix the version number that
 	# will appear in the version attribute faces config tag and potentially fix the version number that will appear in
 	# the xsi:schemaLocation attribute URL of the faces config tag.
 	#
-	elsif ($file eq "faces-config.xml" and ($File::Find::name =~ /\/src/)) {
+	elsif ((($file eq "faces-config.xml") or ($file eq "navigation-rule.xml")) and ($File::Find::name =~ /\/src/)) {
 		print "$File::Find::name\n";
 		`perl -pi -e 's/faces-config version=\"[0-9.]+\"/faces-config version=\"$facesVersion\"/' $file`;
 		`perl -pi -e 's/web-facesconfig[0-9_]+/web-facesconfig_$facesVersionURL/' $file`;
@@ -211,6 +221,19 @@ sub do_inplace_edits {
 	elsif (($file =~ m/.*\.taglib\.xml/) and ($File::Find::name =~ /\/src/)) {
 		print "$File::Find::name\n";
 		`perl -pi -e 's/vdldoc:since>[0-9]\\.[0-9]/vdldoc:since>$liferayFacesVersionShortMajor1DotMajor2/' $file`;
+
+		# If the JSF version is 2.1, the Facelet Taglib version is 2.0. See
+		# https://issues.liferay.com/browse/FACES-2109#commentauthor_590915_verbose for more details.
+		if ($facesMajor eq 2 and $facesMinor eq 1) {
+			`perl -pi -e 's/xmlns.jcp.org\\/xml\\/ns\\/javaee/java.sun.com\\/xml\\/ns\\/javaee/g' $file`;
+			`perl -pi -e 's/web-facelettaglibrary_[0-9]_[0-9]\\.xsd/web-facelettaglibrary_2_0.xsd/' $file`;
+			`perl -pi -e 's/version="[0-9]\\.[0-9]"/version="2.0"/' $file`;
+		}
+		elsif ($facesMajor > 2 or ($facesMajor == 2 and $facesMinor > 1)) {
+			`perl -pi -e 's/java.sun.com\\/xml\\/ns\\/javaee/xmlns.jcp.org\\/xml\\/ns\\/javaee/g' $file`;
+			`perl -pi -e 's/web-facelettaglibrary_[0-9]_[0-9]\\.xsd/web-facelettaglibrary_${facesMajor}_${facesMinor}.xsd/' $file`;
+			`perl -pi -e 's/version="[0-9]\\.[0-9]"/version="$facesVersion"/' $file`;
+		}
 	}
 
 	#
@@ -245,11 +268,12 @@ sub do_inplace_edits {
 	}
 
 	#
-	# Otherwise, if the current file is named generator.properties, then potentially fix the current version.
+	# Otherwise, if the current file is named generator.properties, then potentially fix the copyright year and the
+	# current version.
 	#
 	elsif ($file eq "generator.properties") {
 		print "$File::Find::name\n";
-		`perl -pi -e 's/builder\\.faces\\.version=.*/builder\\.faces\\.version=$liferayFacesVersionWithoutSnapshot/' $file`;
+		`perl -pi -e 's/builder[.]copyright[.]year=[0-9]+/builder.copyright.year=${year}/' $file`;
 	}
 }
 

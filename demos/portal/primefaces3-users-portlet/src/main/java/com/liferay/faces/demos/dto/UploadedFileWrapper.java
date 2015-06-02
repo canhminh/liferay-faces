@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -28,7 +28,6 @@ import java.util.Map;
 import javax.faces.FacesWrapper;
 
 import com.liferay.faces.bridge.model.UploadedFile;
-import com.liferay.faces.bridge.renderkit.primefaces.FileUploadRendererPrimeFacesImpl;
 import com.liferay.faces.demos.util.UploadedFileUtil;
 import com.liferay.faces.util.logging.Logger;
 import com.liferay.faces.util.logging.LoggerFactory;

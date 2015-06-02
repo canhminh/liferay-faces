@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -25,7 +25,7 @@ import com.liferay.faces.util.logging.LoggerFactory;
  *
  * @author  Neil Griffin
  */
-public abstract class LazyDataModel<E> extends RowMarkerDataModel<E> implements Paginated, Sortable {
+public abstract class LazyDataModel<E> extends RowMarkerDataModel<E> implements Paginated {
 
 	// Logger
 	private static final Logger logger = LoggerFactory.getLogger(LazyDataModel.class);
@@ -76,9 +76,6 @@ public abstract class LazyDataModel<E> extends RowMarkerDataModel<E> implements 
 		return (rowIndex >= 0) && (rowIndex < getRowCount());
 	}
 
-	/**
-	 * @see  {@link Sortable#isSortAscending()}
-	 */
 	public boolean isSortAscending() {
 		return sortAscending;
 	}
@@ -181,9 +178,6 @@ public abstract class LazyDataModel<E> extends RowMarkerDataModel<E> implements 
 		this.rowsPerPage = rowsPerPage;
 	}
 
-	/**
-	 * @see  {@link Sortable#setSortAscending(boolean)}
-	 */
 	public void setSortAscending(boolean sortAscending) {
 
 		if (this.sortAscending != sortAscending) {
@@ -193,16 +187,10 @@ public abstract class LazyDataModel<E> extends RowMarkerDataModel<E> implements 
 		this.sortAscending = sortAscending;
 	}
 
-	/**
-	 * @see  {@link Sortable#getSortColumn()}
-	 */
 	public String getSortColumn() {
 		return sortColumn;
 	}
 
-	/**
-	 * @see  {@link Sortable#setSortColumn(String)}
-	 */
 	public void setSortColumn(String sortColumn) {
 
 		if ((this.sortColumn != null) && !this.sortColumn.equals(sortColumn)) {

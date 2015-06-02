@@ -2,11 +2,14 @@
 .project
 .settings
 doc/src/main/docbook/style
+overlays
 target
 rebel.xml
 *.sh
-.idea/*
+.idea
 *.iml
+*.ipr
+*.iws
 faces-config.pageflow
 nb-configuration.xml
 navigation-rule.NavData

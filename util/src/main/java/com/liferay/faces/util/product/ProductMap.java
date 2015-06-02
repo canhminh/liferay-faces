@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -13,6 +13,19 @@
  */
 package com.liferay.faces.util.product;
 
+import com.liferay.faces.util.product.internal.ProductWildFlyImpl;
+import com.liferay.faces.util.product.internal.ProductICEfacesImpl;
+import com.liferay.faces.util.product.internal.ProductJSFImpl;
+import com.liferay.faces.util.product.internal.ProductRichFacesImpl;
+import com.liferay.faces.util.product.internal.ProductResinImpl;
+import com.liferay.faces.util.product.internal.ProductLiferayPortalImpl;
+import com.liferay.faces.util.product.internal.ProductLiferayFacesPortalImpl;
+import com.liferay.faces.util.product.internal.ProductLiferayFacesUtilImpl;
+import com.liferay.faces.util.product.internal.ProductLiferayFacesAlloyImpl;
+import com.liferay.faces.util.product.internal.ProductPrimeFacesImpl;
+import com.liferay.faces.util.product.internal.ProductLiferayFacesBridgeImpl;
+import com.liferay.faces.util.product.internal.ProductCDIImpl;
+import com.liferay.faces.util.product.internal.ProductSpringFrameworkImpl;
 import java.util.HashMap;
 
 

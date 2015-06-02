@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -197,5 +197,24 @@ public class UserLazyDataModel extends LazyDataModel<User> implements Serializab
 		}
 
 		return expression;
+	}
+
+	@Override
+	public User getRowData(String rowKey) {
+		User user = null;
+
+		try {
+			user = UserLocalServiceUtil.getUserById(Long.parseLong(rowKey));
+		}
+		catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+
+		return user;
+	}
+
+	@Override
+	public Object getRowKey(User user) {
+		return user.getUserId();
 	}
 }

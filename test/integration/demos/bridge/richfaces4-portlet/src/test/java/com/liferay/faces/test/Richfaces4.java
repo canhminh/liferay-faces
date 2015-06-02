@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -87,7 +87,7 @@ public class Richfaces4 extends TesterBase {
 	private static final String bridgeVersionXpath = "//*[contains(text(),'Liferay Faces Bridge')]";
 
 	// xpath for specific tests
-	protected static final String dateValidationXpath = "//span[contains(@id,':dateOfBirthField')]/span/span/span/span[contains(@id,':dateOfBirth')]/span";
+	private static final String dateValidationXpath = "//span[contains(@id,':dateOfBirthField')]/span/span/span/span[contains(@id,':dateOfBirth')]/span";
 
 	static final String url = baseUrl + webContext + "/rich4";
 

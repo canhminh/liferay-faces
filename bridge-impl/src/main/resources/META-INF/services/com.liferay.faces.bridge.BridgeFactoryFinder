@@ -1,1 +1,1 @@
-com.liferay.faces.bridge.BridgeFactoryFinderImpl
+com.liferay.faces.bridge.internal.BridgeFactoryFinderImpl

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -58,7 +58,7 @@ public abstract class FactoryExtensionFinder {
 						inputStream.close();
 					}
 					catch (IOException e) {
-						; // ignore
+						e.printStackTrace();
 					}
 				}
 			}
@@ -67,7 +67,7 @@ public abstract class FactoryExtensionFinder {
 		return classPathResourceAsString;
 	}
 
-	public static FactoryExtension<?> getFactory(Class<? extends FactoryExtension<?>> clazz) {
+	public static Object getFactory(Class<?> clazz) {
 		return getInstance().getFactoryInstance(clazz);
 	}
 
@@ -100,5 +100,5 @@ public abstract class FactoryExtensionFinder {
 
 	public abstract void registerFactory(ConfiguredElement configuredFactoryExtension);
 
-	public abstract FactoryExtension<?> getFactoryInstance(Class<? extends FactoryExtension<?>> clazz);
+	public abstract Object getFactoryInstance(Class<?> clazz);
 }

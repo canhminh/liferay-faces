@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -118,13 +118,23 @@ public class TesterBase {
 		logger.log(Level.INFO, "browser.navigate().to(" + signInUrl + ")");
 		browser.navigate().to(signInUrl);
 		logger.log(Level.INFO, "browser.getTitle() = " + browser.getTitle() + " before signing in ...");
+		
+		if (browser.getTitle().contains("Status")) {
+			logger.log(Level.INFO, "welcome-theme installed ...");
+			String welcomeSignInUrl = signInUrl.replace("home", "welcome");
+			browser.navigate().to(welcomeSignInUrl);
+			logger.log(Level.INFO, "browser.getTitle() = " + browser.getTitle() + " before signing in ...");
+		} else { 
+			logger.log(Level.INFO, "no welcome-theme, no problem ...");
+		}
 
 		user.clear();
 		user.sendKeys(u);
 		pass.clear();
 		pass.sendKeys(p);
 		button.click();
-		logger.log(Level.INFO, "browser.getTitle() = " + browser.getTitle() + " after clicking the sign in button and waiting");
+		logger.log(Level.INFO, "browser.getTitle() = " + browser.getTitle() + " after clicking the sign in button.  Now waiting ...");
+		waitForElement(browser, signedInTextXpath);
 		logger.log(Level.INFO, text.getText());
 
 	}

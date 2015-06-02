@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -20,7 +20,7 @@ import javax.faces.context.ResponseWriter;
 
 import com.liferay.faces.bridge.component.inputfile.InputFile;
 import com.liferay.faces.util.lang.StringPool;
-import com.liferay.faces.util.render.DelegationResponseWriter;
+import com.liferay.faces.util.render.internal.DelegationResponseWriter;
 
 
 /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -84,5 +84,6 @@ public class TestPages {
 	static {
 		GUEST_PAGES = new ArrayList<PortalPage>();
 		GUEST_PAGES.add(new PortalPage("JSF2-SIGN-IN", "1_WAR_jsf2loginportlet"));
+		GUEST_PAGES.add(new PortalPage("SHOWCASE", "1_WAR_showcaseportlet", "2_columns_iii"));
 	}
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -52,6 +52,11 @@ public interface ConfigParam<T> {
 	public int getDefaultIntegerValue();
 
 	/**
+	 * Returns the default long value of the config param.
+	 */
+	public long getDefaultLongValue();
+
+	/**
 	 * Returns the default String value of the config param.
 	 */
 	public String getDefaultStringValue();
@@ -61,6 +66,12 @@ public interface ConfigParam<T> {
 	 * #getDefaultIntegerValue()} is returned.
 	 */
 	public int getIntegerValue(T config);
+
+	/**
+	 * Returns the long value of the config param. If not specified in the config file, then the value of {@link
+	 * #getDefaultLongValue()} is returned.
+	 */
+	public long getLongValue(T config);
 
 	/**
 	 * Returns the name of the config param.

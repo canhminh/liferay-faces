@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -19,20 +19,22 @@ import java.util.HashMap;
 import javax.portlet.BaseURL;
 
 import com.liferay.faces.bridge.context.BridgeContext;
+import com.liferay.faces.bridge.context.url.internal.BaseURLNonEncodedStringImpl;
+import com.liferay.faces.bridge.context.url.internal.BridgeURLBase;
 
 
 /**
  * @author  Neil Griffin
  */
-public class BridgeURLMockImpl extends BridgeURLBaseImpl {
+public class BridgeURLMockImpl extends BridgeURLBase {
 
-	public BridgeURLMockImpl(String url, String currentViewId, BridgeContext bridgeContext) {
-		super(url, currentViewId, bridgeContext);
+	public BridgeURLMockImpl(BridgeContext bridgeContext, BridgeURI bridgeURI, String viewId) {
+		super(bridgeContext, bridgeURI, viewId);
 	}
 
 	@Override
 	public BaseURL toBaseURL() throws MalformedURLException {
-		return new BaseURLNonEncodedStringImpl(url, new HashMap<String, String[]>());
+		return new BaseURLNonEncodedStringImpl(bridgeURI.toString(), new HashMap<String, String[]>());
 	}
 
 }

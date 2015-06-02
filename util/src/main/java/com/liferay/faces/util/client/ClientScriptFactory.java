@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -14,15 +14,13 @@
 package com.liferay.faces.util.client;
 
 import javax.faces.FacesException;
-import javax.faces.context.ExternalContext;
-
-import com.liferay.faces.util.factory.FactoryExtension;
+import javax.faces.FacesWrapper;
 
 
 /**
  * @author  Neil Griffin
  */
-public abstract class ClientScriptFactory implements FactoryExtension<ClientScriptFactory> {
+public abstract class ClientScriptFactory implements FacesWrapper<ClientScriptFactory> {
 
-	public abstract ClientScript getClientScript(ExternalContext externalContext) throws FacesException;
+	public abstract ClientScript getClientScript() throws FacesException;
 }
