@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -120,13 +120,12 @@ public class CustomerExportResource extends Resource {
 			// Encode any ampersand characters to ensure that the PDF conversion will work.
 			htmlFragment = htmlFragment.replaceAll("[&]", "&amp;");
 
-			String headMarkup = buf.toString();
 			String pdfTile = "Customers";
 			String description = pdfTile;
 			String author = "Author Name";
 			htmlFragment = htmlFragment.replaceAll("[\\n]", " ");
 			htmlFragment = htmlFragment.replaceAll("[\\t]", " ");
-			byteArray = PDFUtil.TXT2PDF(headMarkup, headMarkup, pdfTile, description, author);
+			byteArray = PDFUtil.TXT2PDF(htmlFragment, null, pdfTile, description, author);
 		}
 		catch (Exception e) {
 			logger.error(e.getMessage(), e);

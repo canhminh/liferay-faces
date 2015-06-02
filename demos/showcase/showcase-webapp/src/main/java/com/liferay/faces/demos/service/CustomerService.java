@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -13,9 +13,10 @@
  */
 package com.liferay.faces.demos.service;
 
-import java.util.List;
-
 import com.liferay.faces.demos.dto.Customer;
+
+import java.util.Comparator;
+import java.util.List;
 
 
 /**
@@ -23,7 +24,11 @@ import com.liferay.faces.demos.dto.Customer;
  */
 public interface CustomerService {
 
+	public int getCustomerCount();
+
 	public List<Customer> getAllCustomers();
 
 	public List<Customer> getCustomers(int start, int finish);
+
+	public List<Customer> getCustomers(int start, int finish, Comparator<Customer> comparator);
 }

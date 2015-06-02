@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -15,7 +15,7 @@ package com.liferay.faces.alloy.component.commandbutton;
 
 import java.util.Map;
 
-import com.liferay.faces.alloy.component.commandlink.CommandLink;
+import com.liferay.faces.alloy.component.commandlink.CommandLinkBase;
 
 
 /**
@@ -23,7 +23,7 @@ import com.liferay.faces.alloy.component.commandlink.CommandLink;
  *
  * @author  Neil Griffin
  */
-public abstract class SplitCommandButtonCompat extends CommandLink {
+public abstract class SplitCommandButtonCompat extends CommandLinkBase {
 
 	// Protected Data Members
 	protected CommandButton wrappedCommandButton;

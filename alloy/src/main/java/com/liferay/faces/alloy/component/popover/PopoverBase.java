@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -27,6 +27,10 @@ import com.liferay.faces.util.component.ClientComponent;
 @Generated(value = "com.liferay.alloy.tools.builder.FacesBuilder")
 public abstract class PopoverBase extends PanelGroupBlockLayout implements Styleable, ClientComponent {
 
+	// Public Constants
+	public static final String COMPONENT_TYPE = "com.liferay.faces.alloy.component.popover.Popover";
+	public static final String RENDERER_TYPE = "com.liferay.faces.alloy.component.popover.internal.PopoverRenderer";
+
 	// Protected Enumerations
 	protected enum PopoverPropertyKeys {
 		autoShow,
@@ -37,8 +41,14 @@ public abstract class PopoverBase extends PanelGroupBlockLayout implements Style
 		height,
 		hideIconRendered,
 		position,
+		styleClass,
 		width,
 		zIndex
+	}
+
+	public PopoverBase() {
+		super();
+		setRendererType(RENDERER_TYPE);
 	}
 
 	public boolean isAutoShow() {
@@ -105,6 +115,20 @@ public abstract class PopoverBase extends PanelGroupBlockLayout implements Style
 
 	public void setPosition(String position) {
 		getStateHelper().put(PopoverPropertyKeys.position, position);
+	}
+
+	@Override
+	public String getStyleClass() {
+		// getStateHelper().eval(PopoverPropertyKeys.styleClass, null) is called because super.getStyleClass() may return the
+		// STYLE_CLASS_NAME of the super class.
+		String styleClass = (String) getStateHelper().eval(PopoverPropertyKeys.styleClass, null);
+
+		return com.liferay.faces.util.component.ComponentUtil.concatCssClasses(styleClass, "alloy-popover");
+	}
+
+	@Override
+	public void setStyleClass(String styleClass) {
+		getStateHelper().put(PopoverPropertyKeys.styleClass, styleClass);
 	}
 
 	public String getWidth() {

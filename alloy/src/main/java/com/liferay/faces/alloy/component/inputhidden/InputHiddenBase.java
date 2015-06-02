@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -24,5 +24,14 @@ import javax.faces.component.html.HtmlInputHidden;
  */
 @Generated(value = "com.liferay.alloy.tools.builder.FacesBuilder")
 public abstract class InputHiddenBase extends HtmlInputHidden {
+
+	// Public Constants
+	public static final String COMPONENT_TYPE = "com.liferay.faces.alloy.component.inputhidden.InputHidden";
+	public static final String RENDERER_TYPE = "com.liferay.faces.alloy.component.inputhidden.internal.InputHiddenRenderer";
+
+	public InputHiddenBase() {
+		super();
+		setRendererType(RENDERER_TYPE);
+	}
 }
 //J+

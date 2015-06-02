@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -36,7 +36,7 @@ abstract class AutoCompleteFilterWordMatchBaseImpl implements AutoCompleteFilter
 
 	static {
 
-		String path = "META-INF/resources/liferay-faces-alloy/yui/text-data-wordbreak.js";
+		String path = "META-INF/resources/liferay-faces-alloy/yui/autocomplete/text-data-wordbreak.js";
 		InputStream inputStream = AutoCompleteFilterWordMatchBaseImpl.class.getClassLoader().getResourceAsStream(path);
 		Scanner scanner = new Scanner(inputStream);
 		Pattern beginLinePattern = Pattern.compile("^\\s*[a-z][a-z]*\\s*:\\s[\"']");

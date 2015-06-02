@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -26,9 +26,19 @@ import com.liferay.faces.util.component.Styleable;
 @Generated(value = "com.liferay.alloy.tools.builder.FacesBuilder")
 public abstract class FormBase extends HtmlForm implements Styleable {
 
+	// Public Constants
+	public static final String COMPONENT_TYPE = "com.liferay.faces.alloy.component.form.Form";
+	public static final String RENDERER_TYPE = "com.liferay.faces.alloy.component.form.internal.FormRenderer";
+
 	// Protected Enumerations
 	protected enum FormPropertyKeys {
-		includeViewParams
+		includeViewParams,
+		styleClass
+	}
+
+	public FormBase() {
+		super();
+		setRendererType(RENDERER_TYPE);
 	}
 
 	public boolean isIncludeViewParams() {
@@ -37,6 +47,20 @@ public abstract class FormBase extends HtmlForm implements Styleable {
 
 	public void setIncludeViewParams(boolean includeViewParams) {
 		getStateHelper().put(FormPropertyKeys.includeViewParams, includeViewParams);
+	}
+
+	@Override
+	public String getStyleClass() {
+		// getStateHelper().eval(FormPropertyKeys.styleClass, null) is called because super.getStyleClass() may return the
+		// STYLE_CLASS_NAME of the super class.
+		String styleClass = (String) getStateHelper().eval(FormPropertyKeys.styleClass, null);
+
+		return com.liferay.faces.util.component.ComponentUtil.concatCssClasses(styleClass, "alloy-form");
+	}
+
+	@Override
+	public void setStyleClass(String styleClass) {
+		getStateHelper().put(FormPropertyKeys.styleClass, styleClass);
 	}
 }
 //J+

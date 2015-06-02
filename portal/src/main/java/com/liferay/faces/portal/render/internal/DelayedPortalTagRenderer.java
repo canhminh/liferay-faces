@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -23,11 +23,14 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
 import javax.faces.render.Renderer;
-import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
 
-import com.liferay.faces.portal.context.LiferayFacesContext;
+import com.liferay.faces.util.client.ClientScript;
+import com.liferay.faces.util.client.ClientScriptFactory;
+import com.liferay.faces.util.factory.FactoryExtensionFinder;
 import com.liferay.faces.util.lang.StringPool;
+import com.liferay.faces.util.logging.Logger;
+import com.liferay.faces.util.logging.LoggerFactory;
 
 
 /**
@@ -38,6 +41,9 @@ import com.liferay.faces.util.lang.StringPool;
  * @author  Juan Gonzalez
  */
 public abstract class DelayedPortalTagRenderer<U extends UIComponent, T extends Tag> extends PortalTagRenderer<U, T> {
+
+	// Logger
+	private static final Logger logger = LoggerFactory.getLogger(DelayedPortalTagRenderer.class);
 
 	@Override
 	public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
@@ -92,30 +98,40 @@ public abstract class DelayedPortalTagRenderer<U extends UIComponent, T extends 
 			}
 
 			// Encode the output of the JSP tag up until the point at which children should be inserted.
-			ResponseWriter responseWriter = facesContext.getResponseWriter();
-			responseWriter.write(preChildMarkup);
+			StringBuilder markup = new StringBuilder(3);
+
+			markup.append(preChildMarkup);
 
 			// Ensure that scripts are rendered at the bottom of the page.
 			String scripts = portalTagOutput.getScripts();
 
 			if (scripts != null) {
-				LiferayFacesContext liferayFacesContext = LiferayFacesContext.getInstance();
-				liferayFacesContext.getJavaScriptMap().put(uiComponent.getClientId(), scripts);
+				ClientScriptFactory clientScriptFactory = (ClientScriptFactory) FactoryExtensionFinder.getFactory(
+						ClientScriptFactory.class);
+				ClientScript clientScript = clientScriptFactory.getClientScript();
+				clientScript.append(scripts);
 			}
 
 			// Encode the children markup.
 			String childrenMarkup = bufferedChildrenMarkupWriter.toString();
 
 			if (childrenMarkup != null) {
-				responseWriter.write(childrenMarkup);
+				markup.append(childrenMarkup);
 			}
 
 			// Encode the output of the JSP tag that is to appear after the children.
 			if (postChildMarkup != null) {
-				responseWriter.write(postChildMarkup);
+				markup.append(postChildMarkup);
 			}
+
+			ResponseWriter responseWriter = facesContext.getResponseWriter();
+			logger.debug("Markup before transformation:{0}", markup);
+
+			StringBuilder processedMarkup = getMarkup(uiComponent, markup);
+			logger.debug("Markup after transformation:{0}", processedMarkup);
+			responseWriter.write(processedMarkup.toString());
 		}
-		catch (JspException e) {
+		catch (Exception e) {
 			throw new IOException(e);
 		}
 	}
@@ -123,6 +139,10 @@ public abstract class DelayedPortalTagRenderer<U extends UIComponent, T extends 
 	@Override
 	public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
 		uiComponent.getAttributes().remove(CORRESPONDING_JSP_TAG);
+	}
+
+	protected StringBuilder getMarkup(UIComponent uiComponent, StringBuilder markup) throws Exception {
+		return markup;
 	}
 
 	@Override

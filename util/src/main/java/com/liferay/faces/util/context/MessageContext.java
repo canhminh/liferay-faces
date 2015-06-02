@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -23,30 +23,20 @@ import javax.faces.context.FacesContext;
 /**
  * @author  Neil Griffin
  */
-public abstract class MessageContext {
+public interface MessageContext {
 
-	protected static MessageContext instance = new MessageContextImpl();
+	public FacesMessage newFacesMessage(Locale locale, Severity severity, String messageId);
 
-	public static MessageContext getInstance() {
-		return instance;
-	}
+	public FacesMessage newFacesMessage(FacesContext facesContext, Severity severity, String messageId);
 
-	public static void setInstance(MessageContext messageContext) {
-		instance = messageContext;
-	}
-
-	public abstract FacesMessage newFacesMessage(Locale locale, Severity severity, String messageId);
-
-	public abstract FacesMessage newFacesMessage(FacesContext facesContext, Severity severity, String messageId);
-
-	public abstract FacesMessage newFacesMessage(Locale locale, Severity severity, String messageId,
+	public FacesMessage newFacesMessage(Locale locale, Severity severity, String messageId,
 		Object... arguments);
 
-	public abstract FacesMessage newFacesMessage(FacesContext facesContext, Severity severity, String messageId,
+	public FacesMessage newFacesMessage(FacesContext facesContext, Severity severity, String messageId,
 		Object... arguments);
 
-	public abstract String getMessage(Locale locale, String messageId);
+	public String getMessage(Locale locale, String messageId);
 
-	public abstract String getMessage(Locale locale, String messageId, Object... arguments);
+	public String getMessage(Locale locale, String messageId, Object... arguments);
 
 }

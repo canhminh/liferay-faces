@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<facelet-taglib xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vdldoc="http://vdldoc.org/vdldoc"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
-   http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd http://vdldoc.org/vdldoc https://vdldoc.googlecode.com/hg/src/org/omnifaces/vdldoc/resources/vdldoc.taglib.xml.xsd"
-	version="2.0">
+<facelet-taglib xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:vdldoc="http://vdldoc.omnifaces.org"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facelettaglibrary_2_2.xsd http://vdldoc.omnifaces.org https://raw.githubusercontent.com/omnifaces/vdldoc/master/src/main/resources/org/omnifaces/vdldoc/resources/vdldoc.taglib.xml.xsd"
+	version="2.2">
 	<description><![CDATA[The Liferay Faces Alloy facelet component tags with the <code>alloy:</code> tag name prefix.]]></description>
 	<namespace>http://liferay.com/faces/alloy</namespace>
 	<function>
@@ -22,8 +22,8 @@
 		<tag-name>accordion</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.accordion.Accordion</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.accordion.AccordionRenderer</renderer-type>
-			<handler-class>com.liferay.faces.alloy.component.accordion.AccordionHandler</handler-class>
+			<renderer-type>com.liferay.faces.alloy.component.accordion.internal.AccordionRenderer</renderer-type>
+			<handler-class>com.liferay.faces.alloy.component.accordion.internal.AccordionHandler</handler-class>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -77,14 +77,12 @@
 			<description><![CDATA[A method that is executed when a tab is clicked. The method must be <code>public</code>, return <code>void</code>, and take a <code>TabCollapseEvent</code> argument.]]></description>
 			<name>tabCollapseListener</name>
 			<required>false</required>
-			<type>javax.el.MethodExpression</type>
 			<method-signature>void tabCollapseListener(com.liferay.faces.alloy.component.tab.TabCollapseEvent)</method-signature>
 		</attribute>
 		<attribute>
 			<description><![CDATA[A method that is executed when a tab is clicked. The method must be <code>public</code>, return <code>void</code>, and take a <code>TabExpandEvent</code> argument.]]></description>
 			<name>tabExpandListener</name>
 			<required>false</required>
-			<type>javax.el.MethodExpression</type>
 			<method-signature>void tabExpandListener(com.liferay.faces.alloy.component.tab.TabExpandEvent)</method-signature>
 		</attribute>
 		<attribute>
@@ -100,7 +98,312 @@
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
+		</tag-extension>
+	</tag>
+	<tag>
+		<description><![CDATA[Audio is a UIComponent that renders a <code>&lt;div&gt;</code> that contains an HTML5 <code>&lt;audio&gt;</code> element. It also supports graceful degradation for older browsers.]]></description>
+		<tag-name>audio</tag-name>
+		<component>
+			<component-type>com.liferay.faces.alloy.component.audio.Audio</component-type>
+			<renderer-type>com.liferay.faces.alloy.component.audio.internal.AudioRenderer</renderer-type>
+		</component>
+		<attribute>
+			<description><![CDATA[HTML5 passthrough attribute specifying whether the media will begin playing automatically. Defaults to false.]]></description>
+			<name>autoplay</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The content type of the media. This attribute is required when the <code>value</code> attribute is used to specify the media URL. Otherwise, the contentType defaults to to the content type determined by the JSF runtime for the resource.]]></description>
+			<name>contentType</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[HTML5 passthrough attribute specifying whether controls should be rendered for the media. Defaults to false.]]></description>
+			<name>controls</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[When true the component will gracefully degrade to the Adobe&reg; Flash&reg; player for older browsers. Defaults to true. Defaults to true.]]></description>
+			<name>degrade</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[A context-relative path, resource URL, or FacesResource that can be used to retrieve the Adobe&reg; Flash&reg; player. Defaults to the player that comes bundled with AlloyUI. <strong>Note:</strong> The AlloyUI player does not support <code>.ogv</code> or <code>.webm</code> formats.]]></description>
+			<name>flashPlayer</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The version of Adobe&reg; Flash&reg; required to play this media. Defaults to <code>"9,0,0,0"</code>.]]></description>
+			<name>flashPlayerVersion</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The name of the library which contains the resource.]]></description>
+			<name>library</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[HTML5 passthrough attribute specifying whether the media will restart after it has completed playing. Defaults to false.]]></description>
+			<name>loop</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[HTML5 passthrough attribute specifying whether the media will be muted initially. Defaults to false.]]></description>
+			<name>muted</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The name of the resource file to be included on the page.]]></description>
+			<name>name</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a abort event occurs.]]></description>
+			<name>onabort</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute after this component loses focus.]]></description>
+			<name>onblur</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a canplay event occurs.]]></description>
+			<name>oncanplay</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a canplaythrough event occurs.]]></description>
+			<name>oncanplaythrough</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when this component is clicked.]]></description>
+			<name>onclick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a double click event occurs.]]></description>
+			<name>ondblclick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a durationchange event occurs.]]></description>
+			<name>ondurationchange</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a emptied event occurs.]]></description>
+			<name>onemptied</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a ended event occurs.]]></description>
+			<name>onended</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a error event occurs.]]></description>
+			<name>onerror</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when this component gets focus.]]></description>
+			<name>onfocus</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a keydown event occurs.]]></description>
+			<name>onkeydown</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a keypress event occurs.]]></description>
+			<name>onkeypress</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a keyup event occurs.]]></description>
+			<name>onkeyup</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a loadeddata event occurs.]]></description>
+			<name>onloadeddata</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a loadedmetadata event occurs.]]></description>
+			<name>onloadedmetadata</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a loadstart event occurs.]]></description>
+			<name>onloadstart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a mousedown event occurs.]]></description>
+			<name>onmousedown</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a mousemove event occurs.]]></description>
+			<name>onmousemove</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a mouseout event occurs.]]></description>
+			<name>onmouseout</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a mouseover event occurs.]]></description>
+			<name>onmouseover</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a mouseup event occurs.]]></description>
+			<name>onmouseup</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a pause event occurs.]]></description>
+			<name>onpause</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a play event occurs.]]></description>
+			<name>onplay</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a playing event occurs.]]></description>
+			<name>onplaying</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a progress event occurs.]]></description>
+			<name>onprogress</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a ratechange event occurs.]]></description>
+			<name>onratechange</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a seeked event occurs.]]></description>
+			<name>onseeked</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a seeking event occurs.]]></description>
+			<name>onseeking</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a stalled event occurs.]]></description>
+			<name>onstalled</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a suspend event occurs.]]></description>
+			<name>onsuspend</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a timeupdate event occurs.]]></description>
+			<name>ontimeupdate</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a volumechange event occurs.]]></description>
+			<name>onvolumechange</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a waiting event occurs.]]></description>
+			<name>onwaiting</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[HTML5 passthrough attribute specifying how the media should be loaded in the page.]]></description>
+			<name>preload</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[HTML passthrough attribute specifying the css style of the element.]]></description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[List of CSS class names (separated by spaces) that are to be rendered within the class attribute.]]></description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[A context-relative path, resource URL, <code>FacesResource</code>, or <code>List&lt;FacesResouce&gt;</code> that can be used to retrieve the media(s).]]></description>
+			<name>value</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[HTML5 passthrough attribute specifying the initial volume of the player.]]></description>
+			<name>volume</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<tag-extension>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -108,8 +411,8 @@
 		<tag-name>autoComplete</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.autocomplete.AutoComplete</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.autocomplete.AutoCompleteRenderer</renderer-type>
-			<handler-class>com.liferay.faces.alloy.component.autocomplete.AutoCompleteHandler</handler-class>
+			<renderer-type>com.liferay.faces.alloy.component.autocomplete.internal.AutoCompleteRenderer</renderer-type>
+			<handler-class>com.liferay.faces.alloy.component.autocomplete.internal.AutoCompleteHandler</handler-class>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
@@ -121,7 +424,7 @@
 			<description><![CDATA[When true, the first item in the list will be activated so that users can press TAB or ENTER to select it. Default is <code>true</code>.]]></description>
 			<name>activateFirstItem</name>
 			<required>false</required>
-			<type>java.lang.Boolean</type>
+			<type>boolean</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying alternative information about the rendered HTML element.]]></description>
@@ -190,7 +493,7 @@
 			<type>java.lang.Integer</type>
 		</attribute>
 		<attribute>
-			<description><![CDATA[The string which delimits the part of the text that will have completion. For example, if <code>delimiter=" "</code>, then only the text after the final space will have completion. <strong>Note:<strong> if <code>listItemRequired="true"</code>, this attribute is ignored.]]></description>
+			<description><![CDATA[The string which delimits the part of the text that will have completion. For example, if <code>delimiter=" "</code>, then only the text after the final space will have completion. <strong>Note:</strong> if <code>listItemRequired="true"</code>, this attribute is ignored.]]></description>
 			<name>delimiter</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -235,7 +538,6 @@
 			<description><![CDATA[A method that is executed when an autoComplete item is selected. The method must be <code>public</code>, return <code>void</code>, and take an <code>com.liferay.faces.alloy.component.autocomplete.ItemSelectEvent</code> argument.]]></description>
 			<name>itemSelectListener</name>
 			<required>false</required>
-			<type>javax.el.MethodExpression</type>
 			<method-signature>void itemSelectListener(com.liferay.faces.alloy.component.autocomplete.ItemSelectEvent)</method-signature>
 		</attribute>
 		<attribute>
@@ -254,7 +556,7 @@
 			<description><![CDATA[When true, the component will perform server-side validation to ensure that the value entered is on the list of completion items. Default is <code>false</code>.]]></description>
 			<name>listItemRequired</name>
 			<required>false</required>
-			<type>java.lang.Boolean</type>
+			<type>boolean</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[The maximum amount of autoComplete results.]]></description>
@@ -392,8 +694,7 @@
 			<description><![CDATA[A method that is executed when a query occurs. The method must be <code>public</code>, return a <code>java.util.List&lt;java.lang.String&gt;</code>, and takes a <code>java.lang.String</code> and a <code>java.util.List&lt;java.lang.String&gt;</code> as a arguments. The <code>String</code> passed to the method is the current query. The <code>List&lt;String&gt;</code> is an immutable list of unfiltered results. The method must return a <code>List&lt;String&gt;</code> which contains the filtered results.]]></description>
 			<name>serverCustomFilter</name>
 			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>java.util.List filterResults(java.lang.String, java.util.List)</method-signature>
+			<method-signature>java.util.List&lt;java.lang.String&gt; filterResults(java.lang.String, java.util.List&lt;java.lang.String&gt;)</method-signature>
 		</attribute>
 		<attribute>
 			<description><![CDATA[Specifies the type of filter that will be used for the autoComplete results. Valid values include:       <ul>        <li>charMatch</li>        <li>charMatchCase</li>        <li>phraseMatch</li>        <li>phraseMatchCase</li>        <li>startsWith</li>        <li>startsWithCase</li>        <li>subWordMatch</li>        <li>subWordMatchCase</li>        <li>wordMatch</li>        <li>wordMatchCase</li>       </ul>      <strong>Note:</strong> This attribute will be ignored if the <code>serverCustomFilter</code> attribute is used.]]></description>
@@ -429,7 +730,7 @@
 			<description><![CDATA[When <code>true</code>, pressing TAB selects the active autoComplete option. Defaults to <code>true</code>.]]></description>
 			<name>tabSelect</name>
 			<required>false</required>
-			<type>java.lang.Boolean</type>
+			<type>boolean</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying the title of the element.]]></description>
@@ -441,7 +742,6 @@
 			<description><![CDATA[A method that is executed in the PROCESS_VALIDATIONS phase of the lifecycle. The method must be <code>public</code>, return <code>void</code>, and take three arguments of <code>FacesContext</code>, <code>UIComponent</code>, and <code>Object</code>.]]></description>
 			<name>validator</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
 java.lang.Object)</method-signature>
 		</attribute>
@@ -461,7 +761,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when the value of this component changes. The method must be <code>public</code>, return <code>void</code>, and take no arguments or one argument of <code>ValueChangeEvent</code>.]]></description>
 			<name>valueChangeListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
 		</attribute>
 		<attribute>
@@ -471,15 +770,15 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
-		<description><![CDATA[Body is a UIOutput that renders a <body> element for webapps and a <div> for portlets. Since it extends HtmlBody, it supports all the features of h:body.]]></description>
+		<description><![CDATA[Body is a UIOutput that renders a <code>&lt;body&gt;</code> element for webapps and a <code>&lt;div&gt;</code> for portlets. Since it extends HtmlBody, it supports all the features of h:body.]]></description>
 		<tag-name>body</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.body.Body</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.body.BodyRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.body.internal.BodyRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying the css style of the element.]]></description>
@@ -494,7 +793,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -502,7 +801,7 @@ java.lang.Object)</method-signature>
 		<tag-name>button</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.button.Button</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.button.ButtonRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.button.internal.ButtonRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
@@ -703,7 +1002,108 @@ java.lang.Object)</method-signature>
 			<type>java.lang.Object</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
+		</tag-extension>
+	</tag>
+	<tag>
+		<description><![CDATA[ButtonRow is a UIPanel component that renders a <code>&lt;div&gt;</code> element for grouping purposes. Since it extends HtmlPanelGroup, it supports all the features of h:panelGroup.]]></description>
+		<tag-name>buttonRow</tag-name>
+		<component>
+			<component-type>com.liferay.faces.alloy.component.buttonrow.ButtonRow</component-type>
+			<renderer-type>com.liferay.faces.alloy.component.buttonrow.internal.ButtonRowRenderer</renderer-type>
+		</component>
+		<attribute>
+			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
+			<name>binding</name>
+			<required>false</required>
+			<type>javax.faces.component.UIComponent</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[A unique identifier for this component.]]></description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when this component is clicked.]]></description>
+			<name>onclick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a double click event occurs.]]></description>
+			<name>ondblclick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a keydown event occurs.]]></description>
+			<name>onkeydown</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a keypress event occurs.]]></description>
+			<name>onkeypress</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a keyup event occurs.]]></description>
+			<name>onkeyup</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a mousedown event occurs.]]></description>
+			<name>onmousedown</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a mousemove event occurs.]]></description>
+			<name>onmousemove</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a mouseout event occurs.]]></description>
+			<name>onmouseout</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a mouseover event occurs.]]></description>
+			<name>onmouseover</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a mouseup event occurs.]]></description>
+			<name>onmouseup</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[When this flag is true, this component will be rendered to there response. When false, it will not be rendered to the response. The default value of this attribute is true.]]></description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[HTML passthrough attribute specifying the css style of the element.]]></description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[List of CSS class names (separated by spaces) that are to be rendered within the class attribute.]]></description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<tag-extension>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -711,13 +1111,25 @@ java.lang.Object)</method-signature>
 		<tag-name>column</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.column.Column</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.column.ColumnRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.column.internal.ColumnRenderer</renderer-type>
 		</component>
+		<attribute>
+			<description><![CDATA[When this flag is true, clicking on the button will cause the form to be submitted via XmlHttpRequest. The default is true.]]></description>
+			<name>ajax</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
 			<name>binding</name>
 			<required>false</required>
 			<type>javax.faces.component.UIComponent</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Space-delimited list of component ids that are to participate in the APPLY_REQUEST_VALUES, PROCESS_VALIDATIONS, UPDATE_MODEL_VALUES, and INVOKE_APPLICATION phases of the JSF lifecycle. The following keywords may also appear in the list: <code>@this</code>, <code>@form</code>, <code>@all</code>, <code>@none</code>, <code>@parent</code>. The default value is <code>@parent</code> (meaning, the parent alloy:dataTable).]]></description>
+			<name>execute</name>
+			<required>false</required>
+			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[When alloy:column is a child of alloy:dataTabe, this is the JavaBean property that is to be used for filtering.]]></description>
@@ -762,6 +1174,18 @@ java.lang.Object)</method-signature>
 			<type>java.lang.Integer</type>
 		</attribute>
 		<attribute>
+			<description><![CDATA[Synonym for the <code>execute</code> attribute.]]></description>
+			<name>process</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Space-delimited list of component ids that are to participate in the RENDER_RESPONSE phase of the JSF lifecycle and be re-rendered in the DOM after the response is received from the XmlHttpRequest. The following keywords may also appear in the list: <code>@this</code>, <code>@form</code>, <code>@all</code>, <code>@none</code>, <code>@parent</code>. The default value is <code>@parent</code> (meaning, the parent alloy:dataTable).]]></description>
+			<name>render</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
 			<description><![CDATA[When this flag is true, this component will be rendered to there response. When false, it will not be rendered to the response. The default value of this attribute is true.]]></description>
 			<name>rendered</name>
 			<required>false</required>
@@ -778,6 +1202,12 @@ java.lang.Object)</method-signature>
 			<name>sortBy</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Indicates the sort order for the column. Valid values are <code>ascending</code>, <code>descending</code>, and <code>none</code>.]]></description>
+			<name>sortOrder</name>
+			<required>false</required>
+			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[When alloy:column is a child of alloy:row, this is the width of this column as a unit from 1 to 12. This value is rendered as a CSS class as <code>span#</code> (for example if span="4", the CSS class rendered will be <code>span4</code>). If both the width and span attributes are present, the width attribute determines the value of the span number. Please consider using width.]]></description>
@@ -798,13 +1228,19 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
+			<description><![CDATA[Synonym for the <code>render</code> attribute.]]></description>
+			<name>update</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
 			<description><![CDATA[When alloy:column is a child of alloy:row, this is the width of the column as a percent. This value selects the span number via the formula <code>span = (width/100)*12 (rounded to the nearest whole number)</code>. If both the width and span attributes are present, the width attribute determines the value of the span number.]]></description>
 			<name>width</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -812,7 +1248,7 @@ java.lang.Object)</method-signature>
 		<tag-name>commandButton</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.commandbutton.CommandButton</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.commandbutton.CommandButtonRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.commandbutton.internal.CommandButtonRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
@@ -824,15 +1260,19 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when this component is clicked. The method must be <code>public</code>, return an <code>Object</code>, and take no arguments. The <code>toString()</code> method of the returned object is used to determine where to navigate (if at all) after the action has been performed.]]></description>
 			<name>action</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>java.lang.Object action()</method-signature>
 		</attribute>
 		<attribute>
 			<description><![CDATA[A method that is executed when this component is clicked. The method must be <code>public</code>, return <code>void</code>, and take either no arguments or one <code>ActionEvent</code> argument.]]></description>
 			<name>actionListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void actionListener(javax.faces.event.ActionEvent)</method-signature>
+		</attribute>
+		<attribute>
+			<description><![CDATA[When this flag is true, clicking on the button will cause the form to be submitted via XmlHttpRequest. The default is true.]]></description>
+			<name>ajax</name>
+			<required>false</required>
+			<type>boolean</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying alternative information about the rendered HTML element.]]></description>
@@ -863,6 +1303,12 @@ java.lang.Object)</method-signature>
 			<name>disabled</name>
 			<required>false</required>
 			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Space-delimited list of component ids that are to participate in the APPLY_REQUEST_VALUES, PROCESS_VALIDATIONS, UPDATE_MODEL_VALUES, and INVOKE_APPLICATION phases of the JSF lifecycle. The following keywords may also appear in the list: <code>@this</code>, <code>@form</code>, <code>@all</code>, <code>@none</code>. The default value is <code>@all</code>.]]></description>
+			<name>execute</name>
+			<required>false</required>
+			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[A unique identifier for this component.]]></description>
@@ -979,10 +1425,22 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
+			<description><![CDATA[Synonym for the <code>execute</code> attribute.]]></description>
+			<name>process</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
 			<description><![CDATA[When true, this causes an attribute to be rendered as readonly="readonly", and prevents the user from changing the value of this component.]]></description>
 			<name>readonly</name>
 			<required>false</required>
 			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Space-delimited list of component ids that are to participate in the RENDER_RESPONSE phase of the JSF lifecycle and be re-rendered in the DOM after the response is received from the XmlHttpRequest. The following keywords may also appear in the list: <code>@this</code>, <code>@form</code>, <code>@all</code>, <code>@none</code>. The default value is <code>@none</code>.]]></description>
+			<name>render</name>
+			<required>false</required>
+			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[When this flag is true, this component will be rendered to there response. When false, it will not be rendered to the response. The default value of this attribute is true.]]></description>
@@ -1027,13 +1485,19 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
+			<description><![CDATA[Synonym for the <code>render</code> attribute.]]></description>
+			<name>update</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
 			<description><![CDATA[The value of this component.]]></description>
 			<name>value</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -1041,7 +1505,7 @@ java.lang.Object)</method-signature>
 		<tag-name>commandLink</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.commandlink.CommandLink</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.commandlink.CommandLinkRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.commandlink.internal.CommandLinkRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
@@ -1053,15 +1517,19 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when this component is clicked. The method must be <code>public</code>, return an <code>Object</code>, and take no arguments. The <code>toString()</code> method of the returned object is used to determine where to navigate (if at all) after the action has been performed.]]></description>
 			<name>action</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>java.lang.Object action()</method-signature>
 		</attribute>
 		<attribute>
 			<description><![CDATA[A method that is executed when this component is clicked. The method must be <code>public</code>, return <code>void</code>, and take either no arguments or one <code>ActionEvent</code> argument.]]></description>
 			<name>actionListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void actionListener(javax.faces.event.ActionEvent)</method-signature>
+		</attribute>
+		<attribute>
+			<description><![CDATA[When this flag is true, clicking on the button will cause the form to be submitted via XmlHttpRequest. The default is true.]]></description>
+			<name>ajax</name>
+			<required>false</required>
+			<type>boolean</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -1092,6 +1560,12 @@ java.lang.Object)</method-signature>
 			<name>disabled</name>
 			<required>false</required>
 			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Space-delimited list of component ids that are to participate in the APPLY_REQUEST_VALUES, PROCESS_VALIDATIONS, UPDATE_MODEL_VALUES, and INVOKE_APPLICATION phases of the JSF lifecycle. The following keywords may also appear in the list: <code>@this</code>, <code>@form</code>, <code>@all</code>, <code>@none</code>. The default value is <code>@all</code>.]]></description>
+			<name>execute</name>
+			<required>false</required>
+			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[The language code of the resource linked to by this component.]]></description>
@@ -1190,8 +1664,20 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
+			<description><![CDATA[Synonym for the <code>execute</code> attribute.]]></description>
+			<name>process</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
 			<description><![CDATA[The relationship between the current document and the one linked to by this component. This is a space-separated list of link types. Used by bots, not browsers.]]></description>
 			<name>rel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Space-delimited list of component ids that are to participate in the RENDER_RESPONSE phase of the JSF lifecycle and be re-rendered in the DOM after the response is received from the XmlHttpRequest. The following keywords may also appear in the list: <code>@this</code>, <code>@form</code>, <code>@all</code>, <code>@none</code>. The default value is <code>@none</code>.]]></description>
+			<name>render</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
@@ -1256,13 +1742,19 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
+			<description><![CDATA[Synonym for the <code>render</code> attribute.]]></description>
+			<name>update</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
 			<description><![CDATA[The value of this component, which is typically bound via EL to a model bean property.]]></description>
 			<name>value</name>
 			<required>false</required>
 			<type>java.lang.Object</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -1270,7 +1762,7 @@ java.lang.Object)</method-signature>
 		<tag-name>dataItem</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.dataitem.DataItem</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.dataitem.DataItemRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.dataitem.internal.DataItemRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -1303,7 +1795,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -1311,7 +1803,7 @@ java.lang.Object)</method-signature>
 		<tag-name>dataList</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.datalist.DataList</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.datalist.DataListRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.datalist.internal.DataListRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -1362,15 +1854,16 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
-		<description><![CDATA[DataTable is a UIData (iterator) component that renders a <code>&lt;table&gt;</code> element representing tabular data. Since it extends HtmlDataTable, it supports all the features of h:dataTable.]]></description>
+		<description><![CDATA[DataTable is a UIData (iterator) component that renders a <code>&lt;table&gt;</code> element representing tabular data and is designed to be used in conjunction with alloy:column child component tags. Since it extends HtmlDataTable, it supports all the features of h:dataTable.]]></description>
 		<tag-name>dataTable</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.datatable.DataTable</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.datatable.DataTableRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.datatable.internal.DataTableRenderer</renderer-type>
+			<handler-class>com.liferay.faces.alloy.component.datatable.internal.DataTableHandler</handler-class>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying the background color for the <code>&lt;table&gt;</code> element.]]></description>
@@ -1475,6 +1968,12 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
+			<description><![CDATA[When true, multiple columns can be selected by the user when the meta key is held down during a left click on a sortable column header. The default is false.]]></description>
+			<name>multiColumnSort</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
 			<description><![CDATA[Javascript to execute when this component is clicked.]]></description>
 			<name>onclick</name>
 			<required>false</required>
@@ -1553,14 +2052,50 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
+			<description><![CDATA[A method that is executed when a row is deselected. The method must be <code>public</code>, return <code>void</code>, and take an <code>RowDeselectEvent</code> argument.]]></description>
+			<name>rowDeselectListener</name>
+			<required>false</required>
+			<method-signature>void rowDeselectListener(com.liferay.faces.alloy.component.datatable.RowDeselectEvent)</method-signature>
+		</attribute>
+		<attribute>
+			<description><![CDATA[A method that is executed when a range of rows is deselected. The method must be <code>public</code>, return <code>void</code>, and take an <code>RowDeselectRangeEvent</code> argument.]]></description>
+			<name>rowDeselectRangeListener</name>
+			<required>false</required>
+			<method-signature>void rowDeselectRangeListener(com.liferay.faces.alloy.component.datatable.RowDeselectRangeEvent)</method-signature>
+		</attribute>
+		<attribute>
 			<description><![CDATA[The total number of rows that are to be displayed. If not set, then all rows are displayed.]]></description>
 			<name>rows</name>
 			<required>false</required>
 			<type>int</type>
 		</attribute>
 		<attribute>
+			<description><![CDATA[A method that is executed when a row is selected. The method must be <code>public</code>, return <code>void</code>, and take an <code>RowSelectEvent</code> argument.]]></description>
+			<name>rowSelectListener</name>
+			<required>false</required>
+			<method-signature>void rowSelectListener(com.liferay.faces.alloy.component.datatable.RowSelectEvent)</method-signature>
+		</attribute>
+		<attribute>
+			<description><![CDATA[A method that is executed when a range of rows is selected. The method must be <code>public</code>, return <code>void</code>, and take an <code>RowSelectRangeEvent</code> argument.]]></description>
+			<name>rowSelectRangeListener</name>
+			<required>false</required>
+			<method-signature>void rowSelectRangeListener(com.liferay.faces.alloy.component.datatable.RowSelectRangeEvent)</method-signature>
+		</attribute>
+		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying the rules for the <code>&lt;table&gt;</code> element. Valid values: none, groups, rows, cols, all.]]></description>
 			<name>rules</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Comma-delimited list of row indexes that indicate which rows are selected.]]></description>
+			<name>selectedRowIndexes</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Indicates the type of row selection. Valid values are <code>"checkbox"</code>, <code>"radio"</code>.]]></description>
+			<name>selectionMode</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
@@ -1607,7 +2142,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -1615,7 +2150,7 @@ java.lang.Object)</method-signature>
 		<tag-name>dialog</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.dialog.Dialog</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.dialog.DialogRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.dialog.internal.DialogRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[When true, the component is visible initially. The default is false.]]></description>
@@ -1762,15 +2297,15 @@ java.lang.Object)</method-signature>
 			<type>java.lang.Integer</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
-		<description><![CDATA[Field is a UIPanel component that renders a <code>&lt;div&gt;</code> element and a <label> element in order to wrap a field. Since it extends PanelGroup, it supports all the features of alloy:panelGroup.]]></description>
+		<description><![CDATA[Field is a UIPanel component that renders a <code>&lt;div&gt;</code> element and a <code>&lt;label&gt;</code> element in order to wrap a field. Since it extends PanelGroup, it supports all the features of alloy:panelGroup.]]></description>
 		<tag-name>field</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.field.Field</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.field.FieldRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.field.internal.FieldRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -1789,6 +2324,12 @@ java.lang.Object)</method-signature>
 			<name>label</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[When this flag is true, the label will be rendered before the rendered children.]]></description>
+			<name>labelFirst</name>
+			<required>false</required>
+			<type>boolean</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[Specifies whether the HTML element rendered by this component will be a <code>div</code> (default) or a <code>span</code>. If the value of this attribute is <code>block</code>, the rendered element will be a <code>div</code>.]]></description>
@@ -1875,7 +2416,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -1883,7 +2424,7 @@ java.lang.Object)</method-signature>
 		<tag-name>fieldset</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.fieldset.Fieldset</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.fieldset.FieldsetRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.fieldset.internal.FieldsetRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -1988,7 +2529,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -1996,7 +2537,7 @@ java.lang.Object)</method-signature>
 		<tag-name>form</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.form.Form</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.form.FormRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.form.internal.FormRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML4 legacy passthrough attribute that has been made obsolete in HTML5 and is not supported by most browsers. The value can be a comma-delimited list of mime-types that the server accepts during file upload.]]></description>
@@ -2149,15 +2690,15 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
-		<description><![CDATA[Head is a UIOutput that renders a <head> element for webapps, but not for portlets. In the case of portlets, the presence of alloy:head informs the JSF portlet bridge that JSF resources with target="head" should be included in the <head> element rendered by the portal. Since it extends HtmlHead, it supports all the features of h:head.]]></description>
+		<description><![CDATA[Head is a UIOutput that renders a <code>&lt;head&gt;</code> element for webapps, but not for portlets. In the case of portlets, the presence of alloy:head informs the JSF portlet bridge that JSF resources with target="head" should be included in the <code>&lt;head&gt;</code> element rendered by the portal. Since it extends HtmlHead, it supports all the features of h:head.]]></description>
 		<tag-name>head</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.head.Head</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.head.HeadRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.head.internal.HeadRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -2220,7 +2761,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -2228,7 +2769,7 @@ java.lang.Object)</method-signature>
 		<tag-name>icon</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.icon.Icon</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.icon.IconRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.icon.internal.IconRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -2273,7 +2814,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -2281,7 +2822,7 @@ java.lang.Object)</method-signature>
 		<tag-name>image</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.image.Image</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.image.ImageRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.image.internal.ImageRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying alternative information about the rendered HTML element.]]></description>
@@ -2458,42 +2999,15 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
-		<description><![CDATA[ImportConstants is a TagHandler which can obtain constants from java for use in EL.]]></description>
-		<tag-name>importConstants</tag-name>
-		<handler-class>com.liferay.faces.alloy.taghandler.ImportConstants</handler-class>
-		<attribute>
-			<description><![CDATA[When true, the imported constants will be cached. Defaults to true.]]></description>
-			<name>cacheable</name>
-			<required>false</required>
-			<type>boolean</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[The fully qualified name of the class, enum, or interface which the constants are being imported from.]]></description>
-			<name>classType</name>
-			<required>true</required>
-			<type>java.lang.Object</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[The name of the variable that is to be introduced into the EL representing the map of imported constants.]]></description>
-			<name>var</name>
-			<required>true</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
-		</tag-extension>
-	</tag>
-	<tag>
-		<description><![CDATA[InputDate is a UIInput component that renders an <input type="text"> element and a calendar-popover with selectable dates. The component attempts to automatically convert the submitted value to a Date via a built-in DateTimeConverter.]]></description>
+		<description><![CDATA[InputDate is a UIInput component that renders an <code>&lt;input type="text"&gt;</code> element and a calendar-popover with selectable dates. The component attempts to automatically convert the submitted value to a Date via a built-in DateTimeConverter.]]></description>
 		<tag-name>inputDate</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.inputdate.InputDate</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.inputdate.InputDateRenderer</renderer-type>
-			<handler-class>com.liferay.faces.alloy.component.inputdate.InputDateHandler</handler-class>
+			<renderer-type>com.liferay.faces.alloy.component.inputdate.internal.InputDateRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
@@ -2538,16 +3052,9 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
-			<description><![CDATA[The format of the date that corresponds to patterns described in the javadoc for <code>java.text.SimpleDateFormat</code>.]]></description>
-			<name>datePattern</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
 			<description><![CDATA[A method that is executed when an date is clicked. The method must be <code>public</code>, return <code>void</code>, and take an <code>com.liferay.faces.alloy.component.inputdate.InputDateEvent</code> argument.]]></description>
 			<name>dateSelectListener</name>
 			<required>false</required>
-			<type>javax.el.MethodExpression</type>
 			<method-signature>void dateSelectListener(com.liferay.faces.alloy.component.inputdate.DateSelectEvent)</method-signature>
 		</attribute>
 		<attribute>
@@ -2701,6 +3208,12 @@ java.lang.Object)</method-signature>
 			<type>java.lang.Integer</type>
 		</attribute>
 		<attribute>
+			<description><![CDATA[The format of the date that corresponds to patterns described in the javadoc for <code>java.text.SimpleDateFormat</code>.]]></description>
+			<name>pattern</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
 			<description><![CDATA[When true, this causes an attribute to be rendered as readonly="readonly", and prevents the user from changing the value of this component.]]></description>
 			<name>readonly</name>
 			<required>false</required>
@@ -2782,7 +3295,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed in the PROCESS_VALIDATIONS phase of the lifecycle. The method must be <code>public</code>, return <code>void</code>, and take three arguments of <code>FacesContext</code>, <code>UIComponent</code>, and <code>Object</code>.]]></description>
 			<name>validator</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
 java.lang.Object)</method-signature>
 		</attribute>
@@ -2802,7 +3314,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when the value of this component changes. The method must be <code>public</code>, return <code>void</code>, and take no arguments or one argument of <code>ValueChangeEvent</code>.]]></description>
 			<name>valueChangeListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
 		</attribute>
 		<attribute>
@@ -2812,7 +3323,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.Integer</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -2820,7 +3331,7 @@ java.lang.Object)</method-signature>
 		<tag-name>inputFile</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.inputfile.InputFile</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.inputfile.InputFileRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.inputfile.internal.InputFileRenderer</renderer-type>
 			<handler-class>com.liferay.faces.alloy.component.inputfile.internal.InputFileHandler</handler-class>
 		</component>
 		<attribute>
@@ -2893,7 +3404,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when a file is uploaded. The method must be <code>public</code>, return <code>void</code>, and take a <code>FileUploadEvent</code> argument.]]></description>
 			<name>fileUploadListener</name>
 			<required>false</required>
-			<type>javax.el.MethodExpression</type>
 			<method-signature>void fileUploadListener(com.liferay.faces.util.component.inputfile.FileUploadEvent)</method-signature>
 		</attribute>
 		<attribute>
@@ -3098,7 +3608,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed in the PROCESS_VALIDATIONS phase of the lifecycle. The method must be <code>public</code>, return <code>void</code>, and take three arguments of <code>FacesContext</code>, <code>UIComponent</code>, and <code>Object</code>.]]></description>
 			<name>validator</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
 java.lang.Object)</method-signature>
 		</attribute>
@@ -3118,11 +3627,10 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when the value of this component changes. The method must be <code>public</code>, return <code>void</code>, and take no arguments or one argument of <code>ValueChangeEvent</code>.]]></description>
 			<name>valueChangeListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -3130,7 +3638,7 @@ java.lang.Object)</method-signature>
 		<tag-name>inputHidden</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.inputhidden.InputHidden</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.inputhidden.InputHiddenRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.inputhidden.internal.InputHiddenRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -3184,7 +3692,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed in the PROCESS_VALIDATIONS phase of the lifecycle. The method must be <code>public</code>, return <code>void</code>, and take three arguments of <code>FacesContext</code>, <code>UIComponent</code>, and <code>Object</code>.]]></description>
 			<name>validator</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
 java.lang.Object)</method-signature>
 		</attribute>
@@ -3204,11 +3711,10 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when the value of this component changes. The method must be <code>public</code>, return <code>void</code>, and take no arguments or one argument of <code>ValueChangeEvent</code>.]]></description>
 			<name>valueChangeListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -3216,7 +3722,7 @@ java.lang.Object)</method-signature>
 		<tag-name>inputSecret</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.inputsecret.InputSecret</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.inputsecret.InputSecretRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.inputsecret.internal.InputSecretRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
@@ -3450,7 +3956,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed in the PROCESS_VALIDATIONS phase of the lifecycle. The method must be <code>public</code>, return <code>void</code>, and take three arguments of <code>FacesContext</code>, <code>UIComponent</code>, and <code>Object</code>.]]></description>
 			<name>validator</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
 java.lang.Object)</method-signature>
 		</attribute>
@@ -3470,11 +3975,10 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when the value of this component changes. The method must be <code>public</code>, return <code>void</code>, and take no arguments or one argument of <code>ValueChangeEvent</code>.]]></description>
 			<name>valueChangeListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -3482,7 +3986,7 @@ java.lang.Object)</method-signature>
 		<tag-name>inputSourceCode</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.inputsourcecode.InputSourceCode</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.inputsourcecode.InputSourceCodeRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.inputsourcecode.internal.InputSourceCodeRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -3537,6 +4041,18 @@ java.lang.Object)</method-signature>
 			<name>locale</name>
 			<required>false</required>
 			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Specifies the maximum number of lines that the editor is to display before a vertical scrollbar appears. Default is 1024.]]></description>
+			<name>maxLines</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Minimum number of lines that the editor is to display. Default is 6.]]></description>
+			<name>minLines</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[The name of the programming language that the editor is editing or displaying.]]></description>
@@ -3608,7 +4124,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed in the PROCESS_VALIDATIONS phase of the lifecycle. The method must be <code>public</code>, return <code>void</code>, and take three arguments of <code>FacesContext</code>, <code>UIComponent</code>, and <code>Object</code>.]]></description>
 			<name>validator</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
 java.lang.Object)</method-signature>
 		</attribute>
@@ -3628,7 +4143,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when the value of this component changes. The method must be <code>public</code>, return <code>void</code>, and take no arguments or one argument of <code>ValueChangeEvent</code>.]]></description>
 			<name>valueChangeListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
 		</attribute>
 		<attribute>
@@ -3638,7 +4152,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -3646,7 +4160,7 @@ java.lang.Object)</method-signature>
 		<tag-name>inputText</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.inputtext.InputText</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.inputtext.InputTextRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.inputtext.internal.InputTextRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
@@ -3874,7 +4388,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed in the PROCESS_VALIDATIONS phase of the lifecycle. The method must be <code>public</code>, return <code>void</code>, and take three arguments of <code>FacesContext</code>, <code>UIComponent</code>, and <code>Object</code>.]]></description>
 			<name>validator</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
 java.lang.Object)</method-signature>
 		</attribute>
@@ -3894,11 +4407,10 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when the value of this component changes. The method must be <code>public</code>, return <code>void</code>, and take no arguments or one argument of <code>ValueChangeEvent</code>.]]></description>
 			<name>valueChangeListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -3906,7 +4418,7 @@ java.lang.Object)</method-signature>
 		<tag-name>inputTextarea</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.inputtextarea.InputTextarea</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.inputtextarea.InputTextareaRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.inputtextarea.internal.InputTextareaRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
@@ -4128,7 +4640,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed in the PROCESS_VALIDATIONS phase of the lifecycle. The method must be <code>public</code>, return <code>void</code>, and take three arguments of <code>FacesContext</code>, <code>UIComponent</code>, and <code>Object</code>.]]></description>
 			<name>validator</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
 java.lang.Object)</method-signature>
 		</attribute>
@@ -4148,20 +4659,18 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when the value of this component changes. The method must be <code>public</code>, return <code>void</code>, and take no arguments or one argument of <code>ValueChangeEvent</code>.]]></description>
 			<name>valueChangeListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
-		<description><![CDATA[InputTime is a UIInput component that renders an <input type="text"> element and a list-popover with selectable times. The component attempts to automatically convert the submitted value to a Date via a built-in DateTimeConverter.]]></description>
+		<description><![CDATA[InputTime is a UIInput component that renders an <code>&lt;input type="text"&gt;</code> element and a list-popover with selectable times. The component attempts to automatically convert the submitted value to a Date via a built-in DateTimeConverter.]]></description>
 		<tag-name>inputTime</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.inputtime.InputTime</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.inputtime.InputTimeRenderer</renderer-type>
-			<handler-class>com.liferay.faces.alloy.component.inputtime.InputTimeHandler</handler-class>
+			<renderer-type>com.liferay.faces.alloy.component.inputtime.internal.InputTimeRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
@@ -4173,7 +4682,7 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[When true, the first item in the list will be activated so that users can press TAB or ENTER to select it. Default is <code>true</code>.]]></description>
 			<name>activateFirstItem</name>
 			<required>false</required>
-			<type>java.lang.Boolean</type>
+			<type>boolean</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying alternative information about the rendered HTML element.]]></description>
@@ -4386,6 +4895,12 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
+			<description><![CDATA[The format of the time that corresponds to patterns described in the javadoc for <code>java.text.SimpleDateFormat</code>. The default is <code>hh:mm a</code>.]]></description>
+			<name>pattern</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
 			<description><![CDATA[The delay in milliseconds before a query occurs. After the <code>autoComplete</code> receives input, it waits the specified number of milliseconds before querying it's source. If input occurs before the specified number of milliseconds has elapsed, the timer is reset.]]></description>
 			<name>queryDelay</name>
 			<required>false</required>
@@ -4470,16 +4985,9 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
-			<description><![CDATA[The format of the time that corresponds to patterns described in the javadoc for <code>java.text.SimpleDateFormat</code>. The default is <code>hh:mm a</code>.]]></description>
-			<name>timePattern</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
 			<description><![CDATA[A method that is executed when an date is clicked. The method must be <code>public</code>, return <code>void</code>, and take an <code>com.liferay.faces.alloy.component.inputtime.TimeSelectEvent</code> argument.]]></description>
 			<name>timeSelectListener</name>
 			<required>false</required>
-			<type>javax.el.MethodExpression</type>
 			<method-signature>void timeSelectListener(com.liferay.faces.alloy.component.inputtime.TimeSelectEvent)</method-signature>
 		</attribute>
 		<attribute>
@@ -4498,7 +5006,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed in the PROCESS_VALIDATIONS phase of the lifecycle. The method must be <code>public</code>, return <code>void</code>, and take three arguments of <code>FacesContext</code>, <code>UIComponent</code>, and <code>Object</code>.]]></description>
 			<name>validator</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
 java.lang.Object)</method-signature>
 		</attribute>
@@ -4518,7 +5025,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when the value of this component changes. The method must be <code>public</code>, return <code>void</code>, and take no arguments or one argument of <code>ValueChangeEvent</code>.]]></description>
 			<name>valueChangeListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
 		</attribute>
 		<attribute>
@@ -4528,7 +5034,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.Integer</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -4536,7 +5042,7 @@ java.lang.Object)</method-signature>
 		<tag-name>link</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.link.Link</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.link.LinkRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.link.internal.LinkRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
@@ -4761,7 +5267,33 @@ java.lang.Object)</method-signature>
 			<type>java.lang.Object</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
+		</tag-extension>
+	</tag>
+	<tag>
+		<description><![CDATA[LoadConstants is a TagHandler which can obtain constants from java for use in EL.]]></description>
+		<tag-name>loadConstants</tag-name>
+		<handler-class>com.liferay.faces.alloy.taghandler.LoadConstants</handler-class>
+		<attribute>
+			<description><![CDATA[When true, the imported constants will be cached. Defaults to true.]]></description>
+			<name>cacheable</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The fully qualified name of the class, enum, or interface which the constants are being imported from.]]></description>
+			<name>classType</name>
+			<required>true</required>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The name of the variable that is to be introduced into the EL representing the map of imported constants.]]></description>
+			<name>var</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<tag-extension>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -4769,7 +5301,6 @@ java.lang.Object)</method-signature>
 		<tag-name>menu</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.menu.Menu</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.menu.MenuRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -4808,7 +5339,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -4816,7 +5347,7 @@ java.lang.Object)</method-signature>
 		<tag-name>message</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.message.Message</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.message.MessageRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.message.internal.MessageRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -4945,7 +5476,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -4953,7 +5484,7 @@ java.lang.Object)</method-signature>
 		<tag-name>messages</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.messages.Messages</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.messages.MessagesRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.messages.internal.MessagesRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -5094,7 +5625,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -5102,7 +5633,7 @@ java.lang.Object)</method-signature>
 		<tag-name>outputFormat</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.outputformat.OutputFormat</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.outputformat.OutputFormatRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.outputformat.internal.OutputFormatRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -5177,15 +5708,15 @@ java.lang.Object)</method-signature>
 			<type>java.lang.Object</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
-		<description><![CDATA[OutputLabel is a UIOutput component that renders its value attribute within a <label> element. Since it extends HtmlOutputLabel, it supports all the features of h:outputLabel.]]></description>
+		<description><![CDATA[OutputLabel is a UIOutput component that renders its value attribute within a <code>&lt;label&gt;</code> element. Since it extends HtmlOutputLabel, it supports all the features of h:outputLabel.]]></description>
 		<tag-name>outputLabel</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.outputlabel.OutputLabel</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.outputlabel.OutputLabelRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.outputlabel.internal.OutputLabelRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
@@ -5350,7 +5881,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.Object</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -5358,7 +5889,7 @@ java.lang.Object)</method-signature>
 		<tag-name>outputLink</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.outputlink.OutputLink</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.outputlink.OutputLinkRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.outputlink.internal.OutputLinkRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
@@ -5565,7 +6096,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.Object</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -5573,7 +6104,7 @@ java.lang.Object)</method-signature>
 		<tag-name>outputRemainingChars</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.outputremainingchars.OutputRemainingChars</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.outputremainingchars.OutputRemainingCharsRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.outputremainingchars.internal.OutputRemainingCharsRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -5678,7 +6209,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.Object</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -5686,7 +6217,7 @@ java.lang.Object)</method-signature>
 		<tag-name>outputScript</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.outputscript.OutputScript</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.outputscript.OutputScriptRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.outputscript.internal.OutputScriptRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -5743,7 +6274,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.Object</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -5751,7 +6282,7 @@ java.lang.Object)</method-signature>
 		<tag-name>outputStylesheet</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.outputstylesheet.OutputStylesheet</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.outputstylesheet.OutputStylesheetRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.outputstylesheet.internal.OutputStylesheetRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -5802,7 +6333,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.Object</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -5810,7 +6341,7 @@ java.lang.Object)</method-signature>
 		<tag-name>outputText</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.outputtext.OutputText</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.outputtext.OutputTextRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.outputtext.internal.OutputTextRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -5885,7 +6416,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.Object</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -5893,7 +6424,7 @@ java.lang.Object)</method-signature>
 		<tag-name>outputTooltip</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.outputtooltip.OutputTooltip</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.outputtooltip.OutputTooltipRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.outputtooltip.internal.OutputTooltipRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[When true, the component is visible initially. The default is false.]]></description>
@@ -6010,15 +6541,170 @@ java.lang.Object)</method-signature>
 			<type>java.lang.Integer</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
-		<description><![CDATA[Panel is a UIPanel component that renders a <div> element with three child <div> elements (one for header, body, and footer). Since it extends HtmlPanelGroup, it supports all the features of h:panelGroup.]]></description>
+		<description><![CDATA[Paginator is a UIComponent that renders pagination controls and can be used in conjunction with alloy:dataTable in order to paginate tabular data.]]></description>
+		<tag-name>paginator</tag-name>
+		<component>
+			<component-type>com.liferay.faces.alloy.component.paginator.Paginator</component-type>
+			<renderer-type>com.liferay.faces.alloy.component.paginator.internal.PaginatorRenderer</renderer-type>
+		</component>
+		<attribute>
+			<description><![CDATA[When this flag is true, clicking on the button will cause the form to be submitted via XmlHttpRequest. The default is true.]]></description>
+			<name>ajax</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
+			<name>binding</name>
+			<required>false</required>
+			<type>javax.faces.component.UIComponent</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Space-delimited list of component ids that are to participate in the APPLY_REQUEST_VALUES, PROCESS_VALIDATIONS, UPDATE_MODEL_VALUES, and INVOKE_APPLICATION phases of the JSF lifecycle. The following keywords may also appear in the list: <code>@this</code>, <code>@form</code>, <code>@all</code>, <code>@none</code>. The default value is <code>@this @for</code> (meaning, the paginator itself and the associated alloy:dataTable).]]></description>
+			<name>execute</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Integer representing the first page number that is to be displayed in the list of page number controls. The default value is 1.]]></description>
+			<name>firstPage</name>
+			<required>false</required>
+			<type>int</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The label of the control that causes the first page to be displayed. The default value is the &amp;laquo; character code.]]></description>
+			<name>firstPageLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The id of the UIData component that is to be paginated.]]></description>
+			<name>for</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[A unique identifier for this component.]]></description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The label of the control that causes the last page to be displayed. The default value is the &amp;raquo; character code.]]></description>
+			<name>lastPageLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Integer representing the maximum number of page number controls that will be displayed. The default value is 10.]]></description>
+			<name>maxPageNumberControls</name>
+			<required>false</required>
+			<type>int</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The label of the control that causes the next page to be displayed. The default value is the &amp;rsaquo; character code.]]></description>
+			<name>nextPageLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The label of the control that causes the previous page to be displayed. The default value is the &amp;lsaquo; character code.]]></description>
+			<name>previousPageLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Synonym for the <code>execute</code> attribute.]]></description>
+			<name>process</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Space-delimited list of component ids that are to participate in the RENDER_RESPONSE phase of the JSF lifecycle and be re-rendered in the DOM after the response is received from the XmlHttpRequest. The following keywords may also appear in the list: <code>@this</code>, <code>@form</code>, <code>@all</code>, <code>@none</code>, <code>@for</code>. The default value is <code>@this @for</code> (meaning, the paginator itself and the associated alloy:dataTable).]]></description>
+			<name>render</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[When this flag is true, this component will be rendered to there response. When false, it will not be rendered to the response. The default value of this attribute is true.]]></description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[When true, a control will be rendered that will cause the associated UIData component to display the first page . This is true by default.]]></description>
+			<name>showFirstPageControl</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[When true, a control will be rendered that will cause the associated UIData component to display the last page. This is true by default.]]></description>
+			<name>showLastPageControl</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[When true, a control will be rendered that will cause the associated UIData component to display the next page. This is true by default.]]></description>
+			<name>showNextPageControl</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[When true, controls will be rendered for each page number (limited by the maxPageNumberControls attribute). This is true by default.]]></description>
+			<name>showPageNumberControls</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[When true, a control will be rendered that will cause the associated UIData component to display the previous page. This is true by default.]]></description>
+			<name>showPreviousPageControl</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[HTML passthrough attribute specifying the css style of the element.]]></description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[List of CSS class names (separated by spaces) that are to be rendered within the class attribute. Valid values are <code>pagination-large</code>, <code>pagination-small</code>, and <code>pagination-mini</code>.]]></description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[When true, a row summary such as "Page 1 of 7." will be displayed based on the <code>results-x-x-of-x-page-x-of-x</code> internationalized language key. This is true by default.]]></description>
+			<name>summaryPosition</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Synonym for the <code>render</code> attribute.]]></description>
+			<name>update</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The value of this component, which is typically bound via EL to a model bean property.]]></description>
+			<name>value</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+		</attribute>
+		<tag-extension>
+			<vdldoc:since>4.2.0</vdldoc:since>
+		</tag-extension>
+	</tag>
+	<tag>
+		<description><![CDATA[Panel is a UIPanel component that renders a <code>&lt;div&gt;</code> element with three child <code>&lt;div&gt;</code> elements (one for header, body, and footer). Since it extends HtmlPanelGroup, it supports all the features of h:panelGroup.]]></description>
 		<tag-name>panel</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.panel.Panel</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.panel.PanelRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.panel.internal.PanelRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -6129,7 +6815,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -6137,7 +6823,7 @@ java.lang.Object)</method-signature>
 		<tag-name>panelGrid</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.panelgrid.PanelGrid</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.panelgrid.PanelGridRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.panelgrid.internal.PanelGridRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying the background color for the <code>&lt;table&gt;</code> element.]]></description>
@@ -6350,7 +7036,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -6358,7 +7044,7 @@ java.lang.Object)</method-signature>
 		<tag-name>panelGroup</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.panelgroup.PanelGroup</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.panelgroup.PanelGroupRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.panelgroup.internal.PanelGroupRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -6457,7 +7143,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -6465,7 +7151,7 @@ java.lang.Object)</method-signature>
 		<tag-name>popover</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.popover.Popover</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.popover.PopoverRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.popover.internal.PopoverRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[When true, the component is visible initially. The default is false.]]></description>
@@ -6618,7 +7304,143 @@ java.lang.Object)</method-signature>
 			<type>java.lang.Integer</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
+		</tag-extension>
+	</tag>
+	<tag>
+		<description><![CDATA[<p>ProgressBar is a UIComponent that displays a progress bar and can operate as a server-side or client-side progress indicator.</p>     <p>This component includes a client-side JavaScript API which can be accessed using the <code>clientKey</code> attribute and the <code>Liferay.component()</code> method:     <ul>      <li><code>set()</code> - The <code>set()</code> method can be used to set the client-side value of the component e.g. <code>Liferay.component('progressBar').set('value', value);</code>.</li>      <li><code>start()</code> - The <code>start()</code> method starts polling the server for the value of the component.</li>      <li><code>stop()</code> - The <code>stop()</code> method stops the component's polling of the server.</li>     </ul></p>]]></description>
+		<tag-name>progressBar</tag-name>
+		<component>
+			<component-type>com.liferay.faces.alloy.component.progressbar.ProgressBar</component-type>
+			<renderer-type>com.liferay.faces.alloy.component.progressbar.internal.ProgressBarRenderer</renderer-type>
+			<handler-class>com.liferay.faces.alloy.component.progressbar.internal.ProgressBarHandler</handler-class>
+		</component>
+		<attribute>
+			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
+			<name>binding</name>
+			<required>false</required>
+			<type>javax.faces.component.UIComponent</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The key name that can be used to reference the component on the client.]]></description>
+			<name>clientKey</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The the height (in pixels) of the progress bar.]]></description>
+			<name>height</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[A unique identifier for this component.]]></description>
+			<name>id</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The label which appears on the progress bar. The <code>{0}</code> token can be used to include the value in the label.]]></description>
+			<name>label</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The direction in which the layout of the component should be displayed. Valid values include <code>lineDirection</code> (the default) and <code>pageDirection</code>.]]></description>
+			<name>layout</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The maximum value that the progress bar can have. Defaults to 100.]]></description>
+			<name>maxProgress</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The minimum value that the progress bar can have. Defaults to 0.]]></description>
+			<name>minProgress</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Client-side javascript to be executed when progress has completed.]]></description>
+			<name>oncomplete</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The delay (in milliseconds) before dispatching a polling Ajax request after recieving the response of a previous request. Defaults to 3000.]]></description>
+			<name>pollingDelay</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[A method that is executed when an progress has completed. The method must be <code>public</code>, return <code>void</code>, and take an <code>com.liferay.faces.alloy.component.progressbar.ProgressCompleteEvent</code> argument.]]></description>
+			<name>progressCompleteListener</name>
+			<required>false</required>
+			<method-signature>void progressCompleteListener(com.liferay.faces.alloy.component.progressbar.ProgressCompleteEvent)</method-signature>
+		</attribute>
+		<attribute>
+			<description><![CDATA[When this flag is true, this component will be rendered to there response. When false, it will not be rendered to the response. The default value of this attribute is true.]]></description>
+			<name>rendered</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[HTML passthrough attribute specifying the css style of the element.]]></description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[List of CSS class names (separated by spaces) that are to be rendered within the class attribute.]]></description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The value of this component, which is typically bound via EL to a model bean property. Defaults to 0.]]></description>
+			<name>value</name>
+			<required>false</required>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The the width (in pixels) of the progress bar.]]></description>
+			<name>width</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<tag-extension>
+			<vdldoc:since>4.2.0</vdldoc:since>
+		</tag-extension>
+	</tag>
+	<tag>
+		<description><![CDATA[A generic resource tag for use with <code>&lt;alloy:audio&gt;</code> and <code>&lt;alloy:video&gt;</code>.]]></description>
+		<tag-name>resource</tag-name>
+		<component>
+			<component-type>com.liferay.faces.alloy.component.resource.Resource</component-type>
+		</component>
+		<attribute>
+			<description><![CDATA[The content type of the resource.]]></description>
+			<name>contentType</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The name of the library which contains the resource.]]></description>
+			<name>library</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The name of the resource file to be included on the page.]]></description>
+			<name>name</name>
+			<required>true</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<tag-extension>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -6626,7 +7448,7 @@ java.lang.Object)</method-signature>
 		<tag-name>row</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.row.Row</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.row.RowRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.row.internal.RowRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -6638,7 +7460,7 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[When this flag is true, the element will have the CSS class <code>row-fluid</code>. Otherwise, the element will have the CSS class <code>row</code>. The default value is true.]]></description>
 			<name>fluid</name>
 			<required>false</required>
-			<type>java.lang.Boolean</type>
+			<type>boolean</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[A unique identifier for this component.]]></description>
@@ -6665,7 +7487,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -6673,7 +7495,7 @@ java.lang.Object)</method-signature>
 		<tag-name>selectBooleanCheckbox</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.selectbooleancheckbox.SelectBooleanCheckbox</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.selectbooleancheckbox.SelectBooleanCheckboxRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.selectbooleancheckbox.internal.SelectBooleanCheckboxRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
@@ -6877,7 +7699,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed in the PROCESS_VALIDATIONS phase of the lifecycle. The method must be <code>public</code>, return <code>void</code>, and take three arguments of <code>FacesContext</code>, <code>UIComponent</code>, and <code>Object</code>.]]></description>
 			<name>validator</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
 java.lang.Object)</method-signature>
 		</attribute>
@@ -6897,11 +7718,10 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when the value of this component changes. The method must be <code>public</code>, return <code>void</code>, and take no arguments or one argument of <code>ValueChangeEvent</code>.]]></description>
 			<name>valueChangeListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -6909,7 +7729,7 @@ java.lang.Object)</method-signature>
 		<tag-name>selectManyCheckbox</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.selectmanycheckbox.SelectManyCheckbox</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.selectmanycheckbox.SelectManyCheckboxRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.selectmanycheckbox.internal.SelectManyCheckboxRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
@@ -6922,12 +7742,6 @@ java.lang.Object)</method-signature>
 			<name>binding</name>
 			<required>false</required>
 			<type>javax.faces.component.UIComponent</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[The width of the table border (measured in pixels).]]></description>
-			<name>border</name>
-			<required>false</required>
-			<type>int</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[An optional attribute that can contain a value like <code>java.util.ArrayList</code> or <code>java.util.HashSet</code> that indicates the type of <code>java.util.Collection</code> for the component's value.]]></description>
@@ -6998,12 +7812,6 @@ java.lang.Object)</method-signature>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying the language code used in the element.]]></description>
 			<name>lang</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[The direction in which the layout of the component should go. The default value is 'lineDirection'.]]></description>
-			<name>layout</name>
 			<required>false</required>
 			<type>java.lang.String</type>
 		</attribute>
@@ -7161,7 +7969,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed in the PROCESS_VALIDATIONS phase of the lifecycle. The method must be <code>public</code>, return <code>void</code>, and take three arguments of <code>FacesContext</code>, <code>UIComponent</code>, and <code>Object</code>.]]></description>
 			<name>validator</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
 java.lang.Object)</method-signature>
 		</attribute>
@@ -7181,11 +7988,10 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when the value of this component changes. The method must be <code>public</code>, return <code>void</code>, and take no arguments or one argument of <code>ValueChangeEvent</code>.]]></description>
 			<name>valueChangeListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -7193,7 +7999,7 @@ java.lang.Object)</method-signature>
 		<tag-name>selectManyListbox</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.selectmanylistbox.SelectManyListbox</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.selectmanylistbox.SelectManyListboxRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.selectmanylistbox.internal.SelectManyListboxRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
@@ -7427,7 +8233,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed in the PROCESS_VALIDATIONS phase of the lifecycle. The method must be <code>public</code>, return <code>void</code>, and take three arguments of <code>FacesContext</code>, <code>UIComponent</code>, and <code>Object</code>.]]></description>
 			<name>validator</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
 java.lang.Object)</method-signature>
 		</attribute>
@@ -7447,11 +8252,10 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when the value of this component changes. The method must be <code>public</code>, return <code>void</code>, and take no arguments or one argument of <code>ValueChangeEvent</code>.]]></description>
 			<name>valueChangeListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -7459,7 +8263,7 @@ java.lang.Object)</method-signature>
 		<tag-name>selectManyMenu</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.selectmanymenu.SelectManyMenu</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.selectmanymenu.SelectManyMenuRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.selectmanymenu.internal.SelectManyMenuRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
@@ -7687,7 +8491,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed in the PROCESS_VALIDATIONS phase of the lifecycle. The method must be <code>public</code>, return <code>void</code>, and take three arguments of <code>FacesContext</code>, <code>UIComponent</code>, and <code>Object</code>.]]></description>
 			<name>validator</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
 java.lang.Object)</method-signature>
 		</attribute>
@@ -7707,11 +8510,10 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when the value of this component changes. The method must be <code>public</code>, return <code>void</code>, and take no arguments or one argument of <code>ValueChangeEvent</code>.]]></description>
 			<name>valueChangeListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -7719,7 +8521,7 @@ java.lang.Object)</method-signature>
 		<tag-name>selectOneListbox</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.selectonelistbox.SelectOneListbox</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.selectonelistbox.SelectOneListboxRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.selectonelistbox.internal.SelectOneListboxRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
@@ -7947,7 +8749,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed in the PROCESS_VALIDATIONS phase of the lifecycle. The method must be <code>public</code>, return <code>void</code>, and take three arguments of <code>FacesContext</code>, <code>UIComponent</code>, and <code>Object</code>.]]></description>
 			<name>validator</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
 java.lang.Object)</method-signature>
 		</attribute>
@@ -7967,11 +8768,10 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when the value of this component changes. The method must be <code>public</code>, return <code>void</code>, and take no arguments or one argument of <code>ValueChangeEvent</code>.]]></description>
 			<name>valueChangeListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -7979,7 +8779,7 @@ java.lang.Object)</method-signature>
 		<tag-name>selectOneMenu</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.selectonemenu.SelectOneMenu</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.selectonemenu.SelectOneMenuRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.selectonemenu.internal.SelectOneMenuRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
@@ -8201,7 +9001,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed in the PROCESS_VALIDATIONS phase of the lifecycle. The method must be <code>public</code>, return <code>void</code>, and take three arguments of <code>FacesContext</code>, <code>UIComponent</code>, and <code>Object</code>.]]></description>
 			<name>validator</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
 java.lang.Object)</method-signature>
 		</attribute>
@@ -8221,11 +9020,10 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when the value of this component changes. The method must be <code>public</code>, return <code>void</code>, and take no arguments or one argument of <code>ValueChangeEvent</code>.]]></description>
 			<name>valueChangeListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -8233,7 +9031,7 @@ java.lang.Object)</method-signature>
 		<tag-name>selectOneRadio</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.selectoneradio.SelectOneRadio</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.selectoneradio.SelectOneRadioRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.selectoneradio.internal.SelectOneRadioRenderer</renderer-type>
 		</component>
 		<attribute>
 			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
@@ -8246,12 +9044,6 @@ java.lang.Object)</method-signature>
 			<name>binding</name>
 			<required>false</required>
 			<type>javax.faces.component.UIComponent</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[The width of the table border (measured in pixels).]]></description>
-			<name>border</name>
-			<required>false</required>
-			<type>int</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[The class name of the converter instance that is to be used by this component.]]></description>
@@ -8320,12 +9112,6 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
-			<description><![CDATA[The direction in which the layout of the component should be displayed. The default value is 'lineDirection'.]]></description>
-			<name>layout</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
 			<description><![CDATA[Javascript to execute after this component loses focus.]]></description>
 			<name>onblur</name>
 			<required>false</required>
@@ -8467,7 +9253,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed in the PROCESS_VALIDATIONS phase of the lifecycle. The method must be <code>public</code>, return <code>void</code>, and take three arguments of <code>FacesContext</code>, <code>UIComponent</code>, and <code>Object</code>.]]></description>
 			<name>validator</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
 java.lang.Object)</method-signature>
 		</attribute>
@@ -8487,11 +9272,10 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when the value of this component changes. The method must be <code>public</code>, return <code>void</code>, and take no arguments or one argument of <code>ValueChangeEvent</code>.]]></description>
 			<name>valueChangeListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -8499,25 +9283,13 @@ java.lang.Object)</method-signature>
 		<tag-name>selectStarRating</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.selectstarrating.SelectStarRating</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.selectstarrating.SelectStarRatingRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.selectstarrating.internal.SelectStarRatingRenderer</renderer-type>
 		</component>
-		<attribute>
-			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
-			<name>accesskey</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
 			<name>binding</name>
 			<required>false</required>
 			<type>javax.faces.component.UIComponent</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[The width of the table border (measured in pixels).]]></description>
-			<name>border</name>
-			<required>false</required>
-			<type>int</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[The key name that can be used to reference the component on the client.]]></description>
@@ -8538,36 +9310,6 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
-			<description><![CDATA[HTML passthrough attribute specifying the reading direction for the element For example, right to left (RTL), or left to right (LTR).]]></description>
-			<name>dir</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[When this flag is true, the component will be disabled, and the user will be unable to interact with the component.]]></description>
-			<name>disabled</name>
-			<required>false</required>
-			<type>boolean</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[A CSS class name to apply to the label of a disabled selectItems.]]></description>
-			<name>disabledClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[A CSS class name to apply to the label of an enabled selectItems.]]></description>
-			<name>enabledClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[When true, any child selectItem with a noSelectOption attribute (which is set to true) will be hidden from the user.]]></description>
-			<name>hideNoSelectionOption</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
 			<description><![CDATA[A unique identifier for this component.]]></description>
 			<name>id</name>
 			<required>false</required>
@@ -8580,7 +9322,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.Boolean</type>
 		</attribute>
 		<attribute>
-			<description><![CDATA[A name for this component to be rendered to the user. This name should be localized for the user.]]></description>
+			<description><![CDATA[A localized label for this component that is typically only rendered in a FacesMessage when validation fails.]]></description>
 			<name>label</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -8590,102 +9332,6 @@ java.lang.Object)</method-signature>
 			<name>lang</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[The direction in which the layout of the component should be displayed. The default value is 'lineDirection'.]]></description>
-			<name>layout</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute after this component loses focus.]]></description>
-			<name>onblur</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute after this component's value has changed, and then it loses focus.]]></description>
-			<name>onchange</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when this component is clicked.]]></description>
-			<name>onclick</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when a double click event occurs.]]></description>
-			<name>ondblclick</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when this component gets focus.]]></description>
-			<name>onfocus</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when a keydown event occurs.]]></description>
-			<name>onkeydown</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when a keypress event occurs.]]></description>
-			<name>onkeypress</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when a keyup event occurs.]]></description>
-			<name>onkeyup</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when a mousedown event occurs.]]></description>
-			<name>onmousedown</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when a mousemove event occurs.]]></description>
-			<name>onmousemove</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when a mouseout event occurs.]]></description>
-			<name>onmouseout</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when a mouseover event occurs.]]></description>
-			<name>onmouseover</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when a mouseup event occurs.]]></description>
-			<name>onmouseup</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when the user selects this component.]]></description>
-			<name>onselect</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[When true, this causes an attribute to be rendered as readonly="readonly", and prevents the user from changing the value of this component.]]></description>
-			<name>readonly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[When this flag is true, this component will be rendered to there response. When false, it will not be rendered to the response. The default value of this attribute is true.]]></description>
@@ -8739,7 +9385,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed in the PROCESS_VALIDATIONS phase of the lifecycle. The method must be <code>public</code>, return <code>void</code>, and take three arguments of <code>FacesContext</code>, <code>UIComponent</code>, and <code>Object</code>.]]></description>
 			<name>validator</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
 java.lang.Object)</method-signature>
 		</attribute>
@@ -8759,11 +9404,10 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when the value of this component changes. The method must be <code>public</code>, return <code>void</code>, and take no arguments or one argument of <code>ValueChangeEvent</code>.]]></description>
 			<name>valueChangeListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -8771,25 +9415,13 @@ java.lang.Object)</method-signature>
 		<tag-name>selectThumbRating</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.selectthumbrating.SelectThumbRating</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.selectthumbrating.SelectThumbRatingRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.alloy.component.selectthumbrating.internal.SelectThumbRatingRenderer</renderer-type>
 		</component>
-		<attribute>
-			<description><![CDATA[HTML passthrough attribute specifying a hot key character for the element.]]></description>
-			<name>accesskey</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
 			<name>binding</name>
 			<required>false</required>
 			<type>javax.faces.component.UIComponent</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[The width of the table border (measured in pixels).]]></description>
-			<name>border</name>
-			<required>false</required>
-			<type>int</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[The key name that can be used to reference the component on the client.]]></description>
@@ -8810,36 +9442,6 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
-			<description><![CDATA[HTML passthrough attribute specifying the reading direction for the element For example, right to left (RTL), or left to right (LTR).]]></description>
-			<name>dir</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[When this flag is true, the component will be disabled, and the user will be unable to interact with the component.]]></description>
-			<name>disabled</name>
-			<required>false</required>
-			<type>boolean</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[A CSS class name to apply to the label of a disabled selectItems.]]></description>
-			<name>disabledClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[A CSS class name to apply to the label of an enabled selectItems.]]></description>
-			<name>enabledClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[When true, any child selectItem with a noSelectOption attribute (which is set to true) will be hidden from the user.]]></description>
-			<name>hideNoSelectionOption</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-		</attribute>
-		<attribute>
 			<description><![CDATA[A unique identifier for this component.]]></description>
 			<name>id</name>
 			<required>false</required>
@@ -8852,7 +9454,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.Boolean</type>
 		</attribute>
 		<attribute>
-			<description><![CDATA[A name for this component to be rendered to the user. This name should be localized for the user.]]></description>
+			<description><![CDATA[A localized label for this component that is typically only rendered in a FacesMessage when validation fails.]]></description>
 			<name>label</name>
 			<required>false</required>
 			<type>java.lang.String</type>
@@ -8862,102 +9464,6 @@ java.lang.Object)</method-signature>
 			<name>lang</name>
 			<required>false</required>
 			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[The direction in which the layout of the component should be displayed. The default value is 'lineDirection'.]]></description>
-			<name>layout</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute after this component loses focus.]]></description>
-			<name>onblur</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute after this component's value has changed, and then it loses focus.]]></description>
-			<name>onchange</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when this component is clicked.]]></description>
-			<name>onclick</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when a double click event occurs.]]></description>
-			<name>ondblclick</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when this component gets focus.]]></description>
-			<name>onfocus</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when a keydown event occurs.]]></description>
-			<name>onkeydown</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when a keypress event occurs.]]></description>
-			<name>onkeypress</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when a keyup event occurs.]]></description>
-			<name>onkeyup</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when a mousedown event occurs.]]></description>
-			<name>onmousedown</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when a mousemove event occurs.]]></description>
-			<name>onmousemove</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when a mouseout event occurs.]]></description>
-			<name>onmouseout</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when a mouseover event occurs.]]></description>
-			<name>onmouseover</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when a mouseup event occurs.]]></description>
-			<name>onmouseup</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[Javascript to execute when the user selects this component.]]></description>
-			<name>onselect</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-		</attribute>
-		<attribute>
-			<description><![CDATA[When true, this causes an attribute to be rendered as readonly="readonly", and prevents the user from changing the value of this component.]]></description>
-			<name>readonly</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
 		</attribute>
 		<attribute>
 			<description><![CDATA[When this flag is true, this component will be rendered to there response. When false, it will not be rendered to the response. The default value of this attribute is true.]]></description>
@@ -9011,7 +9517,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed in the PROCESS_VALIDATIONS phase of the lifecycle. The method must be <code>public</code>, return <code>void</code>, and take three arguments of <code>FacesContext</code>, <code>UIComponent</code>, and <code>Object</code>.]]></description>
 			<name>validator</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
 java.lang.Object)</method-signature>
 		</attribute>
@@ -9031,11 +9536,10 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when the value of this component changes. The method must be <code>public</code>, return <code>void</code>, and take no arguments or one argument of <code>ValueChangeEvent</code>.]]></description>
 			<name>valueChangeListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -9043,8 +9547,8 @@ java.lang.Object)</method-signature>
 		<tag-name>tab</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.tab.Tab</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.tab.TabRenderer</renderer-type>
-			<handler-class>com.liferay.faces.alloy.component.tab.TabHandler</handler-class>
+			<renderer-type>com.liferay.faces.alloy.component.tab.internal.TabRenderer</renderer-type>
+			<handler-class>com.liferay.faces.alloy.component.tab.internal.TabHandler</handler-class>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -9101,7 +9605,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -9109,8 +9613,8 @@ java.lang.Object)</method-signature>
 		<tag-name>tabView</tag-name>
 		<component>
 			<component-type>com.liferay.faces.alloy.component.tabview.TabView</component-type>
-			<renderer-type>com.liferay.faces.alloy.component.tabview.TabViewRenderer</renderer-type>
-			<handler-class>com.liferay.faces.alloy.component.tabview.TabViewHandler</handler-class>
+			<renderer-type>com.liferay.faces.alloy.component.tabview.internal.TabViewRenderer</renderer-type>
+			<handler-class>com.liferay.faces.alloy.component.tabview.internal.TabViewHandler</handler-class>
 		</component>
 		<attribute>
 			<description><![CDATA[An EL expression that binds the Java reference to this component in the component tree to a bean property.]]></description>
@@ -9170,7 +9674,6 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when a tab is clicked. The method must be <code>public</code>, return <code>void</code>, and take an <code>TabSelectEvent</code> argument.]]></description>
 			<name>tabSelectListener</name>
 			<required>false</required>
-			<type>javax.el.MethodExpression</type>
 			<method-signature>void tabSelectListener(com.liferay.faces.alloy.component.tab.TabSelectEvent)</method-signature>
 		</attribute>
 		<attribute>
@@ -9192,7 +9695,7 @@ java.lang.Object)</method-signature>
 			<type>java.lang.String</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 	<tag>
@@ -9214,7 +9717,324 @@ java.lang.Object)</method-signature>
 			<type>java.lang.Long</type>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
+		</tag-extension>
+	</tag>
+	<tag>
+		<description><![CDATA[Video is a UIComponent that renders a <code>&lt;div&gt;</code> that contains an HTML5 <code>&lt;video&gt;</code> element. It also supports graceful degradation for older browsers.]]></description>
+		<tag-name>video</tag-name>
+		<component>
+			<component-type>com.liferay.faces.alloy.component.video.Video</component-type>
+			<renderer-type>com.liferay.faces.alloy.component.video.internal.VideoRenderer</renderer-type>
+		</component>
+		<attribute>
+			<description><![CDATA[HTML5 passthrough attribute specifying whether the media will begin playing automatically. Defaults to false.]]></description>
+			<name>autoplay</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The content type of the media. This attribute is required when the <code>value</code> attribute is used to specify the media URL. Otherwise, the contentType defaults to to the content type determined by the JSF runtime for the resource.]]></description>
+			<name>contentType</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[HTML5 passthrough attribute specifying whether controls should be rendered for the media. Defaults to false.]]></description>
+			<name>controls</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[When true the component will gracefully degrade to the Adobe&reg; Flash&reg; player for older browsers. Defaults to true. Defaults to true.]]></description>
+			<name>degrade</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[A context-relative path, resource URL, or FacesResource that can be used to retrieve the Adobe&reg; Flash&reg; player. Defaults to the player that comes bundled with AlloyUI. <strong>Note:</strong> The AlloyUI player does not support <code>.ogv</code> or <code>.webm</code> formats.]]></description>
+			<name>flashPlayer</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The version of Adobe&reg; Flash&reg; required to play this media. Defaults to <code>"9,0,0,0"</code>.]]></description>
+			<name>flashPlayerVersion</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The height (in pixels) of the video, this attribute will also be applied to the Adobe&reg; Flash&reg; player's <code>&lt;object&gt;</code> tag.]]></description>
+			<name>height</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The name of the library which contains the resource.]]></description>
+			<name>library</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[HTML5 passthrough attribute specifying whether the media will restart after it has completed playing. Defaults to false.]]></description>
+			<name>loop</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[HTML5 passthrough attribute specifying whether the media will be muted initially. Defaults to false.]]></description>
+			<name>muted</name>
+			<required>false</required>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The name of the resource file to be included on the page.]]></description>
+			<name>name</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a abort event occurs.]]></description>
+			<name>onabort</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute after this component loses focus.]]></description>
+			<name>onblur</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a canplay event occurs.]]></description>
+			<name>oncanplay</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a canplaythrough event occurs.]]></description>
+			<name>oncanplaythrough</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when this component is clicked.]]></description>
+			<name>onclick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a double click event occurs.]]></description>
+			<name>ondblclick</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a durationchange event occurs.]]></description>
+			<name>ondurationchange</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a emptied event occurs.]]></description>
+			<name>onemptied</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a ended event occurs.]]></description>
+			<name>onended</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a error event occurs.]]></description>
+			<name>onerror</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when this component gets focus.]]></description>
+			<name>onfocus</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a keydown event occurs.]]></description>
+			<name>onkeydown</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a keypress event occurs.]]></description>
+			<name>onkeypress</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a keyup event occurs.]]></description>
+			<name>onkeyup</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a loadeddata event occurs.]]></description>
+			<name>onloadeddata</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a loadedmetadata event occurs.]]></description>
+			<name>onloadedmetadata</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a loadstart event occurs.]]></description>
+			<name>onloadstart</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a mousedown event occurs.]]></description>
+			<name>onmousedown</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a mousemove event occurs.]]></description>
+			<name>onmousemove</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a mouseout event occurs.]]></description>
+			<name>onmouseout</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a mouseover event occurs.]]></description>
+			<name>onmouseover</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a mouseup event occurs.]]></description>
+			<name>onmouseup</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a pause event occurs.]]></description>
+			<name>onpause</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a play event occurs.]]></description>
+			<name>onplay</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a playing event occurs.]]></description>
+			<name>onplaying</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a progress event occurs.]]></description>
+			<name>onprogress</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a ratechange event occurs.]]></description>
+			<name>onratechange</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a seeked event occurs.]]></description>
+			<name>onseeked</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a seeking event occurs.]]></description>
+			<name>onseeking</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a stalled event occurs.]]></description>
+			<name>onstalled</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a suspend event occurs.]]></description>
+			<name>onsuspend</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a timeupdate event occurs.]]></description>
+			<name>ontimeupdate</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a volumechange event occurs.]]></description>
+			<name>onvolumechange</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[Javascript to execute when a waiting event occurs.]]></description>
+			<name>onwaiting</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[A context-relative path, resource URL, or <code>FacesResource</code> that can be used to retrieve the poster image.]]></description>
+			<name>poster</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[HTML5 passthrough attribute specifying how the media should be loaded in the page.]]></description>
+			<name>preload</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[HTML passthrough attribute specifying the css style of the element.]]></description>
+			<name>style</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[List of CSS class names (separated by spaces) that are to be rendered within the class attribute.]]></description>
+			<name>styleClass</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[A context-relative path, resource URL, <code>FacesResource</code>, or <code>List&lt;FacesResouce&gt;</code> that can be used to retrieve the media(s).]]></description>
+			<name>value</name>
+			<required>false</required>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description><![CDATA[The width (in pixels) of the video, this attribute will also be applied to the Adobe&reg; Flash&reg; player's <code>&lt;object&gt;</code> tag.]]></description>
+			<name>width</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		</attribute>
+		<tag-extension>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 </facelet-taglib>

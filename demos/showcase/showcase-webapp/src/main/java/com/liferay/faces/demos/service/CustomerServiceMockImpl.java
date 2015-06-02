@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -16,6 +16,8 @@ package com.liferay.faces.demos.service;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -28,6 +30,7 @@ import javax.faces.bean.ManagedProperty;
 
 import com.liferay.faces.demos.dto.Country;
 import com.liferay.faces.demos.dto.Customer;
+import com.liferay.faces.util.model.SortCriterion;
 
 
 /**
@@ -232,6 +235,11 @@ public class CustomerServiceMockImpl implements CustomerService, Serializable {
 	}
 
 	@Override
+	public int getCustomerCount() {
+		return allCustomers.size();
+	}
+
+	@Override
 	public List<Customer> getAllCustomers() {
 		return allCustomers;
 	}
@@ -242,7 +250,15 @@ public class CustomerServiceMockImpl implements CustomerService, Serializable {
 
 	@Override
 	public List<Customer> getCustomers(int start, int finish) {
-		return allCustomers.subList(start, finish);
+		return allCustomers.subList(start, finish+1);
+	}
+
+	@Override
+	public List<Customer> getCustomers(int start, int finish, Comparator<Customer> comparator) {
+
+		List<Customer> customerList = new ArrayList<Customer>(getAllCustomers());
+		Collections.sort(customerList, comparator);
+		return customerList.subList(start, finish+1);
 	}
 
 	public Date getDate(int month, int day, int year) {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -27,19 +27,31 @@ import com.liferay.faces.util.component.ClientComponent;
 @Generated(value = "com.liferay.alloy.tools.builder.FacesBuilder")
 public abstract class InputSourceCodeBase extends HtmlInputText implements Styleable, ClientComponent {
 
+	// Public Constants
+	public static final String COMPONENT_TYPE = "com.liferay.faces.alloy.component.inputsourcecode.InputSourceCode";
+	public static final String RENDERER_TYPE = "com.liferay.faces.alloy.component.inputsourcecode.internal.InputSourceCodeRenderer";
+
 	// Protected Enumerations
 	protected enum InputSourceCodePropertyKeys {
 		clientKey,
 		height,
 		highlightActiveLine,
 		locale,
+		maxLines,
+		minLines,
 		mode,
 		readOnly,
 		showPrintMargin,
+		styleClass,
 		tabSize,
 		useSoftTabs,
 		useWrapMode,
 		width
+	}
+
+	public InputSourceCodeBase() {
+		super();
+		setRendererType(RENDERER_TYPE);
 	}
 
 	@Override
@@ -60,7 +72,7 @@ public abstract class InputSourceCodeBase extends HtmlInputText implements Style
 		getStateHelper().put(InputSourceCodePropertyKeys.height, height);
 	}
 
-	public Boolean isHighlightActiveLine() {
+	public Boolean getHighlightActiveLine() {
 		return (Boolean) getStateHelper().eval(InputSourceCodePropertyKeys.highlightActiveLine, null);
 	}
 
@@ -76,6 +88,22 @@ public abstract class InputSourceCodeBase extends HtmlInputText implements Style
 		getStateHelper().put(InputSourceCodePropertyKeys.locale, locale);
 	}
 
+	public Integer getMaxLines() {
+		return (Integer) getStateHelper().eval(InputSourceCodePropertyKeys.maxLines, 1024);
+	}
+
+	public void setMaxLines(Integer maxLines) {
+		getStateHelper().put(InputSourceCodePropertyKeys.maxLines, maxLines);
+	}
+
+	public Integer getMinLines() {
+		return (Integer) getStateHelper().eval(InputSourceCodePropertyKeys.minLines, 6);
+	}
+
+	public void setMinLines(Integer minLines) {
+		getStateHelper().put(InputSourceCodePropertyKeys.minLines, minLines);
+	}
+
 	public String getMode() {
 		return (String) getStateHelper().eval(InputSourceCodePropertyKeys.mode, null);
 	}
@@ -84,7 +112,7 @@ public abstract class InputSourceCodeBase extends HtmlInputText implements Style
 		getStateHelper().put(InputSourceCodePropertyKeys.mode, mode);
 	}
 
-	public Boolean isReadOnly() {
+	public Boolean getReadOnly() {
 		return (Boolean) getStateHelper().eval(InputSourceCodePropertyKeys.readOnly, null);
 	}
 
@@ -92,12 +120,26 @@ public abstract class InputSourceCodeBase extends HtmlInputText implements Style
 		getStateHelper().put(InputSourceCodePropertyKeys.readOnly, readOnly);
 	}
 
-	public Boolean isShowPrintMargin() {
+	public Boolean getShowPrintMargin() {
 		return (Boolean) getStateHelper().eval(InputSourceCodePropertyKeys.showPrintMargin, null);
 	}
 
 	public void setShowPrintMargin(Boolean showPrintMargin) {
 		getStateHelper().put(InputSourceCodePropertyKeys.showPrintMargin, showPrintMargin);
+	}
+
+	@Override
+	public String getStyleClass() {
+		// getStateHelper().eval(InputSourceCodePropertyKeys.styleClass, null) is called because super.getStyleClass() may return the
+		// STYLE_CLASS_NAME of the super class.
+		String styleClass = (String) getStateHelper().eval(InputSourceCodePropertyKeys.styleClass, null);
+
+		return com.liferay.faces.util.component.ComponentUtil.concatCssClasses(styleClass, "alloy-input-source-code");
+	}
+
+	@Override
+	public void setStyleClass(String styleClass) {
+		getStateHelper().put(InputSourceCodePropertyKeys.styleClass, styleClass);
 	}
 
 	public String getTabSize() {
@@ -108,7 +150,7 @@ public abstract class InputSourceCodeBase extends HtmlInputText implements Style
 		getStateHelper().put(InputSourceCodePropertyKeys.tabSize, tabSize);
 	}
 
-	public Boolean isUseSoftTabs() {
+	public Boolean getUseSoftTabs() {
 		return (Boolean) getStateHelper().eval(InputSourceCodePropertyKeys.useSoftTabs, null);
 	}
 
@@ -116,7 +158,7 @@ public abstract class InputSourceCodeBase extends HtmlInputText implements Style
 		getStateHelper().put(InputSourceCodePropertyKeys.useSoftTabs, useSoftTabs);
 	}
 
-	public Boolean isUseWrapMode() {
+	public Boolean getUseWrapMode() {
 		return (Boolean) getStateHelper().eval(InputSourceCodePropertyKeys.useWrapMode, null);
 	}
 

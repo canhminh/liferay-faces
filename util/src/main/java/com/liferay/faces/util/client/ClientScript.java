@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -18,5 +18,12 @@ package com.liferay.faces.util.client;
  */
 public interface ClientScript {
 
-	public void append(String portletId, String content, String use);
+	public void append(String content);
+
+	public void append(String content, String options);
+
+	public void clear();
+
+	@Override
+	public String toString();
 }

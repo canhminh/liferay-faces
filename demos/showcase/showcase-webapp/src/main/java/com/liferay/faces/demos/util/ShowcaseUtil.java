@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -69,6 +69,13 @@ public class ShowcaseUtil {
 		StringPool.PERIOD + LIFERAY_FACES_PORTAL_PRODUCT.getMinorVersion();
 	private static final String LIFERAY_FACES_PORTAL_JAVADOC_BASE_URL = "http://www.liferayfaces.org/doc/faces/" +
 		LIFERAY_FACES_PORTAL_VERSION + "/javadoc/portal/";
+	private static final Product LIFERAY_FACES_UTIL_PRODUCT = ProductMap.getInstance().get(
+			ProductConstants.LIFERAY_FACES_UTIL);
+	private static final String LIFERAY_FACES_UTIL_PACKAGE_PREFIX = "com.liferay.faces.util";
+	private static final String LIFERAY_FACES_UTIL_VERSION = LIFERAY_FACES_UTIL_PRODUCT.getMajorVersion() +
+		StringPool.PERIOD + LIFERAY_FACES_UTIL_PRODUCT.getMinorVersion();
+	private static final String LIFERAY_FACES_UTIL_JAVADOC_BASE_URL = "http://www.liferayfaces.org/doc/faces/" +
+		LIFERAY_FACES_UTIL_VERSION + "/javadoc/util/";
 	private static final String LIFERAY_FACES_VDLDOC_BASE_URL = "http://www.liferayfaces.org/doc/faces/" +
 		LIFERAY_FACES_ALLOY_VERSION + "/vdldoc/";
 	private static final String NAMESPACE_PREFIX_ALLOY = "alloy";
@@ -178,8 +185,11 @@ public class ShowcaseUtil {
 		else if (fqcn.startsWith(LIFERAY_FACES_PORTAL_PACKAGE_PREFIX)) {
 			javaDocURL.append(LIFERAY_FACES_PORTAL_JAVADOC_BASE_URL);
 		}
+		else if (fqcn.startsWith(LIFERAY_FACES_UTIL_PACKAGE_PREFIX)) {
+			javaDocURL.append(LIFERAY_FACES_UTIL_JAVADOC_BASE_URL);
+		}
 		else {
-			logger.error("Unknown JavaDoc package=[{0}]", fqcn);
+			logger.error("Unknown JavaDoc fqcn=[{0}]", fqcn);
 		}
 
 		String javaClassURLPath = fqcn.replaceAll(REGEX_DOT, StringPool.FORWARD_SLASH);

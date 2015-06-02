@@ -1,16 +1,16 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<facelet-taglib xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vdldoc="http://vdldoc.org/vdldoc"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
-   http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd http://vdldoc.org/vdldoc https://vdldoc.googlecode.com/hg/src/org/omnifaces/vdldoc/resources/vdldoc.taglib.xml.xsd"
-	version="2.0">
+<facelet-taglib xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:vdldoc="http://vdldoc.omnifaces.org"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facelettaglibrary_2_2.xsd http://vdldoc.omnifaces.org https://raw.githubusercontent.com/omnifaces/vdldoc/master/src/main/resources/org/omnifaces/vdldoc/resources/vdldoc.taglib.xml.xsd"
+	version="2.2">
 	<description><![CDATA[The Liferay Faces Bridge facelet component tags with the <code>bridge:</code> tag name prefix.]]></description>
 	<namespace>http://liferay.com/faces/bridge</namespace>
 	<tag>
-		<description><![CDATA[InputFile is a UIInput component that renders an <input> element with type=file. Since it extends HtmlInputFile, it supports all the features of h:inputFile and also supports multi-file uploads.]]></description>
+		<description><![CDATA[InputFile is a UIInput component that renders an <code>&lt;input&gt;</code> element with type=file. Since it extends HtmlInputFile, it supports all the features of h:inputFile and also supports multi-file uploads.]]></description>
 		<tag-name>inputFile</tag-name>
 		<component>
 			<component-type>com.liferay.faces.bridge.component.inputfile.InputFile</component-type>
-			<renderer-type>com.liferay.faces.bridge.component.inputfile.InputFileRenderer</renderer-type>
+			<renderer-type>com.liferay.faces.bridge.component.inputfile.internal.InputFileRenderer</renderer-type>
 			<handler-class>com.liferay.faces.bridge.component.inputfile.internal.InputFileHandler</handler-class>
 		</component>
 		<attribute>
@@ -71,7 +71,6 @@
 			<description><![CDATA[A method that is executed when a file is uploaded. The method must be <code>public</code>, return <code>void</code>, and take a <code>FileUploadEvent</code> argument.]]></description>
 			<name>fileUploadListener</name>
 			<required>false</required>
-			<type>javax.el.MethodExpression</type>
 			<method-signature>void fileUploadListener(com.liferay.faces.util.component.inputfile.FileUploadEvent)</method-signature>
 		</attribute>
 		<attribute>
@@ -258,7 +257,6 @@
 			<description><![CDATA[A method that is executed in the PROCESS_VALIDATIONS phase of the lifecycle. The method must be <code>public</code>, return <code>void</code>, and take three arguments of <code>FacesContext</code>, <code>UIComponent</code>, and <code>Object</code>.]]></description>
 			<name>validator</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
 java.lang.Object)</method-signature>
 		</attribute>
@@ -278,11 +276,10 @@ java.lang.Object)</method-signature>
 			<description><![CDATA[A method that is executed when the value of this component changes. The method must be <code>public</code>, return <code>void</code>, and take no arguments or one argument of <code>ValueChangeEvent</code>.]]></description>
 			<name>valueChangeListener</name>
 			<required>false</required>
-			<type>java.lang.Object</type>
 			<method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
 		</attribute>
 		<tag-extension>
-			<vdldoc:since>4.2.0-m2</vdldoc:since>
+			<vdldoc:since>4.2.0</vdldoc:since>
 		</tag-extension>
 	</tag>
 </facelet-taglib>

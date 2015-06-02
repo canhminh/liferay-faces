@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -21,13 +21,5 @@ import javax.faces.component.FacesComponent;
  */
 @FacesComponent(value = NavItem.COMPONENT_TYPE)
 public class NavItem extends NavItemBase {
-
-	// Public Constants
-	public static final String COMPONENT_TYPE = "com.liferay.faces.portal.component.navitem.NavItem";
-	public static final String RENDERER_TYPE = "com.liferay.faces.portal.component.navitem.NavItemRenderer";
-
-	public NavItem() {
-		super();
-		setRendererType(RENDERER_TYPE);
-	}
+	// Initial Generation
 }

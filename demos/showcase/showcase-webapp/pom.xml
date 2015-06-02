@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.liferay.faces.demos</groupId>
 		<artifactId>liferay-faces-showcase-demos</artifactId>
-		<version>4.2.0-beta1-SNAPSHOT</version>
+		<version>4.2.5-rc1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>showcase-webapp</artifactId>
@@ -26,6 +26,14 @@
 	</profiles>
 
 	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-install-plugin</artifactId>
+				<configuration>
+					<skip>false</skip>
+				</configuration>
+			</plugin>
+		</plugins>
 		<resources>
 			<resource>
 				<directory>src/main/java</directory>
@@ -69,10 +77,6 @@
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>javax.servlet.jsp-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.seam</groupId>
-			<artifactId>jboss-el</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.liferay.faces</groupId>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -27,6 +27,10 @@ import com.liferay.faces.util.component.ClientComponent;
 @Generated(value = "com.liferay.alloy.tools.builder.FacesBuilder")
 public abstract class AccordionBase extends UIData implements Styleable, ClientComponent {
 
+	// Public Constants
+	public static final String COMPONENT_TYPE = "com.liferay.faces.alloy.component.accordion.Accordion";
+	public static final String RENDERER_TYPE = "com.liferay.faces.alloy.component.accordion.internal.AccordionRenderer";
+
 	// Protected Enumerations
 	protected enum AccordionPropertyKeys {
 		clientKey,
@@ -36,6 +40,11 @@ public abstract class AccordionBase extends UIData implements Styleable, ClientC
 		styleClass,
 		tabCollapseListener,
 		tabExpandListener
+	}
+
+	public AccordionBase() {
+		super();
+		setRendererType(RENDERER_TYPE);
 	}
 
 	@Override
@@ -76,7 +85,11 @@ public abstract class AccordionBase extends UIData implements Styleable, ClientC
 
 	@Override
 	public String getStyleClass() {
-		return (String) getStateHelper().eval(AccordionPropertyKeys.styleClass, null);
+		// getStateHelper().eval(AccordionPropertyKeys.styleClass, null) is called because super.getStyleClass() may return the
+		// STYLE_CLASS_NAME of the super class.
+		String styleClass = (String) getStateHelper().eval(AccordionPropertyKeys.styleClass, null);
+
+		return com.liferay.faces.util.component.ComponentUtil.concatCssClasses(styleClass, "alloy-accordion");
 	}
 
 	@Override

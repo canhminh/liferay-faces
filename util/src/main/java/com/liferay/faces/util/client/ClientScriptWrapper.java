@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -22,9 +22,25 @@ import javax.faces.FacesWrapper;
 public abstract class ClientScriptWrapper implements ClientScript, FacesWrapper<ClientScript> {
 
 	@Override
-	public void append(String portletId, String content, String use) {
-		getWrapped().append(portletId, content, use);
+	public void append(String content) {
+		getWrapped().append(content);
 	}
 
+	@Override
+	public void append(String content, String use) {
+		getWrapped().append(content, use);
+	}
+
+	@Override
+	public void clear() {
+		getWrapped().clear();
+	}
+
+	@Override
+	public String toString() {
+		return getWrapped().toString();
+	}
+
+	@Override
 	public abstract ClientScript getWrapped();
 }

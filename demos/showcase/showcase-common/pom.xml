@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.liferay.faces.demos</groupId>
 		<artifactId>liferay-faces-showcase-demos</artifactId>
-		<version>4.2.0-beta1-SNAPSHOT</version>
+		<version>4.2.5-rc1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>showcase-common</artifactId>
@@ -34,6 +34,13 @@
 				<artifactId>maven-deploy-plugin</artifactId>
 				<configuration>
 					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<configuration>
+					<skip>false</skip>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -37,20 +37,17 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
-import com.liferay.faces.alloy.component.nodemenunav.NodeMenuNav;
-import com.liferay.faces.alloy.component.nodemenunav.internal.NodeMenuNavRendererBase;
 import com.liferay.faces.util.component.ComponentUtil;
 
 
 /**
  * @author  Vernon Singleton
  */
-public class SplitCommandButton extends SplitCommandButtonCompat implements NodeMenuNav {
+public class SplitCommandButton extends SplitCommandButtonCompat {
 
-	public static final String RENDERER_TYPE = "com.liferay.faces.alloy.component.button.SplitCommandButtonRenderer";
-
-	// Private constants
-	private static final String BUTTON_PREFIX = "btn-";
+	// Public Constants
+	public static final String RENDERER_TYPE =
+		"com.liferay.faces.alloy.component.button.internal.SplitCommandButtonRenderer";
 
 	private String rendererType;
 
@@ -634,13 +631,13 @@ public class SplitCommandButton extends SplitCommandButtonCompat implements Node
 		String styleClass = wrappedCommandButton.getStyleClass();
 
 		if (styleClass == null) {
-			styleClass = NodeMenuNavRendererBase.DEFAULT_BUTTON;
+			styleClass = "btn-default";
 		}
 
 		String defaultCommandButtonClass = null;
 
-		if (!styleClass.contains(BUTTON_PREFIX)) {
-			defaultCommandButtonClass = NodeMenuNavRendererBase.DEFAULT_BUTTON;
+		if (!styleClass.contains("btn-")) {
+			defaultCommandButtonClass = "btn-default";
 		}
 
 		String disabledClass = null;
@@ -650,8 +647,7 @@ public class SplitCommandButton extends SplitCommandButtonCompat implements Node
 			disabledClass = "disabled";
 		}
 
-		styleClass = ComponentUtil.concatCssClasses(NodeMenuNavRendererBase.DEFAULT_BTN, defaultCommandButtonClass,
-				disabledClass, styleClass);
+		styleClass = ComponentUtil.concatCssClasses("btn", defaultCommandButtonClass, disabledClass, styleClass);
 
 		return styleClass;
 	}

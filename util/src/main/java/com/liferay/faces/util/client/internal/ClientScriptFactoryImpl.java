@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -11,80 +11,34 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+
 package com.liferay.faces.util.client.internal;
 
-import java.util.Map;
-
-import javax.faces.FacesException;
-import javax.faces.context.ExternalContext;
-
-import com.liferay.faces.util.client.BrowserSniffer;
-import com.liferay.faces.util.client.BrowserSnifferFactory;
 import com.liferay.faces.util.client.ClientScript;
 import com.liferay.faces.util.client.ClientScriptFactory;
-import com.liferay.faces.util.factory.FactoryExtensionFinder;
-import com.liferay.faces.util.portal.WebKeys;
-import com.liferay.faces.util.product.ProductConstants;
-import com.liferay.faces.util.product.ProductMap;
-import com.liferay.portal.kernel.servlet.taglib.aui.ScriptData;
+import java.util.Map;
+import javax.faces.FacesException;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 
 /**
- * @author  Neil Griffin
+ * @author  Kyle Stiemann
  */
 public class ClientScriptFactoryImpl extends ClientScriptFactory {
 
-	// Private Constants
-	private static final boolean LIFERAY_PORTAL_DETECTED = ProductMap.getInstance().get(ProductConstants.LIFERAY_PORTAL)
-		.isDetected();
-
-	private static final String SCRIPT_DATA_FQCN = "com.liferay.portal.kernel.servlet.taglib.aui.ScriptData";
-
 	@Override
-	public ClientScript getClientScript(ExternalContext externalContext) throws FacesException {
+	public ClientScript getClientScript() throws FacesException {
 
-		ClientScript clientScript = null;
-
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext externalContext = facesContext.getExternalContext();
 		Map<String, Object> requestMap = externalContext.getRequestMap();
-		Object attributeValue = requestMap.get(WebKeys.AUI_SCRIPT_DATA);
+		ClientScript clientScript = (ClientScript) requestMap.get(ClientScriptFactory.class.getName());
 
-		if (LIFERAY_PORTAL_DETECTED) {
+		if (clientScript == null) {
 
-			Object scriptData = null;
-
-			if (attributeValue == null) {
-
-				try {
-					Class<?> scriptDataClass = Class.forName(SCRIPT_DATA_FQCN);
-					scriptData = scriptDataClass.newInstance();
-				}
-				catch (Exception e) {
-					throw new FacesException(e);
-				}
-
-				requestMap.put(WebKeys.AUI_SCRIPT_DATA, scriptData);
-			}
-			else {
-				scriptData = (ScriptData) attributeValue;
-			}
-
-			clientScript = new ClientScriptLiferayImpl(scriptData);
-		}
-		else {
-
-			if (attributeValue == null) {
-
-				BrowserSnifferFactory browserSnifferFactory = (BrowserSnifferFactory) FactoryExtensionFinder.getFactory(
-						BrowserSnifferFactory.class);
-				BrowserSniffer browserSniffer = browserSnifferFactory.getBrowserSniffer(externalContext);
-				boolean browserIE = browserSniffer.isIe();
-				float browserMajorVersion = browserSniffer.getMajorVersion();
-				clientScript = new ClientScriptImpl(browserIE, browserMajorVersion);
-				requestMap.put(WebKeys.AUI_SCRIPT_DATA, clientScript);
-			}
-			else {
-				clientScript = (ClientScript) attributeValue;
-			}
+			clientScript = new ClientScriptImpl();
+			requestMap.put(ClientScriptFactory.class.getName(), clientScript);
 		}
 
 		return clientScript;
@@ -96,5 +50,4 @@ public class ClientScriptFactoryImpl extends ClientScriptFactory {
 		// Since this is the default factory instance, it will never wrap another factory.
 		return null;
 	}
-
 }

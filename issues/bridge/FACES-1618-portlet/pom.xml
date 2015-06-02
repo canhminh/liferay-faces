@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.liferay.faces.issues</groupId>
 		<artifactId>liferay-faces-bridge-issues</artifactId>
-		<version>4.2.0-beta1-SNAPSHOT</version>
+		<version>4.2.5-rc1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>FACES-1618-portlet</artifactId>
@@ -29,10 +29,6 @@
 			<groupId>com.liferay.faces</groupId>
 			<artifactId>liferay-faces-alloy</artifactId>
 			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.seam</groupId>
-			<artifactId>jboss-el</artifactId>
 		</dependency>
 
 		<!-- The following ICEfaces dependencies below are specified because they produce .js resources in the head of -->

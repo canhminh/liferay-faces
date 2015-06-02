@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -61,8 +61,10 @@ public class Primefaces4 extends TesterBase {
 	private static final String cityFieldXpath = "//input[contains(@id,':city')]";
 	private static final String cityFieldErrorXpath = "//input[contains(@id,':city')]/following-sibling::*[1]";
 
-	private static final String provinceIdFieldXpath = "//select[contains(@id,':provinceId')]";
-	private static final String provinceIdFieldErrorXpath = "//select[contains(@id,':provinceId')]/following-sibling::*[1]";
+	private static final String provinceIdFieldXpath = "//select[contains(@id,':provinceId')]/../..";
+	private static final String provinceIdFieldErrorXpath = "//select[contains(@id,':provinceId')]/../../following-sibling::*[1]";
+	
+	private static final String provinceIdSelectorXpath = "//select[contains(@id,':provinceId')]";
 
 	private static final String postalCodeFieldXpath = "//input[contains(@id,':postalCode')]";
 	private static final String postalCodeFieldErrorXpath = "//input[contains(@id,':postalCode')]/following-sibling::*[1]/following-sibling::*[1]";
@@ -132,6 +134,8 @@ public class Primefaces4 extends TesterBase {
 	private WebElement cityFieldError;
 	@FindBy(xpath = provinceIdFieldXpath)
 	private WebElement provinceIdField;
+	@FindBy(xpath = provinceIdSelectorXpath)
+	private WebElement provinceIdSelector;
 	@FindBy(xpath = provinceIdFieldErrorXpath)
 	private WebElement provinceIdFieldError;
 	@FindBy(xpath = postalCodeFieldXpath)

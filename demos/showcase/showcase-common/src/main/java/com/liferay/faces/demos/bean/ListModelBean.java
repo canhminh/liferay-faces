@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -63,7 +63,7 @@ public class ListModelBean {
 		.isDetected();
 	private static final String[] PACKAGE_NAMES = new String[] {
 			"com.liferay.faces.demos.bean", "com.liferay.faces.demos.constants", "com.liferay.faces.demos.dto",
-			"com.liferay.faces.demos.converter", "com.liferay.faces.demos.portlet"
+			"com.liferay.faces.demos.converter", "com.liferay.faces.demos.portlet", "com.liferay.faces.demos.validator"
 		};
 
 	// Private Data Members
@@ -87,6 +87,7 @@ public class ListModelBean {
 		showcaseCategoryList.add("multimedia");
 		showcaseCategoryList.add("output");
 		showcaseCategoryList.add("panel");
+		showcaseCategoryList.add("select");
 
 		if (LIFERAY_PORTAL_DETECTED) {
 			showcaseCategoryList.add("portal");
@@ -96,7 +97,6 @@ public class ListModelBean {
 			showcaseCategoryList.add("portlet");
 		}
 
-		showcaseCategoryList.add("select");
 		showcaseCategoryList.add("jstl");
 		showcaseCategoryList.add("facescore");
 		showcaseCategoryList.add("facelets");
@@ -175,21 +175,21 @@ public class ListModelBean {
 
 								if (sourceFileName.endsWith(".css")) {
 
-									String sourcePath = File.separator + "resources" + File.separator + "css" +
+									String sourcePath = File.separator + "WEB-INF" + File.separator + "resources" + File.separator + "css" +
 										File.separator + sourceFileName;
 
 									sourceFileURL = startupExternalContext.getResource(sourcePath);
 								}
 								else if (sourceFileName.endsWith(".js")) {
 
-									String sourcePath = File.separator + "resources" + File.separator + "js" +
+									String sourcePath = File.separator + "WEB-INF" + File.separator + "resources" + File.separator + "js" +
 										File.separator + sourceFileName;
 
 									sourceFileURL = startupExternalContext.getResource(sourcePath);
 								}
 								else if (sourceFileName.endsWith(".xhtml")) {
 
-									String sourcePath = File.separator + "component" + File.separator + prefix +
+									String sourcePath = File.separator + "WEB-INF" + File.separator + "component" + File.separator + prefix +
 										File.separator + lowerCaseName + File.separator;
 
 									if (!sourceFileName.toLowerCase().contains("common")) {

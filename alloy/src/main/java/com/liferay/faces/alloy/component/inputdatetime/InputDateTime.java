@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -13,24 +13,26 @@
  */
 package com.liferay.faces.alloy.component.inputdatetime;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
 import java.util.TimeZone;
 
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.DateTimeConverter;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.FacesEvent;
 
+import com.liferay.faces.util.client.BrowserSniffer;
+import com.liferay.faces.util.client.BrowserSnifferFactory;
 import com.liferay.faces.util.component.ClientComponent;
 import com.liferay.faces.util.context.MessageContext;
+import com.liferay.faces.util.context.MessageContextFactory;
+import com.liferay.faces.util.factory.FactoryExtensionFinder;
+import com.liferay.faces.util.lang.StringPool;
 
 
 /**
@@ -42,46 +44,11 @@ public abstract class InputDateTime extends InputDateTimeBase implements ClientC
 	public static final String FOCUS = "focus";
 	public static final String GREENWICH = "Greenwich";
 
-	@Override
-	public void queueEvent(FacesEvent facesEvent) {
-
-		if (facesEvent instanceof AjaxBehaviorEvent) {
-
-			AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) facesEvent;
-
-			UIComponent uiComponent = ajaxBehaviorEvent.getComponent();
-			Behavior behavior = ajaxBehaviorEvent.getBehavior();
-
-			FacesContext facesContext = FacesContext.getCurrentInstance();
-			Map<String, String> requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
-
-			String clientId = getClientId(facesContext);
-			String selectedString = requestParameterMap.get(clientId);
-
-			Date selected = null;
-
-			if ((selectedString != null) && (selectedString.length() > 0)) {
-
-				InputDateTime inputDateTime = (InputDateTime) uiComponent;
-				String pattern = inputDateTime.getPattern();
-				String timeZoneString = inputDateTime.getTimeZone();
-				TimeZone timeZone = TimeZone.getTimeZone(timeZoneString);
-				selected = InputDateTimeUtil.getObjectAsDate(selectedString, pattern, timeZone);
-			}
-
-			facesEvent = newSelectEvent(uiComponent, behavior, selected);
-		}
-
-		super.queueEvent(facesEvent);
-	}
-
-	protected abstract AjaxBehaviorEvent newSelectEvent(UIComponent uiComponent, Behavior behavior, Date selected);
-
 	protected void validateValue(FacesContext facesContext, Object newValue, Date minDate, Date maxDate,
 		TimeZone timeZone) {
 
 		String pattern = getPattern();
-		Date submittedDate = InputDateTimeUtil.getObjectAsDate(newValue, pattern, timeZone);
+		Date submittedDate = getObjectAsDate(newValue, pattern, timeZone);
 
 		try {
 
@@ -98,14 +65,13 @@ public abstract class InputDateTime extends InputDateTimeBase implements ClientC
 					facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
 				}
 				else {
-					MessageContext messageContext = MessageContext.getInstance();
 					SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 					simpleDateFormat.setTimeZone(timeZone);
 
 					String minDateString = simpleDateFormat.format(minDate);
 					String maxDateString = simpleDateFormat.format(maxDate);
-					Locale locale = InputDateTimeUtil.getObjectAsLocale(getLocale(facesContext));
-					String message = messageContext.getMessage(locale, "please-enter-a-value-between-x-and-x",
+					Locale locale = getObjectAsLocale(getLocale(facesContext));
+					String message = getMessageContext().getMessage(locale, "please-enter-a-value-between-x-and-x",
 							minDateString, maxDateString);
 					facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, message, message);
 				}
@@ -140,7 +106,7 @@ public abstract class InputDateTime extends InputDateTimeBase implements ClientC
 			dateTimeConverter.setPattern(pattern);
 
 			Object objectLocale = getLocale();
-			Locale locale = InputDateTimeUtil.getObjectAsLocale(objectLocale);
+			Locale locale = getObjectAsLocale(objectLocale);
 			dateTimeConverter.setLocale(locale);
 
 			String timeZoneString = getTimeZone();
@@ -155,16 +121,118 @@ public abstract class InputDateTime extends InputDateTimeBase implements ClientC
 	@Override
 	public abstract boolean isResponsive();
 
+	protected boolean isResponsiveMobile() {
+
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		BrowserSnifferFactory browserSnifferFactory = (BrowserSnifferFactory) FactoryExtensionFinder.getFactory(
+				BrowserSnifferFactory.class);
+		BrowserSniffer browserSniffer = browserSnifferFactory.getBrowserSniffer(facesContext.getExternalContext());
+
+		return browserSniffer.isMobile() && isResponsive();
+	}
+
 	@Override
 	public Object getLocale() {
 		return getLocale(FacesContext.getCurrentInstance());
 	}
 
 	public Object getLocale(FacesContext facesContext) {
-		return InputDateTimeUtil.determineLocale(facesContext, super.getLocale());
+
+		Object locale = super.getLocale();
+
+		if (locale == null) {
+
+			UIViewRoot viewRoot = facesContext.getViewRoot();
+			locale = viewRoot.getLocale();
+		}
+
+		return locale;
 	}
 
-	protected abstract String getPattern();
+	protected MessageContext getMessageContext() {
+
+		MessageContextFactory messageContextFactory = (MessageContextFactory) FactoryExtensionFinder.getFactory(
+				MessageContextFactory.class);
+
+		return messageContextFactory.getMessageContext();
+	}
+
+	public final Date getObjectAsDate(Object dateAsObject, String datePattern, TimeZone timeZone)
+		throws FacesException {
+
+		Date date = null;
+
+		if (dateAsObject != null) {
+
+			if (dateAsObject instanceof Date) {
+				date = (Date) dateAsObject;
+			}
+			else if (dateAsObject instanceof String) {
+
+				String dateAsString = (String) dateAsObject;
+
+				if (dateAsString.length() > 0) {
+
+					try {
+
+						SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
+						simpleDateFormat.setTimeZone(timeZone);
+						date = simpleDateFormat.parse(dateAsString);
+					}
+					catch (ParseException e) {
+
+						FacesException facesException = new FacesException(e);
+						throw facesException;
+					}
+				}
+			}
+			else {
+
+				String message = "Unable to convert value to Date.";
+				FacesException facesException = new FacesException(message);
+				throw facesException;
+			}
+		}
+
+		return date;
+	}
+
+	public final Locale getObjectAsLocale(Object localeAsObject) throws FacesException {
+
+		Locale locale = null;
+
+		if (localeAsObject != null) {
+
+			if (localeAsObject instanceof Locale) {
+				locale = (Locale) localeAsObject;
+			}
+			else if (localeAsObject instanceof String) {
+
+				String localeAsString = (String) localeAsObject;
+
+				if (localeAsString.length() > 0) {
+					String[] locales = localeAsString.split(StringPool.DASH);
+
+					if (locales.length > 1) {
+						locale = new Locale(locales[0], locales[1]);
+					}
+					else {
+						locale = new Locale(locales[0]);
+					}
+				}
+			}
+			else {
+
+				String message = "Unable to convert value to locale.";
+				FacesException facesException = new FacesException(message);
+				throw facesException;
+			}
+		}
+
+		return locale;
+	}
+
+	public abstract String getPattern();
 
 	@Override
 	public String getShowOn() {

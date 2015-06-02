@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -15,18 +15,17 @@ package com.liferay.faces.alloy.component.nodemenunav.internal;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import com.liferay.faces.alloy.component.menu.Menu;
-import com.liferay.faces.alloy.component.nodemenunav.NodeMenuNav;
-import com.liferay.faces.alloy.renderkit.AlloyRendererUtil;
-import com.liferay.faces.alloy.renderkit.DelegatingAlloyRendererBase;
+import com.liferay.faces.alloy.render.internal.DelegatingAlloyRendererBase;
+import com.liferay.faces.util.component.Styleable;
 import com.liferay.faces.util.lang.StringPool;
-import com.liferay.faces.util.render.DelegationResponseWriter;
-import com.liferay.faces.util.render.RendererUtil;
+import com.liferay.faces.util.render.internal.DelegationResponseWriter;
 
 
 /**
@@ -39,10 +38,7 @@ public abstract class NodeMenuNavRendererBase extends DelegatingAlloyRendererBas
 
 	// Public constants
 	public static final String COLON_OPTIONS = ":options";
-	public static final String DEFAULT_BTN = "btn";
-	public static final String DEFAULT_BUTTON = "btn-default";
 	public static final String IMAGE = "image";
-	public static final String LIFERAY_COMPONENT = AlloyRendererUtil.LIFERAY_COMPONENT;
 
 	// Needed when yui="false"
 	// Modules
@@ -73,20 +69,20 @@ public abstract class NodeMenuNavRendererBase extends DelegatingAlloyRendererBas
 	@Override
 	public void encodeJavaScriptCustom(FacesContext facesContext, UIComponent uiComponent) throws IOException {
 
-		NodeMenuNav nodeMenuNav = (NodeMenuNav) uiComponent;
 		ResponseWriter responseWriter = facesContext.getResponseWriter();
 
-		boolean disabled = nodeMenuNav.isDisabled();
+		Map<String, Object> attributes = uiComponent.getAttributes();
+		boolean disabled = (Boolean) attributes.get("disabled");
 
 		if (!disabled) {
 
-			String escapedOptionsDivId = RendererUtil.escapeClientId(getDefaultOptionsId(facesContext, uiComponent) +
+			String escapedOptionsDivId = escapeClientId(getDefaultOptionsId(facesContext, uiComponent) +
 					StringPool.COLON + "0");
 
 			// AlloyRendererUtil.LIFERAY_Z_INDEX_OVERLAY
 			responseWriter.write("A.one('#");
 			responseWriter.write(escapedOptionsDivId);
-			responseWriter.write("')._node['style'].zIndex=" + AlloyRendererUtil.LIFERAY_Z_INDEX_OVERLAY + ";");
+			responseWriter.write("')._node['style'].zIndex=" + LIFERAY_Z_INDEX_OVERLAY + ";");
 
 			// The <div> containing menu items was initially styled with "display:none;" in order to prevent blinking
 			// when JavaScript attempts to hide it. At this point in JavaScript execution, JavaScript is done
@@ -103,7 +99,7 @@ public abstract class NodeMenuNavRendererBase extends DelegatingAlloyRendererBas
 
 		ResponseWriter responseWriter = facesContext.getResponseWriter();
 		String clientId = uiComponent.getClientId(facesContext);
-		String escapeClientId = RendererUtil.escapeClientId(clientId);
+		String escapeClientId = escapeClientId(clientId);
 
 		responseWriter.write("A.one('#");
 		responseWriter.write(escapeClientId);
@@ -143,7 +139,6 @@ public abstract class NodeMenuNavRendererBase extends DelegatingAlloyRendererBas
 	@Override
 	public void encodeMarkupBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
 
-		NodeMenuNav nodeMenuNav = (NodeMenuNav) uiComponent;
 		ResponseWriter responseWriter = facesContext.getResponseWriter();
 
 		String clientId = uiComponent.getClientId(facesContext);
@@ -166,8 +161,10 @@ public abstract class NodeMenuNavRendererBase extends DelegatingAlloyRendererBas
 		responseWriter.writeAttribute(StringPool.CLASS, "yui3-menu-label btn-group", StringPool.CLASS);
 
 		// ResponseWriter blocks the text value and blocks writing of URIAttributes, if necessary
-		boolean disabled = nodeMenuNav.isDisabled();
-		String styleClass = nodeMenuNav.getStyleClass();
+		Map<String, Object> attributes = uiComponent.getAttributes();
+		boolean disabled = (Boolean) attributes.get("disabled");
+		Styleable styleable = (Styleable) uiComponent;
+		String styleClass = styleable.getStyleClass();
 		DelegationResponseWriter delegationResponseWriter = new NodeMenuNavResponseWriter(responseWriter, disabled,
 				uiComponent.getClientId(facesContext), styleClass);
 
@@ -194,9 +191,10 @@ public abstract class NodeMenuNavRendererBase extends DelegatingAlloyRendererBas
 		super.encodeMarkupEnd(facesContext, uiComponent);
 
 		ResponseWriter responseWriter = facesContext.getResponseWriter();
-		NodeMenuNav nodeMenuNav = (NodeMenuNav) uiComponent;
-		boolean disabled = nodeMenuNav.isDisabled();
-		String styleClass = nodeMenuNav.getStyleClass();
+		Map<String, Object> attributes = uiComponent.getAttributes();
+		boolean disabled = (Boolean) attributes.get("disabled");
+		Styleable styleable = (Styleable) uiComponent;
+		String styleClass = styleable.getStyleClass();
 		String defaultOptionsDivId = getDefaultOptionsId(facesContext, uiComponent);
 
 		responseWriter.startElement("a", uiComponent);
@@ -238,7 +236,6 @@ public abstract class NodeMenuNavRendererBase extends DelegatingAlloyRendererBas
 
 		// end yui3-menu div
 		responseWriter.endElement(StringPool.DIV);
-
 	}
 
 	public void encodeMenuRecurse(UIComponent uiComponent, ResponseWriter responseWriter, boolean disabled,
@@ -281,21 +278,16 @@ public abstract class NodeMenuNavRendererBase extends DelegatingAlloyRendererBas
 
 		for (UIComponent child : children) {
 
-			if (child instanceof Menu) {
-				encodeMenuRecurse(child, responseWriter, disabled, styleClass, optionsDivId, (depth + 1), facesContext);
-			}
-			else {
-				responseWriter.startElement(StringPool.LI, uiComponent);
-				responseWriter.writeAttribute(StringPool.CLASS, "yui3-menuitem", StringPool.CLASS);
+			responseWriter.startElement(StringPool.LI, uiComponent);
+			responseWriter.writeAttribute(StringPool.CLASS, "yui3-menuitem", StringPool.CLASS);
 
-				ResponseWriter originalResponseWriter = facesContext.getResponseWriter();
-				DelegationResponseWriter delegationResponseWriter = new NodeMenuNavMenuResponseWriter(
-						originalResponseWriter);
-				facesContext.setResponseWriter(delegationResponseWriter);
-				child.encodeAll(facesContext);
-				facesContext.setResponseWriter(originalResponseWriter);
-				responseWriter.endElement(StringPool.LI);
-			}
+			ResponseWriter originalResponseWriter = facesContext.getResponseWriter();
+			DelegationResponseWriter delegationResponseWriter = new NodeMenuNavMenuResponseWriter(
+					originalResponseWriter);
+			facesContext.setResponseWriter(delegationResponseWriter);
+			child.encodeAll(facesContext);
+			facesContext.setResponseWriter(originalResponseWriter);
+			responseWriter.endElement(StringPool.LI);
 		}
 
 		responseWriter.endElement(StringPool.UL);

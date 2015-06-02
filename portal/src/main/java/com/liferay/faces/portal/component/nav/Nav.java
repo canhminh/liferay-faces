@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -21,13 +21,5 @@ import javax.faces.component.FacesComponent;
  */
 @FacesComponent(value = Nav.COMPONENT_TYPE)
 public class Nav extends NavBase {
-
-	// Public Constants
-	public static final String COMPONENT_TYPE = "com.liferay.faces.portal.component.nav.Nav";
-	public static final String RENDERER_TYPE = "com.liferay.faces.portal.component.nav.NavRenderer";
-
-	public Nav() {
-		super();
-		setRendererType(RENDERER_TYPE);
-	}
+	// Initial Generation
 }

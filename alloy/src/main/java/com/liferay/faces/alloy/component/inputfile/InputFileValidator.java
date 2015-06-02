@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -30,6 +30,8 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
 import com.liferay.faces.util.context.MessageContext;
+import com.liferay.faces.util.context.MessageContextFactory;
+import com.liferay.faces.util.factory.FactoryExtensionFinder;
 import com.liferay.faces.util.lang.StringPool;
 import com.liferay.faces.util.logging.Logger;
 import com.liferay.faces.util.logging.LoggerFactory;
@@ -54,7 +56,9 @@ public class InputFileValidator implements Validator {
 	public void validate(FacesContext facesContext, UIComponent uiComponent, Object value) throws ValidatorException {
 
 		Locale locale = facesContext.getViewRoot().getLocale();
-		MessageContext messageContext = MessageContext.getInstance();
+		MessageContextFactory messageContextFactory = (MessageContextFactory) FactoryExtensionFinder.getFactory(
+				MessageContextFactory.class);
+		MessageContext messageContext = messageContextFactory.getMessageContext();
 		List<FacesMessage> facesMessages = new ArrayList<FacesMessage>();
 		@SuppressWarnings("unchecked")
 		List<UploadedFile> uploadedFiles = (List<UploadedFile>) value;

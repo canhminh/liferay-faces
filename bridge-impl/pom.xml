@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.liferay.faces</groupId>
 		<artifactId>liferay-faces</artifactId>
-		<version>4.2.0-beta1-SNAPSHOT</version>
+		<version>4.2.5-rc1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>liferay-faces-bridge-impl</artifactId>
@@ -71,50 +71,14 @@
 
 	<profiles>
 		<profile>
-			<id>generate-bridge</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>exec-maven-plugin</artifactId>
-						<version>1.2.1</version>
-						<executions>
-							<execution>
-								<goals>
-									<goal>java</goal>
-								</goals>
-								<phase>generate-sources</phase>
-								<configuration>
-									<includeProjectDependencies>false</includeProjectDependencies>
-									<includePluginDependencies>true</includePluginDependencies>
-									<mainClass>com.liferay.alloy.tools.builder.faces.FacesBuilder</mainClass>
-									<systemProperties>
-										<systemProperty>
-											<key>build-ext</key>
-											<value>generator.properties</value>
-										</systemProperty>
-										<systemProperty>
-											<key>HOME</key>
-											<value>${env.HOME}</value>
-										</systemProperty>
-									</systemProperties>
-									<executableDependency>
-										<groupId>com.liferay.alloy</groupId>
-										<artifactId>alloy-generator</artifactId>
-									</executableDependency>
-								</configuration>
-							</execution>
-						</executions>
-						<dependencies>
-							<dependency>
-								<groupId>com.liferay.alloy</groupId>
-								<artifactId>alloy-generator</artifactId>
-								<version>0.1.0</version>
-							</dependency>
-						</dependencies>
-					</plugin>
-				</plugins>
-			</build>
+			<id>generate-components</id>
+			<properties>
+				<namespace>bridge</namespace>
+				<!-- To generate portlet components, run:
+					mvn generate-source -P generate-components -Dnamespace=portlet -Dnamespace.URI=http://java.sun.com/portlet_2_0
+				-->
+				<component.api.output.dir>../bridge-api/${component.impl.output.dir}</component.api.output.dir>
+			</properties>
 		</profile>
 	</profiles>
 

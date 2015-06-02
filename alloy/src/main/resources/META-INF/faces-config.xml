@@ -1,83 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
+	xmlns:util="http://www.liferay.com/xml/ns/liferay-faces-util-extension">
 
 	<name>LiferayFacesAlloy</name>
-	<ordering>
-		<after>
-			<name>LiferayFacesUtil</name>
-		</after>
-	</ordering>
-	<application>
-		<el-resolver>com.liferay.faces.alloy.el.AUIELResolver</el-resolver>
-		<system-event-listener>
-			<system-event-listener-class>com.liferay.faces.alloy.event.ApplicationStartupListener</system-event-listener-class>
-			<system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
-		</system-event-listener>
-		<system-event-listener>
-			<system-event-listener-class>com.liferay.faces.alloy.component.inputfile.InputFileRenderer</system-event-listener-class>
-			<system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>
-		</system-event-listener>
-	</application>
-	<component>
-		<component-type>com.liferay.faces.alloy.AUIButtonRow</component-type>
-		<component-class>com.liferay.faces.alloy.component.AUIButtonRow</component-class>
-	</component>
-	<component>
-		<component-type>com.liferay.faces.alloy.AUIColumn</component-type>
-		<component-class>com.liferay.faces.alloy.component.AUIColumn</component-class>
-	</component>
-	<component>
-		<component-type>com.liferay.faces.alloy.AUICol</component-type>
-		<component-class>com.liferay.faces.alloy.component.AUICol</component-class>
-	</component>
-	<component>
-		<component-type>com.liferay.faces.alloy.AUIRow</component-type>
-		<component-class>com.liferay.faces.alloy.component.AUIRow</component-class>
-	</component>
-	<component>
-		<component-type>com.liferay.faces.alloy.AUIField</component-type>
-		<component-class>com.liferay.faces.alloy.component.AUIField</component-class>
-	</component>
-	<component>
-		<component-type>com.liferay.faces.alloy.AUIFieldSet</component-type>
-		<component-class>com.liferay.faces.alloy.component.AUIFieldSet</component-class>
-	</component>
-	<component>
-		<component-type>com.liferay.faces.alloy.AUIForm</component-type>
-		<component-class>com.liferay.faces.alloy.component.AUIForm</component-class>
-	</component>
-	<component>
-		<component-type>com.liferay.faces.alloy.AUILayout</component-type>
-		<component-class>com.liferay.faces.alloy.component.AUILayout</component-class>
-	</component>
-	<component>
-		<component-type>com.liferay.faces.alloy.AUIList</component-type>
-		<component-class>com.liferay.faces.alloy.component.AUIList</component-class>
-	</component>
-	<component>
-		<component-type>com.liferay.faces.alloy.AUIListItem</component-type>
-		<component-class>com.liferay.faces.alloy.component.AUIListItem</component-class>
-	</component>
-	<component>
-		<component-type>com.liferay.faces.alloy.AUITextBoxList</component-type>
-		<component-class>com.liferay.faces.alloy.component.AUITextBoxList</component-class>
-	</component>
-	<component>
-		<component-type>com.liferay.faces.alloy.AUITextBoxListItem</component-type>
-		<component-class>com.liferay.faces.alloy.component.AUITextBoxListItem</component-class>
-	</component>
-	<component>
-		<component-type>com.liferay.faces.alloy.AUIScript</component-type>
-		<component-class>com.liferay.faces.alloy.component.AUIScript</component-class>
-	</component>
-	<converter>
-		<converter-id>convertLongList</converter-id>
-		<converter-class>com.liferay.faces.alloy.converter.LongListConverter</converter-class>
-	</converter>
 	<factory>
 		<factory-extension>
-			<component-resource-factory>com.liferay.faces.alloy.application.internal.ComponentResourceFactoryAlloyImpl</component-resource-factory>
+			<util:component-resource-factory>com.liferay.faces.alloy.application.internal.ComponentResourceFactoryAlloyImpl</util:component-resource-factory>
+			<util:message-context-factory>com.liferay.faces.alloy.context.internal.MessageContextFactoryAlloyImpl</util:message-context-factory>
+			<util:client-script-factory>com.liferay.faces.alloy.client.internal.ClientScriptFactoryAlloyImpl</util:client-script-factory>
 		</factory-extension>
 	</factory>
 	<render-kit>
@@ -85,67 +17,7 @@
 			<description>Overrides the BodyRenderer that comes with the JSF implementation</description>
 			<component-family>javax.faces.Output</component-family>
 			<renderer-type>javax.faces.Body</renderer-type>
-			<renderer-class>com.liferay.faces.alloy.component.body.BodyRenderer</renderer-class>
-		</renderer>
-		<renderer>
-			<component-family>javax.faces.Panel</component-family>
-			<renderer-type>com.liferay.faces.alloy.renderkit.ButtonRowRenderer</renderer-type>
-			<renderer-class>com.liferay.faces.alloy.renderkit.ButtonRowRenderer</renderer-class>
-		</renderer>
-		<renderer>
-			<component-family>javax.faces.Panel</component-family>
-			<renderer-type>com.liferay.faces.alloy.renderkit.ColumnRenderer</renderer-type>
-			<renderer-class>com.liferay.faces.alloy.renderkit.ColumnRenderer</renderer-class>
-		</renderer>
-		<renderer>
-			<component-family>javax.faces.Panel</component-family>
-			<renderer-type>com.liferay.faces.alloy.renderkit.ColRenderer</renderer-type>
-			<renderer-class>com.liferay.faces.alloy.renderkit.ColRenderer</renderer-class>
-		</renderer>
-		<renderer>
-			<component-family>javax.faces.Panel</component-family>
-			<renderer-type>com.liferay.faces.alloy.renderkit.RowRenderer</renderer-type>
-			<renderer-class>com.liferay.faces.alloy.renderkit.RowRenderer</renderer-class>
-		</renderer>
-		<renderer>
-			<component-family>javax.faces.Panel</component-family>
-			<renderer-type>com.liferay.faces.alloy.renderkit.FieldRenderer</renderer-type>
-			<renderer-class>com.liferay.faces.alloy.renderkit.FieldRenderer</renderer-class>
-		</renderer>
-		<renderer>
-			<component-family>javax.faces.Panel</component-family>
-			<renderer-type>com.liferay.faces.alloy.renderkit.FieldSetRenderer</renderer-type>
-			<renderer-class>com.liferay.faces.alloy.renderkit.FieldSetRenderer</renderer-class>
-		</renderer>
-		<renderer>
-			<component-family>javax.faces.Panel</component-family>
-			<renderer-type>com.liferay.faces.alloy.renderkit.LayoutRenderer</renderer-type>
-			<renderer-class>com.liferay.faces.alloy.renderkit.LayoutRenderer</renderer-class>
-		</renderer>
-		<renderer>
-			<component-family>javax.faces.Panel</component-family>
-			<renderer-type>com.liferay.faces.alloy.renderkit.ListRenderer</renderer-type>
-			<renderer-class>com.liferay.faces.alloy.renderkit.ListRenderer</renderer-class>
-		</renderer>
-		<renderer>
-			<component-family>javax.faces.Panel</component-family>
-			<renderer-type>com.liferay.faces.alloy.renderkit.ListItemRenderer</renderer-type>
-			<renderer-class>com.liferay.faces.alloy.renderkit.ListItemRenderer</renderer-class>
-		</renderer>
-		<renderer>
-			<component-family>javax.faces.Panel</component-family>
-			<renderer-type>com.liferay.faces.alloy.renderkit.TextBoxListRenderer</renderer-type>
-			<renderer-class>com.liferay.faces.alloy.renderkit.TextBoxListRenderer</renderer-class>
-		</renderer>
-		<renderer>
-			<component-family>javax.faces.Panel</component-family>
-			<renderer-type>com.liferay.faces.alloy.renderkit.TextBoxListItemRenderer</renderer-type>
-			<renderer-class>com.liferay.faces.alloy.renderkit.TextBoxListItemRenderer</renderer-class>
-		</renderer>
-		<renderer>
-			<component-family>javax.faces.Output</component-family>
-			<renderer-type>com.liferay.faces.alloy.renderkit.ScriptRenderer</renderer-type>
-			<renderer-class>com.liferay.faces.alloy.renderkit.ScriptRenderer</renderer-class>
+			<renderer-class>com.liferay.faces.alloy.component.body.internal.BodyRenderer</renderer-class>
 		</renderer>
 	</render-kit>
 

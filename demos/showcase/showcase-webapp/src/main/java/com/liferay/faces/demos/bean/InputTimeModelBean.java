@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -17,18 +17,27 @@ import java.util.Date;
 import java.util.Locale;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 
 
 /**
  * @author  Kyle Stiemann
  */
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class InputTimeModelBean {
 
+	private String highlighterType = "charMatch";
 	private Date time;
 	private Locale locale;
+	
+	public String getHighlighterType() {
+		return highlighterType;
+	}
+
+	public void setHighlighterType(String highlighterType) {
+		this.highlighterType = highlighterType;
+	}
 
 	public Locale getLocale() {
 

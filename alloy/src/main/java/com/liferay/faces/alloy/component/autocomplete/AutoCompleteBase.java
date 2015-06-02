@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -15,7 +15,7 @@ package com.liferay.faces.alloy.component.autocomplete;
 //J-
 
 import javax.annotation.Generated;
-import com.liferay.faces.alloy.component.inputtext.InputText;
+import com.liferay.faces.alloy.component.inputtext.AbstractInputText;
 
 import com.liferay.faces.util.component.Styleable;
 import com.liferay.faces.util.component.ClientComponent;
@@ -25,7 +25,11 @@ import com.liferay.faces.util.component.ClientComponent;
  * @author	Kyle Stiemann
  */
 @Generated(value = "com.liferay.alloy.tools.builder.FacesBuilder")
-public abstract class AutoCompleteBase extends InputText implements Styleable, ClientComponent {
+public abstract class AutoCompleteBase extends AbstractInputText implements Styleable, ClientComponent {
+
+	// Public Constants
+	public static final String COMPONENT_TYPE = "com.liferay.faces.alloy.component.autocomplete.AutoComplete";
+	public static final String RENDERER_TYPE = "com.liferay.faces.alloy.component.autocomplete.internal.AutoCompleteRenderer";
 
 	// Protected Enumerations
 	protected enum AutoCompletePropertyKeys {
@@ -45,19 +49,25 @@ public abstract class AutoCompleteBase extends InputText implements Styleable, C
 		minChars,
 		serverCustomFilter,
 		serverFilterType,
+		styleClass,
 		tabSelect,
 		width
 	}
 
-	public Boolean isActivateFirstItem() {
+	public AutoCompleteBase() {
+		super();
+		setRendererType(RENDERER_TYPE);
+	}
+
+	public boolean isActivateFirstItem() {
 		return (Boolean) getStateHelper().eval(AutoCompletePropertyKeys.activateFirstItem, true);
 	}
 
-	public void setActivateFirstItem(Boolean activateFirstItem) {
+	public void setActivateFirstItem(boolean activateFirstItem) {
 		getStateHelper().put(AutoCompletePropertyKeys.activateFirstItem, activateFirstItem);
 	}
 
-	public Boolean isAutoScroll() {
+	public Boolean getAutoScroll() {
 		return (Boolean) getStateHelper().eval(AutoCompletePropertyKeys.autoScroll, null);
 	}
 
@@ -65,7 +75,7 @@ public abstract class AutoCompleteBase extends InputText implements Styleable, C
 		getStateHelper().put(AutoCompletePropertyKeys.autoScroll, autoScroll);
 	}
 
-	public Boolean isCircular() {
+	public Boolean getCircular() {
 		return (Boolean) getStateHelper().eval(AutoCompletePropertyKeys.circular, null);
 	}
 
@@ -139,11 +149,11 @@ public abstract class AutoCompleteBase extends InputText implements Styleable, C
 		getStateHelper().put(AutoCompletePropertyKeys.itemSelectListener, itemSelectListener);
 	}
 
-	public Boolean isListItemRequired() {
+	public boolean isListItemRequired() {
 		return (Boolean) getStateHelper().eval(AutoCompletePropertyKeys.listItemRequired, false);
 	}
 
-	public void setListItemRequired(Boolean listItemRequired) {
+	public void setListItemRequired(boolean listItemRequired) {
 		getStateHelper().put(AutoCompletePropertyKeys.listItemRequired, listItemRequired);
 	}
 
@@ -179,11 +189,25 @@ public abstract class AutoCompleteBase extends InputText implements Styleable, C
 		getStateHelper().put(AutoCompletePropertyKeys.serverFilterType, serverFilterType);
 	}
 
-	public Boolean isTabSelect() {
+	@Override
+	public String getStyleClass() {
+		// getStateHelper().eval(AutoCompletePropertyKeys.styleClass, null) is called because super.getStyleClass() may return the
+		// STYLE_CLASS_NAME of the super class.
+		String styleClass = (String) getStateHelper().eval(AutoCompletePropertyKeys.styleClass, null);
+
+		return com.liferay.faces.util.component.ComponentUtil.concatCssClasses(styleClass, "alloy-auto-complete");
+	}
+
+	@Override
+	public void setStyleClass(String styleClass) {
+		getStateHelper().put(AutoCompletePropertyKeys.styleClass, styleClass);
+	}
+
+	public boolean isTabSelect() {
 		return (Boolean) getStateHelper().eval(AutoCompletePropertyKeys.tabSelect, true);
 	}
 
-	public void setTabSelect(Boolean tabSelect) {
+	public void setTabSelect(boolean tabSelect) {
 		getStateHelper().put(AutoCompletePropertyKeys.tabSelect, tabSelect);
 	}
 

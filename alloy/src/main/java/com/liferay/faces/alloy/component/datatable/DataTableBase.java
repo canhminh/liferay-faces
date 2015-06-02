@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -27,9 +27,26 @@ import com.liferay.faces.util.component.ClientComponent;
 @Generated(value = "com.liferay.alloy.tools.builder.FacesBuilder")
 public abstract class DataTableBase extends HtmlDataTable implements Styleable, ClientComponent {
 
+	// Public Constants
+	public static final String COMPONENT_TYPE = "com.liferay.faces.alloy.component.datatable.DataTable";
+	public static final String RENDERER_TYPE = "com.liferay.faces.alloy.component.datatable.internal.DataTableRenderer";
+
 	// Protected Enumerations
 	protected enum DataTablePropertyKeys {
-		clientKey
+		clientKey,
+		multiColumnSort,
+		rowDeselectListener,
+		rowDeselectRangeListener,
+		rowSelectListener,
+		rowSelectRangeListener,
+		selectedRowIndexes,
+		selectionMode,
+		styleClass
+	}
+
+	public DataTableBase() {
+		super();
+		setRendererType(RENDERER_TYPE);
 	}
 
 	@Override
@@ -40,6 +57,76 @@ public abstract class DataTableBase extends HtmlDataTable implements Styleable, 
 	@Override
 	public void setClientKey(String clientKey) {
 		getStateHelper().put(DataTablePropertyKeys.clientKey, clientKey);
+	}
+
+	public boolean isMultiColumnSort() {
+		return (Boolean) getStateHelper().eval(DataTablePropertyKeys.multiColumnSort, false);
+	}
+
+	public void setMultiColumnSort(boolean multiColumnSort) {
+		getStateHelper().put(DataTablePropertyKeys.multiColumnSort, multiColumnSort);
+	}
+
+	public javax.el.MethodExpression getRowDeselectListener() {
+		return (javax.el.MethodExpression) getStateHelper().eval(DataTablePropertyKeys.rowDeselectListener, null);
+	}
+
+	public void setRowDeselectListener(javax.el.MethodExpression rowDeselectListener) {
+		getStateHelper().put(DataTablePropertyKeys.rowDeselectListener, rowDeselectListener);
+	}
+
+	public javax.el.MethodExpression getRowDeselectRangeListener() {
+		return (javax.el.MethodExpression) getStateHelper().eval(DataTablePropertyKeys.rowDeselectRangeListener, null);
+	}
+
+	public void setRowDeselectRangeListener(javax.el.MethodExpression rowDeselectRangeListener) {
+		getStateHelper().put(DataTablePropertyKeys.rowDeselectRangeListener, rowDeselectRangeListener);
+	}
+
+	public javax.el.MethodExpression getRowSelectListener() {
+		return (javax.el.MethodExpression) getStateHelper().eval(DataTablePropertyKeys.rowSelectListener, null);
+	}
+
+	public void setRowSelectListener(javax.el.MethodExpression rowSelectListener) {
+		getStateHelper().put(DataTablePropertyKeys.rowSelectListener, rowSelectListener);
+	}
+
+	public javax.el.MethodExpression getRowSelectRangeListener() {
+		return (javax.el.MethodExpression) getStateHelper().eval(DataTablePropertyKeys.rowSelectRangeListener, null);
+	}
+
+	public void setRowSelectRangeListener(javax.el.MethodExpression rowSelectRangeListener) {
+		getStateHelper().put(DataTablePropertyKeys.rowSelectRangeListener, rowSelectRangeListener);
+	}
+
+	public String getSelectedRowIndexes() {
+		return (String) getStateHelper().eval(DataTablePropertyKeys.selectedRowIndexes, null);
+	}
+
+	public void setSelectedRowIndexes(String selectedRowIndexes) {
+		getStateHelper().put(DataTablePropertyKeys.selectedRowIndexes, selectedRowIndexes);
+	}
+
+	public String getSelectionMode() {
+		return (String) getStateHelper().eval(DataTablePropertyKeys.selectionMode, null);
+	}
+
+	public void setSelectionMode(String selectionMode) {
+		getStateHelper().put(DataTablePropertyKeys.selectionMode, selectionMode);
+	}
+
+	@Override
+	public String getStyleClass() {
+		// getStateHelper().eval(DataTablePropertyKeys.styleClass, null) is called because super.getStyleClass() may return the
+		// STYLE_CLASS_NAME of the super class.
+		String styleClass = (String) getStateHelper().eval(DataTablePropertyKeys.styleClass, null);
+
+		return com.liferay.faces.util.component.ComponentUtil.concatCssClasses(styleClass, "alloy-data-table");
+	}
+
+	@Override
+	public void setStyleClass(String styleClass) {
+		getStateHelper().put(DataTablePropertyKeys.styleClass, styleClass);
 	}
 }
 //J+

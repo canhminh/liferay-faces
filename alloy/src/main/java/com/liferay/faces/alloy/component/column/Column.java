@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -13,63 +13,69 @@
  */
 package com.liferay.faces.alloy.component.column;
 
-import java.util.Map;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 import javax.faces.component.FacesComponent;
 import javax.faces.component.UIComponent;
-import javax.faces.component.html.HtmlDataTable;
-
-import com.liferay.faces.util.component.ComponentUtil;
-import com.liferay.faces.util.lang.StringPool;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
 
 /**
  * @author  Kyle Stiemann
  */
 @FacesComponent(value = Column.COMPONENT_TYPE)
-public class Column extends ColumnBase {
+public class Column extends ColumnBase implements ClientBehaviorHolder {
 
 	// Public Constants
 	public static final int COLUMNS = 12;
-	public static final String COMPONENT_TYPE = "com.liferay.faces.alloy.component.column.Column";
-	public static final String RENDERER_TYPE = "com.liferay.faces.alloy.component.column.ColumnRenderer";
-	public static final String STYLE_CLASS_NAME = "alloy-column";
 
-	public Column() {
-		super();
-		setRendererType(RENDERER_TYPE);
+	// Private Constants
+	private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("sortBy"));
+
+	@Override
+	public String getDefaultEventName() {
+		return "sortBy";
 	}
 
 	@Override
-	public void setParent(UIComponent parent) {
-		super.setParent(parent);
+	public Collection<String> getEventNames() {
+		return EVENT_NAMES;
+	}
 
-		if ((parent != null) && (parent instanceof HtmlDataTable)) {
+	@Override
+	public String getExecute() {
 
-			Map<String, UIComponent> facetMap = getFacets();
+		String execute = super.getExecute();
 
-			if (facetMap != null) {
-				UIComponent headerFacet = facetMap.get(StringPool.HEADER);
+		if ((execute != null) && execute.contains("@parent")) {
 
-				if (headerFacet == null) {
-					facetMap.put(StringPool.HEADER, new ColumnHeaderFacet());
-				}
-			}
+			UIComponent parent = getParent();
+			String parentId = parent.getId();
+			execute = execute.replace("@parent", parentId);
 		}
+
+		return execute;
+	}
+
+	@Override
+	public String getRender() {
+
+		String render = super.getRender();
+
+		if ((render != null) && render.contains("@parent")) {
+
+			UIComponent parent = getParent();
+			String parentId = parent.getId();
+			render = render.replace("@parent", parentId);
+		}
+
+		return render;
 	}
 
 	@Override
 	public Integer getSpan() {
 		return (Integer) getStateHelper().eval(ColumnPropertyKeys.span, COLUMNS);
-	}
-
-	@Override
-	public String getStyleClass() {
-
-		// getStateHelper().eval(PropertyKeys.styleClass, null) is called because super.getStyleClass() may return the
-		// STYLE_CLASS_NAME of the super class.
-		String styleClass = (String) getStateHelper().eval(ColumnPropertyKeys.styleClass, null);
-
-		return ComponentUtil.concatCssClasses(styleClass, STYLE_CLASS_NAME);
 	}
 }

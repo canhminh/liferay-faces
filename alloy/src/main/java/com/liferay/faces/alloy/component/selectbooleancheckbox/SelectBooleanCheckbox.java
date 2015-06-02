@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -27,18 +27,7 @@ import com.liferay.faces.util.component.ComponentUtil;
 public class SelectBooleanCheckbox extends SelectBooleanCheckboxBase {
 
 	// Public Constants
-	public static final String COMPONENT_TYPE =
-		"com.liferay.faces.alloy.component.selectbooleancheckbox.SelectBooleanCheckbox";
-	public static final String DELEGATE_COMPONENT_FAMILY = COMPONENT_FAMILY;
-	public static final String DELEGATE_RENDERER_TYPE = "javax.faces.Checkbox";
-	public static final String RENDERER_TYPE =
-		"com.liferay.faces.alloy.component.selectbooleancheckbox.SelectBooleanCheckboxRenderer";
 	public static final String STYLE_CLASS_NAME = "alloy-select-boolean-checkbox radio";
-
-	public SelectBooleanCheckbox() {
-		super();
-		setRendererType(RENDERER_TYPE);
-	}
 
 	@Override
 	public String getLabel() {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -15,6 +15,7 @@ package com.liferay.faces.bridge.model.internal;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
@@ -24,7 +25,10 @@ import com.liferay.faces.bridge.model.UploadedFile;
 /**
  * @author  Neil Griffin
  */
-public class UploadedFileBridgeImpl implements UploadedFile {
+public class UploadedFileBridgeImpl implements Serializable, UploadedFile {
+
+	// serialVersionUID
+	private static final long serialVersionUID = 2492812271137403881L;
 
 	// Private Data Members
 	private com.liferay.faces.util.model.UploadedFile wrappedUploadedFile;
@@ -110,6 +114,8 @@ public class UploadedFileBridgeImpl implements UploadedFile {
 
 	@Override
 	public Status getStatus() {
-		return wrappedUploadedFile.getStatus();
+
+		com.liferay.faces.util.model.UploadedFile.Status wrappedStatus = wrappedUploadedFile.getStatus();
+		return UploadedFile.Status.valueOf(wrappedStatus.name());
 	}
 }

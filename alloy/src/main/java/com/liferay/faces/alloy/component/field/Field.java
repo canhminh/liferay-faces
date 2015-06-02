@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -36,22 +36,12 @@ import com.liferay.faces.util.lang.StringPool;
 @FacesComponent(value = Field.COMPONENT_TYPE)
 public class Field extends FieldBase {
 
-	// Public Constants
-	public static final String COMPONENT_TYPE = "com.liferay.faces.alloy.component.field.Field";
-	public static final String RENDERER_TYPE = "com.liferay.faces.alloy.component.field.FieldRenderer";
-	public static final String STYLE_CLASS_NAME = "alloy-field";
-
 	// Private Constants
 	private static final String CONTROL_GROUP = "control-group";
 	private static final String ERROR = "error";
 	private static final String INFO = "info";
 	private static final String WARNING = "warning";
 	private static final String SUCCESS = "success";
-
-	public Field() {
-		super();
-		setRendererType(RENDERER_TYPE);
-	}
 
 	protected List<EditableValueHolder> getEditableValueHoldersRecurse(UIComponent uiComponent) {
 
@@ -64,8 +54,10 @@ public class Field extends FieldBase {
 		else if (uiComponent instanceof UIMessage) {
 			UIMessage uiMessage = (UIMessage) uiComponent;
 			String forId = uiMessage.getFor();
+
 			if (forId != null) {
 				UIComponent forComponent = uiComponent.findComponent(forId);
+
 				if ((forComponent != null) && (forComponent instanceof EditableValueHolder)) {
 					editableValueHolders = new ArrayList<EditableValueHolder>();
 					editableValueHolders.add((EditableValueHolder) forComponent);
@@ -158,13 +150,15 @@ public class Field extends FieldBase {
 				if (editableValueHolder.isValid()) {
 
 					if (editableValueHolder.isRequired()) {
-						
+
 						if (editableValueHolder.isLocalValueSet()) {
 							editableValueHoldersValid = true;
 						}
 						else {
+
 							if (editableValueHolder instanceof UIInput) {
 								UIInput uiInput = (UIInput) editableValueHolder;
+
 								if (!UIInput.isEmpty(uiInput.getValue())) {
 									editableValueHoldersValid = true;
 								}
@@ -212,6 +206,6 @@ public class Field extends FieldBase {
 		// STYLE_CLASS_NAME of the super class.
 		String styleClass = (String) getStateHelper().eval(PropertyKeys.styleClass, null);
 
-		return ComponentUtil.concatCssClasses(styleClass, STYLE_CLASS_NAME, controlGroupCssClass);
+		return ComponentUtil.concatCssClasses(styleClass, "alloy-field", controlGroupCssClass);
 	}
 }

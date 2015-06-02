@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -20,8 +20,7 @@ import javax.faces.context.ResponseWriter;
 
 import com.liferay.faces.alloy.component.inputfile.InputFile;
 import com.liferay.faces.util.lang.StringPool;
-import com.liferay.faces.util.render.DelegationResponseWriter;
-import com.liferay.faces.util.render.DelegationResponseWriterBase;
+import com.liferay.faces.util.render.internal.DelegationResponseWriter;
 
 
 /**
@@ -29,7 +28,7 @@ import com.liferay.faces.util.render.DelegationResponseWriterBase;
  *
  * @author  Neil Griffin
  */
-public class InputFileDelegationResponseWriter extends DelegationResponseWriterBase {
+public class InputFileDelegationResponseWriter extends InputFileDelegationResponseWriterCompat {
 
 	// Private Data Members
 	private boolean auto;

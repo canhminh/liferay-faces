@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -40,7 +40,7 @@ public class BrowserSnifferImpl extends LiferayPortalBrowserSnifferImpl implemen
 
 		if (LIFERAY_PORTAL_DETECTED) {
 
-			this.httpServletRequest = PortalUtil.getHttpServeletRequest(externalContext);
+			this.httpServletRequest = PortalUtil.getHttpServletRequest(externalContext);
 		}
 		else if (LIFERAY_FACES_BRIDGE_DETECTED) {
 			// no-op because there is no way to obtain the underlying HttpServletRequest.

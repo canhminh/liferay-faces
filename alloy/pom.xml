@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.liferay.faces</groupId>
 		<artifactId>liferay-faces</artifactId>
-		<version>4.2.0-beta1-SNAPSHOT</version>
+		<version>4.2.5-rc1-SNAPSHOT</version>
 	</parent>
 	<artifactId>liferay-faces-alloy</artifactId>
 	<name>Liferay Faces Alloy</name>
@@ -12,14 +12,22 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>com.tunyk.mvn.plugins.htmlcompressor</groupId>
-				<artifactId>htmlcompressor-maven-plugin</artifactId>
+				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
-						<phase>compile</phase>
+						<phase>process-resources</phase>
 						<goals>
-							<goal>html</goal>
+							<goal>run</goal>
 						</goals>
+						<configuration>
+							<target>
+								<copy file="${basedir}/../reslib/target/classes/META-INF/yui3-bsd-license.txt" tofile="${project.build.directory}/classes/META-INF/resources/liferay-faces-alloy/yui/yui3-bsd-license.txt" />
+								<copy file="${basedir}/../reslib/target/classes/META-INF/resources/liferay-faces-reslib/build/text-data-wordbreak/text-data-wordbreak.js" tofile="${project.build.directory}/classes/META-INF/resources/liferay-faces-alloy/yui/autocomplete/text-data-wordbreak.js" />
+								<copy file="${basedir}/../reslib/target/classes/META-INF/alloyui-bsd-license.md" tofile="${project.build.directory}/classes/META-INF/resources/liferay-faces-alloy/aui/alloyui-bsd-license.md" />
+								<copy file="${basedir}/../reslib/target/classes/META-INF/resources/liferay-faces-reslib/build/aui-video/assets/player.swf" tofile="${project.build.directory}/classes/META-INF/resources/liferay-faces-alloy/aui/video/player.swf" />
+								<copy file="${basedir}/../reslib/target/classes/META-INF/resources/liferay-faces-reslib/build/aui-audio/assets/player.swf" tofile="${project.build.directory}/classes/META-INF/resources/liferay-faces-alloy/aui/audio/player.swf" />
+							</target>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -105,19 +113,6 @@
 										<versionRange>[1.0,)</versionRange>
 										<goals>
 											<goal>transform</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>com.tunyk.mvn.plugins.htmlcompressor</groupId>
-										<artifactId>htmlcompressor-maven-plugin</artifactId>
-										<versionRange>[1.3,)</versionRange>
-										<goals>
-											<goal>html</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
@@ -226,50 +221,14 @@
 			</build>
 		</profile>
 		<profile>
-			<id>generate-alloy</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>exec-maven-plugin</artifactId>
-						<version>1.2.1</version>
-						<executions>
-							<execution>
-								<goals>
-									<goal>java</goal>
-								</goals>
-								<phase>generate-sources</phase>
-								<configuration>
-									<includeProjectDependencies>false</includeProjectDependencies>
-									<includePluginDependencies>true</includePluginDependencies>
-									<mainClass>com.liferay.alloy.tools.builder.faces.FacesBuilder</mainClass>
-									<systemProperties>
-										<systemProperty>
-											<key>build-ext</key>
-											<value>generator.properties</value>
-										</systemProperty>
-										<systemProperty>
-											<key>HOME</key>
-											<value>${env.HOME}</value>
-										</systemProperty>
-									</systemProperties>
-									<executableDependency>
-										<groupId>com.liferay.alloy</groupId>
-										<artifactId>alloy-generator</artifactId>
-									</executableDependency>
-								</configuration>
-							</execution>
-						</executions>
-						<dependencies>
-							<dependency>
-								<groupId>com.liferay.alloy</groupId>
-								<artifactId>alloy-generator</artifactId>
-								<version>0.1.0</version>
-							</dependency>
-						</dependencies>
-					</plugin>
-				</plugins>
-			</build>
+			<id>generate-components</id>
+			<properties>
+				<authors>
+					Bruno Basto,\
+					Kyle Stiemann
+				</authors>
+				<namespace>alloy</namespace>
+			</properties>
 		</profile>
 	</profiles>
 

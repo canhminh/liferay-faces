@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -25,6 +25,10 @@ import com.liferay.faces.util.component.Styleable;
 @Generated(value = "com.liferay.alloy.tools.builder.FacesBuilder")
 public abstract class InputRichTextBase extends UIInput implements Styleable {
 
+	// Public Constants
+	public static final String COMPONENT_TYPE = "com.liferay.faces.portal.component.inputrichtext.InputRichText";
+	public static final String RENDERER_TYPE = "com.liferay.faces.portal.component.inputrichtext.internal.InputRichTextRenderer";
+
 	// Protected Enumerations
 	protected enum InputRichTextPropertyKeys {
 		configParams,
@@ -42,6 +46,11 @@ public abstract class InputRichTextBase extends UIInput implements Styleable {
 		style,
 		styleClass,
 		toolbarSet
+	}
+
+	public InputRichTextBase() {
+		super();
+		setRendererType(RENDERER_TYPE);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -154,7 +163,11 @@ public abstract class InputRichTextBase extends UIInput implements Styleable {
 
 	@Override
 	public String getStyleClass() {
-		return (String) getStateHelper().eval(InputRichTextPropertyKeys.styleClass, null);
+		// getStateHelper().eval(InputRichTextPropertyKeys.styleClass, null) is called because super.getStyleClass() may return the
+		// STYLE_CLASS_NAME of the super class.
+		String styleClass = (String) getStateHelper().eval(InputRichTextPropertyKeys.styleClass, null);
+
+		return com.liferay.faces.util.component.ComponentUtil.concatCssClasses(styleClass, "portal-input-rich-text");
 	}
 
 	@Override

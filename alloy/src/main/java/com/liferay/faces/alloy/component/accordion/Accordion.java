@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -32,8 +32,6 @@ import com.liferay.faces.alloy.component.tab.Tab;
 import com.liferay.faces.alloy.component.tab.TabCollapseEvent;
 import com.liferay.faces.alloy.component.tab.TabExpandEvent;
 import com.liferay.faces.alloy.component.tab.TabUtil;
-import com.liferay.faces.alloy.renderkit.AlloyRendererUtil;
-import com.liferay.faces.util.component.ComponentUtil;
 import com.liferay.faces.util.helper.IntegerHelper;
 import com.liferay.faces.util.lang.FacesConstants;
 import com.liferay.faces.util.lang.StringPool;
@@ -45,19 +43,9 @@ import com.liferay.faces.util.lang.StringPool;
 @FacesComponent(value = Accordion.COMPONENT_TYPE)
 public class Accordion extends AccordionBase implements ClientBehaviorHolder {
 
-	// Public Constants
-	public static final String COMPONENT_TYPE = "com.liferay.faces.alloy.component.accordion.Accordion";
-	public static final String RENDERER_TYPE = "com.liferay.faces.alloy.component.accordion.AccordionRenderer";
-	public static final String STYLE_CLASS_NAME = "alloy-accordion";
-
 	// Private Constants
 	private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList(
 				TabCollapseEvent.TAB_COLLAPSE, TabExpandEvent.TAB_EXPAND));
-
-	public Accordion() {
-		super();
-		setRendererType(RENDERER_TYPE);
-	}
 
 	@Override
 	public void addClientBehavior(String eventName, ClientBehavior clientBehavior) {
@@ -84,8 +72,7 @@ public class Accordion extends AccordionBase implements ClientBehaviorHolder {
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			Map<String, String> requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
 			String clientId = getClientId(facesContext);
-			int selectedIndex = IntegerHelper.toInteger(requestParameterMap.get(
-						clientId + AccordionRenderer.SELECTED_INDEX));
+			int selectedIndex = IntegerHelper.toInteger(requestParameterMap.get(clientId + "selectedIndex"));
 
 			// If iterating over a data model, then determine the row data and tab associated with the data model
 			// iteration.
@@ -148,20 +135,12 @@ public class Accordion extends AccordionBase implements ClientBehaviorHolder {
 		// Initially style the outermost <div> with "display:none;" in order to prevent blinking when Alloy's
 		// JavaScript attempts to hide the contentBox.
 		if (style == null) {
-			style = AlloyRendererUtil.DISPLAY_NONE;
+			style = "display:none;";
 		}
 		else {
-			style = style + StringPool.SEMICOLON + AlloyRendererUtil.DISPLAY_NONE;
+			style = style + StringPool.SEMICOLON + "display:none;";
 		}
 
 		return style;
-	}
-
-	@Override
-	public String getStyleClass() {
-
-		String styleClass = (String) getStateHelper().eval(AccordionPropertyKeys.styleClass, null);
-
-		return ComponentUtil.concatCssClasses(styleClass, STYLE_CLASS_NAME);
 	}
 }

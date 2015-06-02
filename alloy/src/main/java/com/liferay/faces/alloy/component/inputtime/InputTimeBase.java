@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -27,6 +27,10 @@ import com.liferay.faces.util.component.ClientComponent;
 @Generated(value = "com.liferay.alloy.tools.builder.FacesBuilder")
 public abstract class InputTimeBase extends InputDateTime implements Styleable, ClientComponent {
 
+	// Public Constants
+	public static final String COMPONENT_TYPE = "com.liferay.faces.alloy.component.inputtime.InputTime";
+	public static final String RENDERER_TYPE = "com.liferay.faces.alloy.component.inputtime.internal.InputTimeRenderer";
+
 	// Protected Enumerations
 	protected enum InputTimePropertyKeys {
 		activateFirstItem,
@@ -37,23 +41,29 @@ public abstract class InputTimeBase extends InputDateTime implements Styleable, 
 		maxResults,
 		maxTime,
 		minTime,
+		pattern,
 		queryDelay,
 		responsive,
 		scrollIntoView,
 		step,
-		timePattern,
+		styleClass,
 		timeSelectListener
 	}
 
-	public Boolean isActivateFirstItem() {
+	public InputTimeBase() {
+		super();
+		setRendererType(RENDERER_TYPE);
+	}
+
+	public boolean isActivateFirstItem() {
 		return (Boolean) getStateHelper().eval(InputTimePropertyKeys.activateFirstItem, true);
 	}
 
-	public void setActivateFirstItem(Boolean activateFirstItem) {
+	public void setActivateFirstItem(boolean activateFirstItem) {
 		getStateHelper().put(InputTimePropertyKeys.activateFirstItem, activateFirstItem);
 	}
 
-	public Boolean isCircular() {
+	public Boolean getCircular() {
 		return (Boolean) getStateHelper().eval(InputTimePropertyKeys.circular, null);
 	}
 
@@ -109,6 +119,14 @@ public abstract class InputTimeBase extends InputDateTime implements Styleable, 
 		getStateHelper().put(InputTimePropertyKeys.minTime, minTime);
 	}
 
+	public String getPattern() {
+		return (String) getStateHelper().eval(InputTimePropertyKeys.pattern, "hh:mm a");
+	}
+
+	public void setPattern(String pattern) {
+		getStateHelper().put(InputTimePropertyKeys.pattern, pattern);
+	}
+
 	public Integer getQueryDelay() {
 		return (Integer) getStateHelper().eval(InputTimePropertyKeys.queryDelay, null);
 	}
@@ -125,7 +143,7 @@ public abstract class InputTimeBase extends InputDateTime implements Styleable, 
 		getStateHelper().put(InputTimePropertyKeys.responsive, responsive);
 	}
 
-	public Boolean isScrollIntoView() {
+	public Boolean getScrollIntoView() {
 		return (Boolean) getStateHelper().eval(InputTimePropertyKeys.scrollIntoView, null);
 	}
 
@@ -141,12 +159,18 @@ public abstract class InputTimeBase extends InputDateTime implements Styleable, 
 		getStateHelper().put(InputTimePropertyKeys.step, step);
 	}
 
-	public String getTimePattern() {
-		return (String) getStateHelper().eval(InputTimePropertyKeys.timePattern, "hh:mm a");
+	@Override
+	public String getStyleClass() {
+		// getStateHelper().eval(InputTimePropertyKeys.styleClass, null) is called because super.getStyleClass() may return the
+		// STYLE_CLASS_NAME of the super class.
+		String styleClass = (String) getStateHelper().eval(InputTimePropertyKeys.styleClass, null);
+
+		return com.liferay.faces.util.component.ComponentUtil.concatCssClasses(styleClass, "alloy-input-time");
 	}
 
-	public void setTimePattern(String timePattern) {
-		getStateHelper().put(InputTimePropertyKeys.timePattern, timePattern);
+	@Override
+	public void setStyleClass(String styleClass) {
+		getStateHelper().put(InputTimePropertyKeys.styleClass, styleClass);
 	}
 
 	public javax.el.MethodExpression getTimeSelectListener() {

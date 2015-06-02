@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -22,10 +22,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 import javax.servlet.http.Part;
 
+import com.liferay.faces.bridge.BridgeFactoryFinder;
 import com.liferay.faces.bridge.component.inputfile.InputFile;
 import com.liferay.faces.bridge.context.BridgeContext;
-import com.liferay.faces.bridge.context.map.ContextMapFactory;
-import com.liferay.faces.util.factory.FactoryExtensionFinder;
+import com.liferay.faces.bridge.context.map.internal.ContextMapFactory;
 import com.liferay.faces.util.logging.Logger;
 import com.liferay.faces.util.logging.LoggerFactory;
 import com.liferay.faces.util.model.UploadedFile;
@@ -91,7 +91,7 @@ public class HtmlInputFileRenderer extends DelegatingRendererBase {
 
 	@Override
 	public String getDelegateComponentFamily() {
-		return InputFile.DELEGATE_COMPONENT_FAMILY;
+		return InputFile.COMPONENT_FAMILY;
 	}
 
 	@Override
@@ -101,12 +101,12 @@ public class HtmlInputFileRenderer extends DelegatingRendererBase {
 
 	@Override
 	public String getDelegateRendererType() {
-		return InputFile.DELEGATE_RENDERER_TYPE;
+		return "javax.faces.File";
 	}
 
 	protected Map<String, List<UploadedFile>> getUploadedFileMap(FacesContext facesContext) {
 
-		ContextMapFactory contextMapFactory = (ContextMapFactory) FactoryExtensionFinder.getFactory(
+		ContextMapFactory contextMapFactory = (ContextMapFactory) BridgeFactoryFinder.getFactory(
 				ContextMapFactory.class);
 		BridgeContext bridgeContext = BridgeContext.getCurrentInstance();
 

@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.liferay.faces</groupId>
 		<artifactId>liferay-faces</artifactId>
-		<version>4.2.0-beta1-SNAPSHOT</version>
+		<version>4.2.5-rc1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>liferay-faces-util</artifactId>
@@ -67,5 +67,17 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<useFile>false</useFile>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

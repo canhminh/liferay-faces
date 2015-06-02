@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -15,7 +15,7 @@ package com.liferay.faces.alloy.component.outputremainingchars;
 //J-
 
 import javax.annotation.Generated;
-import com.liferay.faces.alloy.component.outputtext.OutputText;
+import com.liferay.faces.alloy.component.outputtext.OutputTextBase;
 
 import com.liferay.faces.util.component.Styleable;
 import com.liferay.faces.util.component.ClientComponent;
@@ -25,7 +25,11 @@ import com.liferay.faces.util.component.ClientComponent;
  * @author	Kyle Stiemann
  */
 @Generated(value = "com.liferay.alloy.tools.builder.FacesBuilder")
-public abstract class OutputRemainingCharsBase extends OutputText implements Styleable, ClientComponent {
+public abstract class OutputRemainingCharsBase extends OutputTextBase implements Styleable, ClientComponent {
+
+	// Public Constants
+	public static final String COMPONENT_TYPE = "com.liferay.faces.alloy.component.outputremainingchars.OutputRemainingChars";
+	public static final String RENDERER_TYPE = "com.liferay.faces.alloy.component.outputremainingchars.internal.OutputRemainingCharsRenderer";
 
 	// Protected Enumerations
 	protected enum OutputRemainingCharsPropertyKeys {
@@ -33,7 +37,13 @@ public abstract class OutputRemainingCharsBase extends OutputText implements Sty
 		for_,
 		maxLength,
 		onMaxlengthReached,
-		onceMaxlengthReached
+		onceMaxlengthReached,
+		styleClass
+	}
+
+	public OutputRemainingCharsBase() {
+		super();
+		setRendererType(RENDERER_TYPE);
 	}
 
 	@Override
@@ -76,6 +86,20 @@ public abstract class OutputRemainingCharsBase extends OutputText implements Sty
 
 	public void setOnMaxlengthReached(String onMaxlengthReached) {
 		getStateHelper().put(OutputRemainingCharsPropertyKeys.onMaxlengthReached, onMaxlengthReached);
+	}
+
+	@Override
+	public String getStyleClass() {
+		// getStateHelper().eval(OutputRemainingCharsPropertyKeys.styleClass, null) is called because super.getStyleClass() may return the
+		// STYLE_CLASS_NAME of the super class.
+		String styleClass = (String) getStateHelper().eval(OutputRemainingCharsPropertyKeys.styleClass, null);
+
+		return com.liferay.faces.util.component.ComponentUtil.concatCssClasses(styleClass, "alloy-output-remaining-chars");
+	}
+
+	@Override
+	public void setStyleClass(String styleClass) {
+		getStateHelper().put(OutputRemainingCharsPropertyKeys.styleClass, styleClass);
 	}
 }
 //J+

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -27,22 +27,24 @@ import com.liferay.faces.util.component.ClientComponent;
 @Generated(value = "com.liferay.alloy.tools.builder.FacesBuilder")
 public abstract class InputDateBase extends InputDateTime implements Styleable, ClientComponent {
 
+	// Public Constants
+	public static final String COMPONENT_TYPE = "com.liferay.faces.alloy.component.inputdate.InputDate";
+	public static final String RENDERER_TYPE = "com.liferay.faces.alloy.component.inputdate.internal.InputDateRenderer";
+
 	// Protected Enumerations
 	protected enum InputDatePropertyKeys {
-		datePattern,
 		dateSelectListener,
 		maxDate,
 		minDate,
 		panes,
-		responsive
+		pattern,
+		responsive,
+		styleClass
 	}
 
-	public String getDatePattern() {
-		return (String) getStateHelper().eval(InputDatePropertyKeys.datePattern, null);
-	}
-
-	public void setDatePattern(String datePattern) {
-		getStateHelper().put(InputDatePropertyKeys.datePattern, datePattern);
+	public InputDateBase() {
+		super();
+		setRendererType(RENDERER_TYPE);
 	}
 
 	public javax.el.MethodExpression getDateSelectListener() {
@@ -77,12 +79,34 @@ public abstract class InputDateBase extends InputDateTime implements Styleable, 
 		getStateHelper().put(InputDatePropertyKeys.panes, panes);
 	}
 
+	public String getPattern() {
+		return (String) getStateHelper().eval(InputDatePropertyKeys.pattern, null);
+	}
+
+	public void setPattern(String pattern) {
+		getStateHelper().put(InputDatePropertyKeys.pattern, pattern);
+	}
+
 	public boolean isResponsive() {
 		return (Boolean) getStateHelper().eval(InputDatePropertyKeys.responsive, true);
 	}
 
 	public void setResponsive(boolean responsive) {
 		getStateHelper().put(InputDatePropertyKeys.responsive, responsive);
+	}
+
+	@Override
+	public String getStyleClass() {
+		// getStateHelper().eval(InputDatePropertyKeys.styleClass, null) is called because super.getStyleClass() may return the
+		// STYLE_CLASS_NAME of the super class.
+		String styleClass = (String) getStateHelper().eval(InputDatePropertyKeys.styleClass, null);
+
+		return com.liferay.faces.util.component.ComponentUtil.concatCssClasses(styleClass, "alloy-input-date");
+	}
+
+	@Override
+	public void setStyleClass(String styleClass) {
+		getStateHelper().put(InputDatePropertyKeys.styleClass, styleClass);
 	}
 }
 //J+

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -14,6 +14,7 @@
 package com.liferay.faces.test;
 
 import java.util.logging.Logger;
+
 
 // import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBy;
@@ -63,6 +64,8 @@ public class Jsf2Html5 extends TesterBase {
 
 	private static final String provinceIdFieldXpath = "//select[contains(@id,':provinceId')]";
 	private static final String provinceIdFieldErrorXpath = "//select[contains(@id,':provinceId')]/following-sibling::*[1]";
+	
+	private static final String provinceIdSelectorXpath = "";
 
 	private static final String postalCodeFieldXpath = "//input[contains(@id,':postalCode')]";
 	private static final String postalCodeFieldErrorXpath = "//input[contains(@id,':postalCode')]/following-sibling::*[1]/following-sibling::*[1]";
@@ -90,7 +93,7 @@ public class Jsf2Html5 extends TesterBase {
 	// xpath for specific tests
 	protected static final String dateValidationXpath = "//input[contains(@id,':dateOfBirth')]/../child::node()";
 
-	static final String url = baseUrl + webContext + "/jsf2-spring";
+	static final String url = baseUrl + webContext + "/jsf2-html5";
 
 	@FindBy(xpath = formTagXpath)
 	private WebElement formTag;
@@ -132,6 +135,8 @@ public class Jsf2Html5 extends TesterBase {
 	private WebElement cityFieldError;
 	@FindBy(xpath = provinceIdFieldXpath)
 	private WebElement provinceIdField;
+	@FindBy(xpath = provinceIdSelectorXpath)
+	private WebElement provinceIdSelector;
 	@FindBy(xpath = provinceIdFieldErrorXpath)
 	private WebElement provinceIdFieldError;
 	@FindBy(xpath = postalCodeFieldXpath)
@@ -169,6 +174,6 @@ public class Jsf2Html5 extends TesterBase {
 	@FindBy(xpath = bridgeVersionXpath)
 	private WebElement bridgeVersion;
 	
-	protected int dateValidationXpathModifier = 1;
+	protected int dateValidationXpathModifier = 2;
 
 }

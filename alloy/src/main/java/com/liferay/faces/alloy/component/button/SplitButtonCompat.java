@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -15,7 +15,7 @@ package com.liferay.faces.alloy.component.button;
 
 import java.util.Map;
 
-import com.liferay.faces.alloy.component.link.Link;
+import com.liferay.faces.alloy.component.link.LinkBase;
 
 
 /**
@@ -23,7 +23,7 @@ import com.liferay.faces.alloy.component.link.Link;
  *
  * @author  Neil Griffin
  */
-public abstract class SplitButtonCompat extends Link {
+public abstract class SplitButtonCompat extends LinkBase {
 
 	// Protected Data Members
 	protected Button wrappedButton;

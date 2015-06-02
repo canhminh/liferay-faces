@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -13,16 +13,15 @@
  */
 package com.liferay.faces.util.model;
 
+import java.util.List;
+
+
 /**
  * @author  Neil Griffin
  */
 public interface Sortable {
 
-	public boolean isSortAscending();
+	public List<SortCriterion> getSortCriteria();
 
-	public void setSortAscending(boolean sortAscending);
-
-	public String getSortColumn();
-
-	public void setSortColumn(String sortColumn);
+	public void setSortCriteria(List<SortCriterion> sortCriteria);
 }

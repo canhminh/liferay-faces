@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -31,6 +31,16 @@ public class StringHelper {
 
 		if (value != null) {
 			return value.toString();
+		}
+		else {
+			return defaultValue;
+		}
+	}
+
+	public static String toString(String[] values, String defaultValue) {
+
+		if ((values != null) && (values.length > 0)) {
+			return values[0];
 		}
 		else {
 			return defaultValue;

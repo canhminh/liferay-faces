@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -14,7 +14,7 @@
 package com.liferay.faces.bridge.context;
 
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -26,6 +26,7 @@ package com.liferay.faces.bridge.context;
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
@@ -33,17 +34,13 @@ import java.util.Map;
 
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletContext;
-import javax.portlet.PortletMode;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.faces.Bridge.PortletPhase;
 
 import com.liferay.faces.bridge.config.BridgeConfig;
-import com.liferay.faces.bridge.container.PortletContainer;
-import com.liferay.faces.bridge.context.url.BridgeActionURL;
-import com.liferay.faces.bridge.context.url.BridgePartialActionURL;
-import com.liferay.faces.bridge.context.url.BridgeRedirectURL;
 import com.liferay.faces.bridge.context.url.BridgeResourceURL;
+import com.liferay.faces.bridge.context.url.BridgeURL;
 import com.liferay.faces.bridge.scope.BridgeRequestScope;
 
 
@@ -65,22 +62,22 @@ public class BridgeContextMockImpl extends BridgeContext {
 	}
 
 	@Override
-	public void dispatch(String path) throws IOException {
+	public BridgeURL encodeActionURL(String url) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public BridgeActionURL encodeActionURL(String url) {
+	public BridgeURL encodeBookmarkableURL(String baseURL, Map<String, List<String>> parameters) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public BridgePartialActionURL encodePartialActionURL(String url) {
+	public BridgeURL encodePartialActionURL(String url) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public BridgeRedirectURL encodeRedirectURL(String baseUrl, Map<String, List<String>> parameters) {
+	public BridgeURL encodeRedirectURL(String baseUrl, Map<String, List<String>> parameters) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -173,11 +170,6 @@ public class BridgeContextMockImpl extends BridgeContext {
 	}
 
 	@Override
-	public PortletContainer getPortletContainer() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public PortletContext getPortletContext() {
 		throw new UnsupportedOperationException();
 	}
@@ -222,30 +214,18 @@ public class BridgeContextMockImpl extends BridgeContext {
 		throw new UnsupportedOperationException();
 	}
 
-	public void setRenderRedirect(boolean renderRedirect) {
-		throw new UnsupportedOperationException();
-	}
-
 	@Override
 	public void setRenderRedirectAfterDispatch(boolean renderRedirectAfterDispatch) {
 		throw new UnsupportedOperationException();
 	}
 
-	public String getRenderRedirectQueryString() {
-		throw new UnsupportedOperationException();
-	}
-
-	public void setRenderRedirectQueryString(String renderRedirectQueryString) {
+	@Override
+	public BridgeURL getRenderRedirectURL() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public BridgeRedirectURL getRenderRedirectURL() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void setRenderRedirectURL(BridgeRedirectURL renderRedirectURL) {
+	public void setRenderRedirectURL(BridgeURL renderRedirectURL) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -280,11 +260,6 @@ public class BridgeContextMockImpl extends BridgeContext {
 	}
 
 	@Override
-	public String getResponseNamespace() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public Writer getResponseOutputWriter() throws IOException {
 		throw new UnsupportedOperationException();
 	}
@@ -311,10 +286,6 @@ public class BridgeContextMockImpl extends BridgeContext {
 
 	@Override
 	public boolean isRenderRedirect() {
-		throw new UnsupportedOperationException();
-	}
-
-	public void setViewHistory(PortletMode portletMode, String viewId) {
 		throw new UnsupportedOperationException();
 	}
 }

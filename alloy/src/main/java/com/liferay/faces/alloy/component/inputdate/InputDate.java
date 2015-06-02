@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -15,30 +15,14 @@ package com.liferay.faces.alloy.component.inputdate;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import javax.faces.component.FacesComponent;
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.AjaxBehavior;
-import javax.faces.component.behavior.Behavior;
-import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-
-import com.liferay.faces.alloy.component.inputdatetime.InputDateTimeUtil;
-import com.liferay.faces.util.client.BrowserSniffer;
-import com.liferay.faces.util.client.BrowserSnifferFactory;
-import com.liferay.faces.util.component.ComponentUtil;
-import com.liferay.faces.util.factory.FactoryExtensionFinder;
 
 
 /**
@@ -48,50 +32,7 @@ import com.liferay.faces.util.factory.FactoryExtensionFinder;
 public class InputDate extends InputDateBase {
 
 	// Public Constants
-	public static final String COMPONENT_TYPE = "com.liferay.faces.alloy.component.inputdate.InputDate";
 	public static final String DEFAULT_HTML5_DATE_PATTERN = "yyyy-MM-dd";
-	public static final String RENDERER_TYPE = "com.liferay.faces.alloy.component.inputdate.InputDateRenderer";
-	public static final String STYLE_CLASS_NAME = "alloy-input-date";
-
-	// Private Constants
-	private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList(
-				DateSelectEvent.DATE_SELECT));
-
-	public InputDate() {
-		super();
-		setRendererType(RENDERER_TYPE);
-	}
-
-	protected static String getDefaultDatePattern(Object componentLocale) {
-
-		Locale locale = InputDateTimeUtil.getObjectAsLocale(componentLocale);
-
-		// Note: The following usage of SimpleDateFormat is thread-safe, since only the result of the toPattern()
-		// method is utilized.
-		SimpleDateFormat simpleDateFormat = (SimpleDateFormat) SimpleDateFormat.getDateInstance(DateFormat.MEDIUM,
-				locale);
-
-		return simpleDateFormat.toPattern();
-	}
-
-	@Override
-	public void addClientBehavior(String eventName, ClientBehavior clientBehavior) {
-
-		// If the specified client behavior is an Ajax behavior, then the alloy:inputDate component tag has an f:ajax
-		// child tag. Register a behavior listener that can respond to the Ajax behavior by invoking the
-		// dateSelectListener that may have been specified.
-		if (clientBehavior instanceof AjaxBehavior) {
-			AjaxBehavior ajaxBehavior = (AjaxBehavior) clientBehavior;
-			ajaxBehavior.addAjaxBehaviorListener(new InputDateBehaviorListener());
-		}
-
-		super.addClientBehavior(eventName, clientBehavior);
-	}
-
-	@Override
-	protected AjaxBehaviorEvent newSelectEvent(UIComponent uiComponent, Behavior behavior, Date selected) {
-		return new DateSelectEvent(uiComponent, behavior, selected);
-	}
 
 	@Override
 	protected void validateValue(FacesContext facesContext, Object newValue) {
@@ -101,14 +42,14 @@ public class InputDate extends InputDateBase {
 		if (isValid() && (newValue != null)) {
 
 			// Get all necessary dates.
-			String datePattern = getDatePattern();
+			String datePattern = getPattern();
 			Object minDateObject = getMinDate();
 			String timeZoneString = getTimeZone();
 			TimeZone timeZone = TimeZone.getTimeZone(timeZoneString);
 
-			Date minDate = InputDateTimeUtil.getObjectAsDate(minDateObject, datePattern, timeZone);
+			Date minDate = getObjectAsDate(minDateObject, datePattern, timeZone);
 			Object maxDateObject = getMaxDate();
-			Date maxDate = InputDateTimeUtil.getObjectAsDate(maxDateObject, datePattern, timeZone);
+			Date maxDate = getObjectAsDate(maxDateObject, datePattern, timeZone);
 
 			if ((minDate == null) && (maxDate == null)) {
 				setValid(true);
@@ -143,59 +84,38 @@ public class InputDate extends InputDateBase {
 		return calendar.getTime();
 	}
 
+	protected final String getDefaultDatePattern(Object componentLocale) {
+
+		Locale locale = getObjectAsLocale(componentLocale);
+
+		// Note: The following usage of SimpleDateFormat is thread-safe, since only the result of the toPattern()
+		// method is utilized.
+		SimpleDateFormat simpleDateFormat = (SimpleDateFormat) SimpleDateFormat.getDateInstance(DateFormat.MEDIUM,
+				locale);
+
+		return simpleDateFormat.toPattern();
+	}
+
 	@Override
-	public String getDatePattern() {
+	public String getPattern() {
 
-		String datePattern = super.getDatePattern();
+		String datePattern;
 
-		if (datePattern == null) {
+		if (isResponsiveMobile()) {
+			datePattern = DEFAULT_HTML5_DATE_PATTERN;
+		}
+		else {
 
-			// Provide a default datePattern based on the locale.
-			Object locale = getLocale();
-			datePattern = getDefaultDatePattern(locale);
+			datePattern = super.getPattern();
+
+			if (datePattern == null) {
+
+				// Provide a default datePattern based on the locale.
+				Object locale = getLocale();
+				datePattern = getDefaultDatePattern(locale);
+			}
 		}
 
 		return datePattern;
-	}
-
-	@Override
-	public String getDefaultEventName() {
-		return DateSelectEvent.DATE_SELECT;
-	}
-
-	@Override
-	public Collection<String> getEventNames() {
-
-		List<String> eventNames = new ArrayList<String>();
-		eventNames.addAll(super.getEventNames());
-		eventNames.addAll(EVENT_NAMES);
-
-		return Collections.unmodifiableList(eventNames);
-	}
-
-	@Override
-	protected String getPattern() {
-
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		BrowserSnifferFactory browserSnifferFactory = (BrowserSnifferFactory) FactoryExtensionFinder.getFactory(
-				BrowserSnifferFactory.class);
-		BrowserSniffer browserSniffer = browserSnifferFactory.getBrowserSniffer(facesContext.getExternalContext());
-
-		if (browserSniffer.isMobile() && isResponsive()) {
-			return DEFAULT_HTML5_DATE_PATTERN;
-		}
-		else {
-			return getDatePattern();
-		}
-	}
-
-	@Override
-	public String getStyleClass() {
-
-		// getStateHelper().eval(PropertyKeys.styleClass, null) is called because super.getStyleClass() may return the
-		// STYLE_CLASS_NAME of the super class.
-		String styleClass = (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-
-		return ComponentUtil.concatCssClasses(styleClass, STYLE_CLASS_NAME);
 	}
 }

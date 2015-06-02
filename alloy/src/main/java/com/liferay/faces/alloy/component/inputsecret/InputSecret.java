@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -26,18 +26,6 @@ import com.liferay.faces.util.component.ComponentUtil;
 @FacesComponent(value = InputSecret.COMPONENT_TYPE)
 public class InputSecret extends InputSecretBase {
 
-	// Public Constants
-	public static final String COMPONENT_TYPE = "com.liferay.faces.alloy.component.inputsecret.InputSecret";
-	public static final String DELEGATE_COMPONENT_FAMILY = COMPONENT_FAMILY;
-	public static final String DELEGATE_RENDERER_TYPE = "javax.faces.Secret";
-	public static final String RENDERER_TYPE = "com.liferay.faces.alloy.component.inputsecret.InputSecretRenderer";
-	public static final String STYLE_CLASS_NAME = "alloy-input-secret";
-
-	public InputSecret() {
-		super();
-		setRendererType(RENDERER_TYPE);
-	}
-
 	@Override
 	public String getLabel() {
 
@@ -53,15 +41,5 @@ public class InputSecret extends InputSecretBase {
 		}
 
 		return label;
-	}
-
-	@Override
-	public String getStyleClass() {
-
-		// getStateHelper().eval(PropertyKeys.styleClass, null) is called because super.getStyleClass() may return the
-		// STYLE_CLASS_NAME of the super class.
-		String styleClass = (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-
-		return ComponentUtil.concatCssClasses(styleClass, STYLE_CLASS_NAME);
 	}
 }

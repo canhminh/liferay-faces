@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -13,6 +13,9 @@
  */
 package com.liferay.faces.util.logging;
 
+import com.liferay.faces.util.logging.Logger;
+import com.liferay.faces.util.logging.internal.LoggerDefaultImpl;
+import com.liferay.faces.util.logging.internal.LoggerLog4JImpl;
 import com.liferay.faces.util.product.Product;
 import com.liferay.faces.util.product.ProductConstants;
 import com.liferay.faces.util.product.ProductMap;

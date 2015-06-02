@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2014 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2015 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -20,23 +20,19 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorHolder;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import com.liferay.faces.util.client.BrowserSniffer;
-import com.liferay.faces.util.client.BrowserSnifferFactory;
-import com.liferay.faces.util.client.ClientScript;
-import com.liferay.faces.util.client.ClientScriptFactory;
 import com.liferay.faces.util.component.ComponentUtil;
 import com.liferay.faces.util.component.Styleable;
-import com.liferay.faces.util.factory.FactoryExtensionFinder;
 import com.liferay.faces.util.lang.FacesConstants;
 import com.liferay.faces.util.lang.StringPool;
-import com.liferay.faces.util.portal.LiferayPortletUtil;
-import com.liferay.faces.util.portal.WebKeys;
-import com.liferay.faces.util.product.ProductConstants;
-import com.liferay.faces.util.product.ProductMap;
+import com.liferay.faces.util.logging.Logger;
+import com.liferay.faces.util.logging.LoggerFactory;
+import java.util.Arrays;
+import java.util.Collection;
+import javax.faces.application.Application;
+import javax.faces.component.behavior.AjaxBehavior;
 
 
 /**
@@ -45,24 +41,53 @@ import com.liferay.faces.util.product.ProductMap;
 public class RendererUtil {
 
 	// Public Constants
-	public static final String ALLOY_END_SCRIPT = "});";
-	public static final String BACKSLASH_COLON = "\\\\:";
-	public static final String REGEX_COLON = "[:]";
+	public static final String[] MOUSE_DOM_EVENTS = {
+			"onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseout", "onmouseover", "onmouseup"
+		};
+	public static final String[] KEYBOARD_DOM_EVENTS = { "onkeydown", "onkeypress", "onkeyup" };
+
+	// Logger
+	private static final Logger logger = LoggerFactory.getLogger(com.liferay.faces.util.render.RendererUtil.class);
 
 	// Private Constants
-	private static final String FUNCTION_A = "function(A)";
 	private static final String JAVA_SCRIPT_HEX_PREFIX = "\\x";
-	private static final boolean LIFERAY_FACES_BRIDGE_DETECTED = ProductMap.getInstance().get(
-			ProductConstants.LIFERAY_FACES_BRIDGE).isDetected();
-	private static final boolean LIFERAY_PORTAL_DETECTED = ProductMap.getInstance().get(ProductConstants.LIFERAY_PORTAL)
-		.isDetected();
-	private static final String READY = "ready";
-	private static final String USE = "use";
-	private static final String AUI = "AUI";
-
 	private static final char[] _HEX_DIGITS = {
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
 		};
+
+	public static void addDefaultAjaxBehavior(ClientBehaviorHolder clientBehaviorHolder, String execute, String process,
+		String defaultExecute, String render, String update, String defaultRender) {
+
+		Map<String, List<ClientBehavior>> clientBehaviorMap = clientBehaviorHolder.getClientBehaviors();
+		String defaultEventName = clientBehaviorHolder.getDefaultEventName();
+		List<ClientBehavior> clientBehaviors = clientBehaviorMap.get(defaultEventName);
+
+		boolean doAdd = true;
+
+		if (clientBehaviors != null) {
+
+			for (ClientBehavior clientBehavior : clientBehaviors) {
+
+				if (clientBehavior instanceof AjaxBehavior) {
+					doAdd = false;
+
+					break;
+				}
+			}
+		}
+
+		if (doAdd) {
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			Application application = facesContext.getApplication();
+			AjaxBehavior ajaxBehavior = (AjaxBehavior) application.createBehavior(AjaxBehavior.BEHAVIOR_ID);
+			Collection<String> executeIds = getExecuteIds(execute, process, defaultExecute);
+			ajaxBehavior.setExecute(executeIds);
+
+			Collection<String> renderIds = getRenderIds(render, update, defaultRender);
+			ajaxBehavior.setRender(renderIds);
+			clientBehaviorHolder.addClientBehavior(defaultEventName, ajaxBehavior);
+		}
+	}
 
 	public static void decodeClientBehaviors(FacesContext facesContext, UIComponent uiComponent) {
 
@@ -96,67 +121,22 @@ public class RendererUtil {
 		}
 	}
 
-	public static void encodeFunctionCall(ResponseWriter responseWriter, String functionName, Object... parameters)
-		throws IOException {
+	/**
+	 * This method exists as a convenience for Component developers to encode attributes that pass through to the DOM in
+	 * JSF 2.1.
+	 */
+	public static void encodePassThroughAttributes(ResponseWriter responseWriter, UIComponent uiComponent,
+		final String[] PASS_THROUGH_ATTRIBUTES) throws IOException {
 
-		responseWriter.write(functionName);
-		responseWriter.write("(");
+		Map<String, Object> attributes = uiComponent.getAttributes();
 
-		boolean first = true;
+		for (final String PASS_THROUGH_ATTRIBUTE : PASS_THROUGH_ATTRIBUTES) {
 
-		for (Object parameter : parameters) {
+			Object passThroughAttributeValue = attributes.get(PASS_THROUGH_ATTRIBUTE);
 
-			if (first) {
-				first = false;
-			}
-			else {
-				responseWriter.write(",");
-			}
-
-			encodeFunctionParameter(responseWriter, parameter);
-		}
-
-		responseWriter.write(");");
-	}
-
-	public static void encodeFunctionParameter(ResponseWriter responseWriter, Object parameter) throws IOException {
-
-		if (parameter == null) {
-			responseWriter.write("null");
-		}
-		else {
-
-			if (parameter instanceof Object[]) {
-				Object[] parameterItems = (Object[]) parameter;
-
-				if (parameterItems.length == 0) {
-					responseWriter.write("[]");
-				}
-				else {
-					responseWriter.write("[");
-
-					boolean firstIndex = true;
-
-					for (Object parameterItem : parameterItems) {
-
-						if (firstIndex) {
-							firstIndex = false;
-						}
-						else {
-							responseWriter.write(",");
-						}
-
-						encodeFunctionParameter(responseWriter, parameterItem);
-					}
-
-					responseWriter.write("]");
-				}
-			}
-			else if (parameter instanceof String) {
-				responseWriter.write("'" + parameter.toString() + "'");
-			}
-			else {
-				responseWriter.write(parameter.toString());
+			if (passThroughAttributeValue != null) {
+				responseWriter.writeAttribute(PASS_THROUGH_ATTRIBUTE, passThroughAttributeValue,
+					PASS_THROUGH_ATTRIBUTE);
 			}
 		}
 	}
@@ -187,19 +167,6 @@ public class RendererUtil {
 		if (style != null) {
 			responseWriter.writeAttribute(Styleable.STYLE, style, Styleable.STYLE);
 		}
-	}
-
-	public static String escapeClientId(String clientId) {
-
-		String escapedClientId = clientId;
-
-		if (escapedClientId != null) {
-
-			escapedClientId = escapedClientId.replaceAll(REGEX_COLON, BACKSLASH_COLON);
-			escapedClientId = escapeJavaScript(escapedClientId);
-		}
-
-		return escapedClientId;
 	}
 
 	public static String escapeJavaScript(String javaScript) {
@@ -233,24 +200,6 @@ public class RendererUtil {
 		return javaScript;
 	}
 
-	public static void renderScript(FacesContext facesContext, UIComponent uiComponent, String script, String use) {
-
-		// Render the script at the bottom of the page by setting the WebKeys.AUI_SCRIPT_DATA request attribute.
-		ExternalContext externalContext = facesContext.getExternalContext();
-		ClientScriptFactory clientScriptFactory = (ClientScriptFactory) FactoryExtensionFinder.getFactory(
-				ClientScriptFactory.class);
-		ClientScript clientScript = clientScriptFactory.getClientScript(externalContext);
-
-		String portletId = StringPool.BLANK;
-		Object portlet = externalContext.getRequestMap().get(WebKeys.RENDER_PORTLET);
-
-		if (portlet != null) {
-			portletId = LiferayPortletUtil.getPortletId(portlet);
-		}
-
-		clientScript.append(portletId, script, use);
-	}
-
 	private static String toHexString(int i) {
 		char[] buffer = new char[8];
 
@@ -266,73 +215,47 @@ public class RendererUtil {
 		return new String(buffer, index, 8 - index);
 	}
 
-	public static String getAlloyBeginScript(FacesContext facesContext, String[] modules) {
-		return getAlloyBeginScript(facesContext, modules, null);
-	}
+	private static Collection<String> getExecuteIds(String execute, String process, String defaultValue) {
 
-	public static String getAlloyBeginScript(String[] modules, float browserMajorVersion, boolean browserIE) {
-		return getAlloyBeginScript(modules, null, browserMajorVersion, browserIE);
-	}
+		// If the values of the execute and process attributes differ, then
+		if (!execute.equals(process)) {
 
-	public static String getAlloyBeginScript(FacesContext facesContext, String[] modules, String config) {
+			// If the process attribute was specified and the execute attribute was omitted, then use the value of the
+			// process attribute.
+			if (execute.equals(defaultValue)) {
+				execute = process;
+			}
 
-		boolean browserIE = false;
-		float browserMajorVersion = 1;
-
-		BrowserSnifferFactory browserSnifferFactory = (BrowserSnifferFactory) FactoryExtensionFinder.getFactory(
-				BrowserSnifferFactory.class);
-		BrowserSniffer browserSniffer = browserSnifferFactory.getBrowserSniffer(facesContext.getExternalContext());
-
-		if (LIFERAY_PORTAL_DETECTED) {
-			browserIE = browserSniffer.isIe();
-			browserMajorVersion = browserSniffer.getMajorVersion();
-		}
-		else if (LIFERAY_FACES_BRIDGE_DETECTED) {
-			// no-op because there is no way to obtain the underlying HttpServletRequest.
-		}
-		else {
-			browserIE = browserSniffer.isIe();
-			browserMajorVersion = browserSniffer.getMajorVersion();
-		}
-
-		return getAlloyBeginScript(modules, config, browserMajorVersion, browserIE);
-	}
-
-	public static String getAlloyBeginScript(String[] modules, String config, float browserMajorVersion,
-		boolean browserIE) {
-
-		StringBuilder stringBuilder = new StringBuilder();
-		String loadMethod = USE;
-
-		if (browserIE && (browserMajorVersion < 8)) {
-			loadMethod = READY;
-		}
-
-		stringBuilder.append(AUI);
-		stringBuilder.append(StringPool.OPEN_PARENTHESIS);
-
-		if ((config != null) && (config.length() > 0)) {
-			stringBuilder.append(config);
-		}
-
-		stringBuilder.append(StringPool.CLOSE_PARENTHESIS);
-		stringBuilder.append(StringPool.PERIOD);
-		stringBuilder.append(loadMethod);
-		stringBuilder.append(StringPool.OPEN_PARENTHESIS);
-
-		if (modules != null) {
-
-			for (String module : modules) {
-				stringBuilder.append(StringPool.APOSTROPHE);
-				stringBuilder.append(module.trim());
-				stringBuilder.append(StringPool.APOSTROPHE);
-				stringBuilder.append(StringPool.COMMA_AND_SPACE);
+			// Otherwise, if both the execute and process attributes were specified with different values, then log a
+			// warning indicating that the value of the execute attribute takes precedence.
+			else if (!process.equals(defaultValue)) {
+				logger.warn(
+					"Different values were specified for the execute=[{0}] and process=[{0}]. The value for execute takes precedence.");
 			}
 		}
 
-		stringBuilder.append(FUNCTION_A);
-		stringBuilder.append(StringPool.OPEN_CURLY_BRACE);
+		return Arrays.asList(execute.split(" "));
+	}
 
-		return stringBuilder.toString();
+	private static Collection<String> getRenderIds(String render, String update, String defaultValue) {
+
+		// If the values of the render and update attributes differ, then
+		if (!render.equals(update)) {
+
+			// If the update attribute was specified and the render attribute was omitted, then use the value of the
+			// update attribute.
+			if (render.equals(defaultValue)) {
+				render = update;
+			}
+
+			// Otherwise, if both the render and update attributes were specified with different values, then log a
+			// warning indicating that the value of the render attribute takes precedence.
+			else if (!update.equals(defaultValue)) {
+				logger.warn(
+					"Different values were specified for the render=[{0}] and update=[{0}]. The value for render takes precedence.");
+			}
+		}
+
+		return Arrays.asList(render.split(" "));
 	}
 }
